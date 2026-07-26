@@ -1,0 +1,49 @@
+// The "extensions" property lists the extensions
+// according to the URLs in the marketplace website:
+// https://marketplace.visualstudio.com/vscode
+{
+  "name": "homepage",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "corepack enable && pnpm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "burkeholland.simple-react-snippets",
+        "bradlc.vscode-tailwindcss",
+        "vscode-icons-team.vscode-icons",
+        "ms-azuretools.vscode-docker",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "workbench.colorTheme": "Visual Studio Dark",
+        "files.autoSave": "off",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "workbench.iconTheme": "vscode-icons",
+        "vsicons.projectDetection.autoReload": true,
+        "tailwindCSS.sortClassAttributes": true,
+        "tailwindCSS.classAttributesSortOrder": "recommended",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "editor.quickSuggestions": {
+          "strings": true
+        },
+        "css.sortProperties": false
+      }
+    }
+  }
+}
