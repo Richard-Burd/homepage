@@ -1,0 +1,22 @@
+{
+  "Metadata": {
+    "title": "דף הבית של ריצ'רד ברד",
+    "description": "ברוכים הבאים לדף הבית של ריצ'רד ברד",
+    "ogAlt": "דף הבית של ריצ'רד ברד"
+  },
+  "HomePage": {
+    "title": "דף הבית של ריצ'רד ברד.",
+    "subtitle": "זהו דף הבית החדש והמשודרג.",
+    "imageAlt": "צילום קמפוס קולומביה",
+    "socialNav": "קישורים חברתיים",
+    "linkedin": "LinkedIn",
+    "sketchup": "מחסן התלת־ממד של SketchUp",
+    "github": "GitHub"
+  },
+  "LocaleSwitcher": {
+    "label": "שפה",
+    "en": "English",
+    "ar": "عربي",
+    "he": "עברית"
+  }
+}

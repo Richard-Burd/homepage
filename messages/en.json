@@ -1,0 +1,22 @@
+{
+  "Metadata": {
+    "title": "Richard Burd's Homepage",
+    "description": "Welcome to Richard Burd's Homepage",
+    "ogAlt": "Richard Burd's Homepage"
+  },
+  "HomePage": {
+    "title": "Richard Burd Homepage.",
+    "subtitle": "This is the new supercharged homepage.",
+    "imageAlt": "Columbia campus photograph",
+    "socialNav": "Social links",
+    "linkedin": "LinkedIn",
+    "sketchup": "SketchUp 3D Warehouse",
+    "github": "GitHub"
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "ar": "عربي",
+    "he": "עברית"
+  }
+}
