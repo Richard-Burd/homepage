@@ -47,7 +47,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-8 py-32 sm:items-start dark:bg-black">
+      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black">
         <div className="mb-8 flex w-full items-center gap-3 sm:mb-0">
           <LanguageSwitcher />
           <ThemeToggle />

@@ -1,27 +1,37 @@
 [
   {
-    "id": "modeling",
+    "id": "Category1",
     "value": 20,
     "color": "#e8a838"
   },
   {
-    "id": "fullstack",
-    "value": 30,
+    "id": "Category2",
+    "value": 8,
     "color": "#61cdbb"
   },
   {
-    "id": "aviation",
-    "value": 20,
+    "id": "Category3",
+    "value": 30,
     "color": "#e8c1a0"
   },
   {
-    "id": "military",
-    "value": 20,
+    "id": "Category4",
+    "value": 12,
+    "color": "#a0e8a0"
+  },
+  {
+    "id": "Category5",
+    "value": 15,
     "color": "#f47560"
   },
   {
-    "id": "architecture",
+    "id": "Category6",
     "value": 10,
     "color": "#f1e15b"
+  },
+  {
+    "id": "Category7",
+    "value": 5,
+    "color": "#a0c9e4"
   }
 ]

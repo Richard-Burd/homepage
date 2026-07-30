@@ -26,11 +26,13 @@
   },
   "DomainsPie": {
     "slices": {
-      "modeling": "3D Modeling & Visualization",
-      "fullstack": "Full Stack Web Development",
-      "aviation": "Unmanned Aviation",
-      "military": "Military Affairs",
-      "architecture": "Architecture & Urban Planning"
+      "Category1": "3D Modeling & Animation",
+      "Category2": "2D Schematic Visualization",
+      "Category3": "Software Development",
+      "Category4": "Unmanned Aviation",
+      "Category5": "Military Affairs",
+      "Category6": "Systems Engineering",
+      "Category7": "Architecture & Urban Planning"
     }
   }
 }

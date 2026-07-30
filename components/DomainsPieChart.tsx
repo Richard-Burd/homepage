@@ -1,6 +1,7 @@
 'use client'
 
 import { ResponsivePie } from '@nivo/pie'
+import { useLocale } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 export type DomainsPieDatum = {
@@ -28,7 +29,15 @@ const NARROW_SIZE_FACTOR = 0.75
 const NARROW_INNER_RADIUS = 0.35
 const DEFAULT_INNER_RADIUS = 0.5
 
+function getLocaleFontFamily(locale: string) {
+  if (locale === 'ar') return 'var(--font-arabic)'
+  if (locale === 'he') return 'var(--font-hebrew)'
+  return 'var(--font-roboto)'
+}
+
 export default function DomainsPieChart({ data }: Props) {
+  const locale = useLocale()
+  const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number | null>(null)
   const [isDark, setIsDark] = useState(false)
@@ -121,6 +130,7 @@ export default function DomainsPieChart({ data }: Props) {
             labels: {
               text: {
                 fontSize: Math.max(10, DESIGN_FONT_SIZE * scale),
+                fontFamily,
                 fill: labelTextColor,
               },
             },
@@ -129,6 +139,7 @@ export default function DomainsPieChart({ data }: Props) {
                 background: tooltipBg,
                 color: tooltipText,
                 boxShadow: tooltipShadow,
+                fontFamily,
               },
             },
           }}
