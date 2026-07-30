@@ -18,5 +18,10 @@
     "en": "English",
     "ar": "عربي",
     "he": "עברית"
+  },
+  "ThemeSwitcher": {
+    "label": "المظهر",
+    "light": "فاتح",
+    "dark": "داكن"
   }
 }
