@@ -10,7 +10,9 @@ import {
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 
+import { InlineScript } from '@/components/InlineScript'
 import { routing, type Locale } from '@/i18n/routing'
+import { themeInitScript } from '@/lib/theme'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -97,7 +99,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       dir={isRtl ? 'rtl' : 'ltr'}
       className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${localeFont} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <InlineScript html={themeInitScript} />
+      </head>
       <body
         className={`flex min-h-full flex-col ${
           locale === 'ar'
