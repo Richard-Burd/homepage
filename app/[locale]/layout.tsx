@@ -1,6 +1,12 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { Geist, Geist_Mono, Noto_Sans_Arabic, Noto_Sans_Hebrew } from 'next/font/google'
+import {
+  Geist,
+  Geist_Mono,
+  Noto_Kufi_Arabic,
+  Roboto,
+  Rubik,
+} from 'next/font/google'
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 
@@ -16,16 +22,20 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const notoArabic = Noto_Sans_Arabic({
-  variable: '--font-arabic',
-  subsets: ['arabic'],
-  weight: ['400', '600'],
+const roboto = Roboto({
+  variable: '--font-roboto',
+  subsets: ['latin'],
+  weight: ['400', '700'],
 })
 
-const notoHebrew = Noto_Sans_Hebrew({
+const notoArabic = Noto_Kufi_Arabic({
+  variable: '--font-arabic',
+  subsets: ['arabic'],
+})
+
+const rubik = Rubik({
   variable: '--font-hebrew',
   subsets: ['hebrew'],
-  weight: ['400', '600'],
 })
 
 const rtlLocales: Locale[] = ['ar', 'he']
@@ -79,14 +89,14 @@ export default async function LocaleLayout({ children, params }: Props) {
     locale === 'ar'
       ? notoArabic.variable
       : locale === 'he'
-        ? notoHebrew.variable
+        ? rubik.variable
         : ''
 
   return (
     <html
       lang={locale}
       dir={isRtl ? 'rtl' : 'ltr'}
-      className={`${geistSans.variable} ${geistMono.variable} ${localeFont} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${localeFont} h-full antialiased`}
     >
       <body
         className={`flex min-h-full flex-col ${

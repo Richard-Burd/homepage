@@ -42,10 +42,26 @@ export default async function Home({ params }: Props) {
         </div>
 
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-start">
-          <h1 className="text-3xl leading-10 font-semibold tracking-tight text-black dark:text-zinc-50">
+          <h1
+            className={`leading-10 text-zinc-700 dark:text-zinc-50 ${
+              locale === 'ar'
+                ? 'font-(family-name:--font-arabic) text-[1.7rem] font-bold tracking-wider'
+                : locale === 'he'
+                  ? 'font-(family-name:--font-hebrew) text-[2rem] font-bold'
+                  : 'font-(family-name:--font-roboto) text-3xl font-bold tracking-wide'
+            }`}
+          >
             {t('title')}
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+          <p
+            className={`max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400 ${
+              locale === 'ar'
+                ? 'font-(family-name:--font-arabic) font-normal'
+                : locale === 'he'
+                  ? 'font-(family-name:--font-hebrew) font-normal'
+                  : 'font-(family-name:--font-roboto) font-normal'
+            }`}
+          >
             {t('subtitle')}
           </p>
           <RotatingCube />
