@@ -1,7 +1,7 @@
 'use client'
 
 import { ResponsivePie } from '@nivo/pie'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export type DomainsPieDatum = {
   id: string
@@ -14,21 +14,51 @@ type Props = {
   data: DomainsPieDatum[]
 }
 
+/** Desktop design size — everything scales from this proportionally. */
+const DESIGN_WIDTH = 688 // 43rem
+const DESIGN_HEIGHT = 380 // ~23.75rem
+const DESIGN_MARGIN = { top: 40, right: 200, bottom: 40, left: 140 }
+const DESIGN_FONT_SIZE = 14
+const DESIGN_DIAGONAL = 16
+const DESIGN_STRAIGHT = 20
+const DESIGN_THICKNESS = 2
+const DESIGN_ACTIVE_OFFSET = 8
+
 export default function DomainsPieChart({ data }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [width, setWidth] = useState<number | null>(null)
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
     const root = document.documentElement
 
-    function sync() {
+    function syncTheme() {
       setIsDark(root.classList.contains('dark'))
     }
 
-    sync()
+    syncTheme()
 
-    const observer = new MutationObserver(sync)
-    observer.observe(root, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
+    const themeObserver = new MutationObserver(syncTheme)
+    themeObserver.observe(root, { attributes: true, attributeFilter: ['class'] })
+    return () => themeObserver.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const node = containerRef.current
+    if (!node) return
+    const target: HTMLDivElement = node
+
+    function measure() {
+      const next = target.clientWidth
+      if (next > 0) {
+        setWidth(next)
+      }
+    }
+
+    measure()
+    const resizeObserver = new ResizeObserver(measure)
+    resizeObserver.observe(target)
+    return () => resizeObserver.disconnect()
   }, [])
 
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'
@@ -38,43 +68,58 @@ export default function DomainsPieChart({ data }: Props) {
     ? '0 1px 2px rgba(0, 0, 0, 0.5)'
     : '0 1px 2px rgba(0, 0, 0, 0.25)'
 
+  const scale = width == null ? 1 : Math.min(1, width / DESIGN_WIDTH)
+  const height = DESIGN_HEIGHT * scale
+
   return (
-    <div className="relative left-1/2 h-[calc(min(100vw-2rem,43rem)-16.25rem)] w-[min(100vw-2rem,43rem)] max-w-none translate-x-[-55%] overflow-visible">
-      <ResponsivePie
-        data={data}
-        margin={{ top: 40, right: 200, bottom: 40, left: 140 }}
-        innerRadius={0.5}
-        padAngle={0.6}
-        cornerRadius={2}
-        activeOuterRadiusOffset={8}
-        colors={{ datum: 'data.color' }}
-        valueFormat={(value) => `${value}%`}
-        theme={{
-          labels: {
-            text: {
-              fontSize: 14,
-              fill: labelTextColor,
+    <div
+      ref={containerRef}
+      dir="ltr"
+      className="w-full max-w-[43rem] self-center overflow-visible"
+      style={{ height }}
+    >
+      {width != null && width > 0 ? (
+        <ResponsivePie
+          data={data}
+          margin={{
+            top: DESIGN_MARGIN.top * scale,
+            right: DESIGN_MARGIN.right * scale,
+            bottom: DESIGN_MARGIN.bottom * scale,
+            left: DESIGN_MARGIN.left * scale,
+          }}
+          innerRadius={0.5}
+          padAngle={0.6}
+          cornerRadius={2}
+          activeOuterRadiusOffset={DESIGN_ACTIVE_OFFSET * scale}
+          colors={{ datum: 'data.color' }}
+          valueFormat={(value) => `${value}%`}
+          theme={{
+            labels: {
+              text: {
+                fontSize: Math.max(10, DESIGN_FONT_SIZE * scale),
+                fill: labelTextColor,
+              },
             },
-          },
-          tooltip: {
-            container: {
-              background: tooltipBg,
-              color: tooltipText,
-              boxShadow: tooltipShadow,
+            tooltip: {
+              container: {
+                background: tooltipBg,
+                color: tooltipText,
+                boxShadow: tooltipShadow,
+              },
             },
-          },
-        }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabel={(datum) => String(datum.label)}
-        arcLinkLabelsTextColor={labelTextColor}
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLinkLabelsDiagonalLength={16}
-        arcLinkLabelsStraightLength={20}
-        arcLabelsSkipAngle={10}
-        arcLabel={(datum) => `${datum.value}%`}
-        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-      />
+          }}
+          arcLinkLabelsSkipAngle={10}
+          arcLinkLabel={(datum) => String(datum.label)}
+          arcLinkLabelsTextColor={labelTextColor}
+          arcLinkLabelsThickness={Math.max(1, DESIGN_THICKNESS * scale)}
+          arcLinkLabelsColor={{ from: 'color' }}
+          arcLinkLabelsDiagonalLength={DESIGN_DIAGONAL * scale}
+          arcLinkLabelsStraightLength={DESIGN_STRAIGHT * scale}
+          arcLabelsSkipAngle={10}
+          arcLabel={(datum) => `${datum.value}%`}
+          arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+        />
+      ) : null}
     </div>
   )
 }

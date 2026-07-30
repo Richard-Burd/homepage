@@ -53,7 +53,7 @@ export default async function Home({ params }: Props) {
           <ThemeToggle />
         </div>
 
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-start">
+        <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
           <h1
             className={`leading-10 text-zinc-700 dark:text-zinc-50 ${
               locale === 'ar'
