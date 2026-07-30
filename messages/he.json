@@ -23,5 +23,14 @@
     "label": "ערכת נושא",
     "light": "בהיר",
     "dark": "כהה"
+  },
+  "DomainsPie": {
+    "slices": {
+      "modeling": "מידול תלת־ממדי",
+      "fullstack": "פיתוח אתרים מלא",
+      "aviation": "תעופה בלתי מאוישת",
+      "military": "עניינים צבאיים",
+      "architecture": "אדריכלות ותכנון עירוני"
+    }
   }
 }

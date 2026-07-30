@@ -23,5 +23,14 @@
     "label": "Theme",
     "light": "Light",
     "dark": "Dark"
+  },
+  "DomainsPie": {
+    "slices": {
+      "modeling": "3D Modeling",
+      "fullstack": "Full Stack Web Development",
+      "aviation": "Unmanned Aviation",
+      "military": "Military Affairs",
+      "architecture": "Architecture & Urban Planning"
+    }
   }
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "3D Modeling & Visualization",
+    "value": 20,
+    "color": "#e8a838"
+  },
+  {
+    "id": "Full Stack Web Development",
+    "value": 30,
+    "color": "#61cdbb"
+  },
+  {
+    "id": "Unmanned Aviation",
+    "value": 20,
+    "color": "#e8c1a0"
+  },
+  {
+    "id": "Military Affairs",
+    "value": 20,
+    "color": "#f47560"
+  },
+  {
+    "id": "Architecture & Urban Planning",
+    "value": 10,
+    "color": "#f1e15b"
+  }
+]

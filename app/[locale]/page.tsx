@@ -3,9 +3,11 @@ import Image from 'next/image'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa'
 import { SiSketchup } from 'react-icons/si'
 
+import DomainsPieChart from '@/components/DomainsPieChart'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import RotatingCube from '@/components/RotatingCube'
 import ThemeToggle from '@/components/ThemeToggle'
+import domainsPieData from '@/data/domains-pie.json'
 
 const socialLinks = [
   {
@@ -34,6 +36,14 @@ export default async function Home({ params }: Props) {
   setRequestLocale(locale)
 
   const t = await getTranslations('HomePage')
+  const tDomains = await getTranslations('DomainsPie')
+
+  const pieData = domainsPieData.map((slice) => ({
+    id: slice.id,
+    label: tDomains(`slices.${slice.id}`),
+    value: slice.value,
+    color: slice.color,
+  }))
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
@@ -67,6 +77,7 @@ export default async function Home({ params }: Props) {
             {t('subtitle')}
           </p>
           <RotatingCube />
+          <DomainsPieChart data={pieData} />
         </div>
 
         <Image
