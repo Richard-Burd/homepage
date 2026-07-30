@@ -48,6 +48,7 @@ export default function DomainsPieChart({ data }: Props) {
         cornerRadius={2}
         activeOuterRadiusOffset={8}
         colors={{ datum: 'data.color' }}
+        valueFormat={(value) => `${value}%`}
         theme={{
           labels: {
             text: {
@@ -64,12 +65,14 @@ export default function DomainsPieChart({ data }: Props) {
           },
         }}
         arcLinkLabelsSkipAngle={10}
+        arcLinkLabel={(datum) => String(datum.label)}
         arcLinkLabelsTextColor={labelTextColor}
         arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: 'color' }}
         arcLinkLabelsDiagonalLength={16}
         arcLinkLabelsStraightLength={20}
         arcLabelsSkipAngle={10}
+        arcLabel={(datum) => `${datum.value}%`}
         arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
       />
     </div>
