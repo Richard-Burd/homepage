@@ -47,7 +47,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
+      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-8 py-32 sm:items-start dark:bg-black">
         <div className="mb-8 flex w-full items-center gap-3 sm:mb-0">
           <LanguageSwitcher />
           <ThemeToggle />
@@ -79,14 +79,15 @@ export default async function Home({ params }: Props) {
           <RotatingCube />
           <DomainsPieChart data={pieData} />
         </div>
-
-        <Image
-          src="https://richard-burd-homepage.s3.us-east-1.amazonaws.com/columbia-test-image.jpg"
-          alt={t('imageAlt')}
-          width={800}
-          height={600}
-          priority
-        />
+        <div className="mt-6">
+          <Image
+            src="https://richard-burd-homepage.s3.us-east-1.amazonaws.com/columbia-test-image.jpg"
+            alt={t('imageAlt')}
+            width={800}
+            height={600}
+            priority
+          />
+        </div>
 
         <nav
           aria-label={t('socialNav')}

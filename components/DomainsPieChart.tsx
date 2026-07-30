@@ -23,11 +23,16 @@ const DESIGN_DIAGONAL = 16
 const DESIGN_STRAIGHT = 20
 const DESIGN_THICKNESS = 2
 const DESIGN_ACTIVE_OFFSET = 8
+const NARROW_VIEWPORT_PX = 500
+const NARROW_SIZE_FACTOR = 0.75
+const NARROW_INNER_RADIUS = 0.35
+const DEFAULT_INNER_RADIUS = 0.5
 
 export default function DomainsPieChart({ data }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number | null>(null)
   const [isDark, setIsDark] = useState(false)
+  const [isNarrowViewport, setIsNarrowViewport] = useState(false)
 
   useEffect(() => {
     const root = document.documentElement
@@ -39,8 +44,23 @@ export default function DomainsPieChart({ data }: Props) {
     syncTheme()
 
     const themeObserver = new MutationObserver(syncTheme)
-    themeObserver.observe(root, { attributes: true, attributeFilter: ['class'] })
+    themeObserver.observe(root, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
     return () => themeObserver.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${NARROW_VIEWPORT_PX - 1}px)`)
+
+    function syncViewport() {
+      setIsNarrowViewport(media.matches)
+    }
+
+    syncViewport()
+    media.addEventListener('change', syncViewport)
+    return () => media.removeEventListener('change', syncViewport)
   }, [])
 
   useEffect(() => {
@@ -68,14 +88,18 @@ export default function DomainsPieChart({ data }: Props) {
     ? '0 1px 2px rgba(0, 0, 0, 0.5)'
     : '0 1px 2px rgba(0, 0, 0, 0.25)'
 
-  const scale = width == null ? 1 : Math.min(1, width / DESIGN_WIDTH)
+  const baseScale = width == null ? 1 : Math.min(1, width / DESIGN_WIDTH)
+  const scale = isNarrowViewport ? baseScale * NARROW_SIZE_FACTOR : baseScale
   const height = DESIGN_HEIGHT * scale
+  const innerRadius = isNarrowViewport
+    ? NARROW_INNER_RADIUS
+    : DEFAULT_INNER_RADIUS
 
   return (
     <div
       ref={containerRef}
       dir="ltr"
-      className="w-full max-w-[43rem] self-center overflow-visible"
+      className="w-full max-w-172 self-center overflow-visible"
       style={{ height }}
     >
       {width != null && width > 0 ? (
@@ -87,7 +111,7 @@ export default function DomainsPieChart({ data }: Props) {
             bottom: DESIGN_MARGIN.bottom * scale,
             left: DESIGN_MARGIN.left * scale,
           }}
-          innerRadius={0.5}
+          innerRadius={innerRadius}
           padAngle={0.6}
           cornerRadius={2}
           activeOuterRadiusOffset={DESIGN_ACTIVE_OFFSET * scale}
