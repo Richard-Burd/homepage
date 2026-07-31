@@ -1,7 +1,7 @@
 'use client'
 
 import { ResponsivePie } from '@nivo/pie'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 export type DomainsPieDatum = {
@@ -26,6 +26,7 @@ const DESIGN_THICKNESS = 2
 const DESIGN_ACTIVE_OFFSET = 8
 const NARROW_VIEWPORT_PX = 500
 const NARROW_SIZE_FACTOR = 0.85
+const NARROW_FONT_SIZE = 11
 const NARROW_INNER_RADIUS = 0.45
 const DEFAULT_INNER_RADIUS = 0.5
 
@@ -36,6 +37,7 @@ function getLocaleFontFamily(locale: string) {
 }
 
 export default function DomainsPieChart({ data }: Props) {
+  const t = useTranslations('DomainsPie')
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -105,59 +107,69 @@ export default function DomainsPieChart({ data }: Props) {
     : DEFAULT_INNER_RADIUS
 
   return (
-    <div
-      ref={containerRef}
-      dir="ltr"
-      className="w-full max-w-172 self-center overflow-visible"
-      style={{ height }}
-    >
-      {width != null && width > 0 ? (
-        <ResponsivePie
-          data={data}
-          margin={{
-            top: DESIGN_MARGIN.top * scale,
-            right: DESIGN_MARGIN.right * scale,
-            bottom: DESIGN_MARGIN.bottom * scale,
-            left: DESIGN_MARGIN.left * scale,
-          }}
-          innerRadius={innerRadius}
-          startAngle={8}
-          endAngle={368}
-          padAngle={0.6}
-          cornerRadius={2}
-          activeOuterRadiusOffset={DESIGN_ACTIVE_OFFSET * scale}
-          colors={{ datum: 'data.color' }}
-          valueFormat={(value) => `${value}%`}
-          theme={{
-            labels: {
-              text: {
-                fontSize: Math.max(12, DESIGN_FONT_SIZE * scale),
-                fontFamily,
-                fill: labelTextColor,
+    <div className="flex w-full max-w-172 flex-col gap-4 self-center">
+      <h2
+        className="text-center text-xl font-bold tracking-wide text-zinc-700 sm:text-[2.5rem] dark:text-zinc-50"
+        style={{ fontFamily }}
+      >
+        {t('title')}
+      </h2>
+      <div
+        ref={containerRef}
+        dir="ltr"
+        className="w-full overflow-visible"
+        style={{ height }}
+      >
+        {width != null && width > 0 ? (
+          <ResponsivePie
+            data={data}
+            margin={{
+              top: DESIGN_MARGIN.top * scale,
+              right: DESIGN_MARGIN.right * scale,
+              bottom: DESIGN_MARGIN.bottom * scale,
+              left: DESIGN_MARGIN.left * scale,
+            }}
+            innerRadius={innerRadius}
+            startAngle={8}
+            endAngle={368}
+            padAngle={0.6}
+            cornerRadius={2}
+            activeOuterRadiusOffset={DESIGN_ACTIVE_OFFSET * scale}
+            colors={{ datum: 'data.color' }}
+            valueFormat={(value) => `${value}%`}
+            theme={{
+              labels: {
+                text: {
+                  fontSize: isNarrowViewport
+                    ? NARROW_FONT_SIZE
+                    : Math.max(20, DESIGN_FONT_SIZE * scale),
+                  fontFamily,
+                  fill: labelTextColor,
+                },
               },
-            },
-            tooltip: {
-              container: {
-                background: tooltipBg,
-                color: tooltipText,
-                boxShadow: tooltipShadow,
-                fontFamily,
+              tooltip: {
+                container: {
+                  background: tooltipBg,
+                  color: tooltipText,
+                  boxShadow: tooltipShadow,
+                  fontFamily,
+                },
               },
-            },
-          }}
-          arcLinkLabelsSkipAngle={10}
-          arcLinkLabel={(datum) => String(datum.label)}
-          arcLinkLabelsTextColor={labelTextColor}
-          arcLinkLabelsThickness={Math.max(1, DESIGN_THICKNESS * scale)}
-          arcLinkLabelsColor={{ from: 'color' }}
-          arcLinkLabelsDiagonalLength={DESIGN_DIAGONAL * scale}
-          arcLinkLabelsStraightLength={DESIGN_STRAIGHT * scale}
-          enableArcLabels={!isNarrowViewport}
-          arcLabelsSkipAngle={10}
-          arcLabel={(datum) => `${datum.value}%`}
-          arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-        />
-      ) : null}
+            }}
+            arcLinkLabelsSkipAngle={10}
+            arcLinkLabel={(datum) => String(datum.label)}
+            arcLinkLabelsTextColor={labelTextColor}
+            arcLinkLabelsThickness={Math.max(1, DESIGN_THICKNESS * scale)}
+            arcLinkLabelsColor={{ from: 'color' }}
+            arcLinkLabelsDiagonalLength={DESIGN_DIAGONAL * scale}
+            arcLinkLabelsStraightLength={DESIGN_STRAIGHT * scale}
+            enableArcLabels={!isNarrowViewport}
+            arcLabelsSkipAngle={10}
+            arcLabel={(datum) => `${datum.value}%`}
+            arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+          />
+        ) : null}
+      </div>
     </div>
   )
 }

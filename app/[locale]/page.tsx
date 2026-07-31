@@ -76,9 +76,16 @@ export default async function Home({ params }: Props) {
           >
             {t('subtitle')}
           </p>
+        </div>
+
+        <div className="flex w-full items-center justify-center">
           <RotatingCube />
+        </div>
+
+        <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
           <DomainsPieChart data={pieData} />
         </div>
+
         <div className="mt-6">
           <Image
             src="https://richard-burd-homepage.s3.us-east-1.amazonaws.com/columbia-test-image.jpg"

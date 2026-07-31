@@ -25,7 +25,7 @@ function Cube() {
 
 export default function RotatingCube() {
   return (
-    <div className="h-48 w-48">
+    <div className="aspect-square w-[clamp(12rem,40vw,28rem)]">
       <Canvas camera={{ position: [8, 7, 10], fov: 28 }}>
         <ambientLight intensity={0.9} />
         <directionalLight position={[4, 4, 4]} intensity={1} />

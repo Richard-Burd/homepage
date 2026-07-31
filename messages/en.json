@@ -25,6 +25,7 @@
     "dark": "Dark"
   },
   "DomainsPie": {
+    "title": "Areas of Expertise",
     "slices": {
       "Category1": "Systems Engineering",
       "Category2": "Data Visualization",

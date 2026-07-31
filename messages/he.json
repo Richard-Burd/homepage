@@ -25,6 +25,7 @@
     "dark": "כהה"
   },
   "DomainsPie": {
+    "title": "תחומי התמחות",
     "slices": {
       "Category1": "הנדסת מערכות",
       "Category2": "המחשת נתונים",

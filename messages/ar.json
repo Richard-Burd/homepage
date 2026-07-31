@@ -25,6 +25,7 @@
     "dark": "داكن"
   },
   "DomainsPie": {
+    "title": "مجالات الخبرة",
     "slices": {
       "Category1": "هندسة النظم",
       "Category2": "تصور البيانات",
