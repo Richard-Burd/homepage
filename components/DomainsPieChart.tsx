@@ -19,7 +19,7 @@ type Props = {
 const DESIGN_WIDTH = 688 // 43rem
 const DESIGN_HEIGHT = 380 // ~23.75rem
 const DESIGN_MARGIN = { top: 40, right: 200, bottom: 40, left: 140 }
-const DESIGN_FONT_SIZE = 14
+const DESIGN_FONT_SIZE = 19
 const DESIGN_DIAGONAL = 16
 const DESIGN_STRAIGHT = 20
 const DESIGN_THICKNESS = 2
@@ -142,7 +142,7 @@ export default function DomainsPieChart({ data }: Props) {
                 text: {
                   fontSize: isNarrowViewport
                     ? NARROW_FONT_SIZE
-                    : Math.max(20, DESIGN_FONT_SIZE * scale),
+                    : Math.max(1, DESIGN_FONT_SIZE * scale),
                   fontFamily,
                   fill: labelTextColor,
                 },
