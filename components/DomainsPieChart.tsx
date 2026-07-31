@@ -25,7 +25,7 @@ const DESIGN_STRAIGHT = 20
 const DESIGN_THICKNESS = 2
 const DESIGN_ACTIVE_OFFSET = 8
 const NARROW_VIEWPORT_PX = 500
-const NARROW_SIZE_FACTOR = 0.75
+const NARROW_SIZE_FACTOR = 0.85
 const NARROW_INNER_RADIUS = 0.35
 const DEFAULT_INNER_RADIUS = 0.5
 
@@ -121,6 +121,8 @@ export default function DomainsPieChart({ data }: Props) {
             left: DESIGN_MARGIN.left * scale,
           }}
           innerRadius={innerRadius}
+          startAngle={8}
+          endAngle={368}
           padAngle={0.6}
           cornerRadius={2}
           activeOuterRadiusOffset={DESIGN_ACTIVE_OFFSET * scale}

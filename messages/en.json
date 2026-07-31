@@ -26,13 +26,13 @@
   },
   "DomainsPie": {
     "slices": {
-      "Category1": "3D Modeling & Animation",
-      "Category2": "2D Schematic Visualization",
-      "Category3": "Software Development",
-      "Category4": "Unmanned Aviation",
+      "Category1": "Systems Engineering",
+      "Category2": "Data Visualization",
+      "Category3": "Unmanned Aviation",
+      "Category4": "Software Development",
       "Category5": "Military Affairs",
-      "Category6": "Systems Engineering",
-      "Category7": "Architecture & Urban Planning"
+      "Category6": "3D Modeling",
+      "Category7": "Architecture & Urban Design"
     }
   }
 }
