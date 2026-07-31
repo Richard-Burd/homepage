@@ -1,6 +1,14 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
-import { FaGithub, FaLinkedinIn } from 'react-icons/fa'
+import {
+  FaGithub,
+  FaInstagramSquare,
+  FaLinkedinIn,
+  FaMusic,
+  FaPaypal,
+  FaRedditSquare,
+} from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
 import { SiSketchup } from 'react-icons/si'
 
 import DomainsPieChart from '@/components/DomainsPieChart'
@@ -18,6 +26,11 @@ const socialLinks = [
     Icon: FaLinkedinIn,
   },
   {
+    href: 'https://www.instagram.com/richard.a.burd/',
+    labelKey: 'instagram' as const,
+    Icon: FaInstagramSquare,
+  },
+  {
     href: 'https://3dwarehouse.sketchup.com/by/richardburd',
     labelKey: 'sketchup' as const,
     Icon: SiSketchup,
@@ -26,6 +39,26 @@ const socialLinks = [
     href: 'https://github.com/Richard-Burd',
     labelKey: 'github' as const,
     Icon: FaGithub,
+  },
+  {
+    href: 'https://audius.co/richardburd',
+    labelKey: 'audius' as const,
+    Icon: FaMusic,
+  },
+  {
+    href: 'https://www.paypal.com/biz/profile/RichardBurdOR',
+    labelKey: 'paypal' as const,
+    Icon: FaPaypal,
+  },
+  {
+    href: 'https://x.com/Richard_A_Burd',
+    labelKey: 'x' as const,
+    Icon: FaXTwitter,
+  },
+  {
+    href: 'https://www.reddit.com/user/Richard-Burd/',
+    labelKey: 'reddit' as const,
+    Icon: FaRedditSquare,
   },
 ]
 
@@ -102,9 +135,20 @@ export default async function Home({ params }: Props) {
           />
         </div>
 
+        {locale === 'he' ? (
+          <div className="mt-6">
+            <Image
+              src={assetUrl('ketubah-test-image.jpg')}
+              alt={t('ketubahImageAlt')}
+              width={800}
+              height={1100}
+            />
+          </div>
+        ) : null}
+
         <nav
           aria-label={t('socialNav')}
-          className="mt-6 flex flex-row items-center gap-6"
+          className="mx-4 mt-6 flex flex-row flex-wrap items-center gap-6"
         >
           {socialLinks.map(({ href, labelKey, Icon }) => (
             <a

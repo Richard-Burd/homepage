@@ -8,10 +8,16 @@
     "title": "Richard Burd's Homepage",
     "subtitle": "This is the new supercharged homepage.",
     "imageAlt": "Columbia campus photograph",
+    "ketubahImageAlt": "Ketubah",
     "socialNav": "Social links",
     "linkedin": "LinkedIn",
+    "instagram": "Instagram",
     "sketchup": "SketchUp 3D Warehouse",
-    "github": "GitHub"
+    "github": "GitHub",
+    "audius": "Audius",
+    "paypal": "PayPal",
+    "x": "X",
+    "reddit": "Reddit"
   },
   "LocaleSwitcher": {
     "label": "Language",
