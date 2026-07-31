@@ -26,7 +26,7 @@ const DESIGN_THICKNESS = 2
 const DESIGN_ACTIVE_OFFSET = 8
 const NARROW_VIEWPORT_PX = 500
 const NARROW_SIZE_FACTOR = 0.85
-const NARROW_INNER_RADIUS = 0.35
+const NARROW_INNER_RADIUS = 0.45
 const DEFAULT_INNER_RADIUS = 0.5
 
 function getLocaleFontFamily(locale: string) {
@@ -131,7 +131,7 @@ export default function DomainsPieChart({ data }: Props) {
           theme={{
             labels: {
               text: {
-                fontSize: Math.max(10, DESIGN_FONT_SIZE * scale),
+                fontSize: Math.max(12, DESIGN_FONT_SIZE * scale),
                 fontFamily,
                 fill: labelTextColor,
               },
@@ -152,6 +152,7 @@ export default function DomainsPieChart({ data }: Props) {
           arcLinkLabelsColor={{ from: 'color' }}
           arcLinkLabelsDiagonalLength={DESIGN_DIAGONAL * scale}
           arcLinkLabelsStraightLength={DESIGN_STRAIGHT * scale}
+          enableArcLabels={!isNarrowViewport}
           arcLabelsSkipAngle={10}
           arcLabel={(datum) => `${datum.value}%`}
           arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
