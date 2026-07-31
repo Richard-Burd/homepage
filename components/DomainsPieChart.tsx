@@ -1,6 +1,7 @@
 'use client'
 
 import { ResponsivePie } from '@nivo/pie'
+import { useInView } from 'motion/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
@@ -29,6 +30,8 @@ const NARROW_SIZE_FACTOR = 0.85
 const NARROW_FONT_SIZE = 10
 const NARROW_INNER_RADIUS = 0.45
 const DEFAULT_INNER_RADIUS = 0.5
+/** Delay between revealing each pie slice once the chart is in view. */
+const SLICE_STAGGER_MS = 180
 
 function getLocaleFontFamily(locale: string) {
   if (locale === 'ar') return 'var(--font-arabic)'
@@ -36,14 +39,21 @@ function getLocaleFontFamily(locale: string) {
   return 'var(--font-roboto)'
 }
 
+function prefersReducedMotion() {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 export default function DomainsPieChart({ data }: Props) {
   const t = useTranslations('DomainsPie')
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, amount: 0.4 })
   const [width, setWidth] = useState<number | null>(null)
   const [isDark, setIsDark] = useState(false)
   const [isNarrowViewport, setIsNarrowViewport] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(0)
 
   useEffect(() => {
     const root = document.documentElement
@@ -92,6 +102,41 @@ export default function DomainsPieChart({ data }: Props) {
     return () => resizeObserver.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!isInView || data.length === 0) return
+
+    let cancelled = false
+    let timeoutId = 0
+
+    if (prefersReducedMotion()) {
+      timeoutId = window.setTimeout(() => {
+        if (!cancelled) setVisibleCount(data.length)
+      }, 0)
+      return () => {
+        cancelled = true
+        window.clearTimeout(timeoutId)
+      }
+    }
+
+    let revealed = 0
+
+    function revealNext() {
+      if (cancelled) return
+      revealed += 1
+      setVisibleCount(revealed)
+      if (revealed < data.length) {
+        timeoutId = window.setTimeout(revealNext, SLICE_STAGGER_MS)
+      }
+    }
+
+    timeoutId = window.setTimeout(revealNext, 0)
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(timeoutId)
+    }
+  }, [isInView, data])
+
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'
   const tooltipBg = isDark ? '#18181b' : '#ffffff'
   const tooltipText = isDark ? '#f4f4f5' : '#333333'
@@ -105,6 +150,9 @@ export default function DomainsPieChart({ data }: Props) {
   const innerRadius = isNarrowViewport
     ? NARROW_INNER_RADIUS
     : DEFAULT_INNER_RADIUS
+  // Reveal from the end of the array (Category7 → Category1).
+  const visibleData =
+    visibleCount > 0 ? data.slice(data.length - visibleCount) : []
 
   return (
     <div className="flex w-full max-w-172 flex-col gap-4 self-center">
@@ -120,9 +168,9 @@ export default function DomainsPieChart({ data }: Props) {
         className="w-full overflow-visible"
         style={{ height }}
       >
-        {width != null && width > 0 ? (
+        {width != null && width > 0 && visibleData.length > 0 ? (
           <ResponsivePie
-            data={data}
+            data={visibleData}
             margin={{
               top: DESIGN_MARGIN.top * scale,
               right: DESIGN_MARGIN.right * scale,
@@ -137,6 +185,9 @@ export default function DomainsPieChart({ data }: Props) {
             activeOuterRadiusOffset={DESIGN_ACTIVE_OFFSET * scale}
             colors={{ datum: 'data.color' }}
             valueFormat={(value) => `${value}%`}
+            animate
+            motionConfig="gentle"
+            transitionMode="startAngle"
             theme={{
               labels: {
                 text: {
