@@ -5,6 +5,7 @@ import { SiSketchup } from 'react-icons/si'
 
 import DomainsPieChart from '@/components/DomainsPieChart'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import RotatingBlenderTestObject from '@/components/RotatingBlenderTestObject'
 import RotatingCube from '@/components/RotatingCube'
 import ThemeToggle from '@/components/ThemeToggle'
 import domainsPieData from '@/data/domains-pie.json'
@@ -79,7 +80,11 @@ export default async function Home({ params }: Props) {
         </div>
 
         <div className="flex w-full items-center justify-center">
-          <RotatingCube />
+          {/* <RotatingCube /> */}
+        </div>
+
+        <div className="flex w-full items-center justify-center pb-12">
+          <RotatingBlenderTestObject />
         </div>
 
         <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">

@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Proxy GLB/assets so the browser can load them without S3 CORS.
+  async rewrites() {
+    return [
+      {
+        source: '/s3/:path*',
+        destination:
+          'https://richard-burd-homepage.s3.us-east-1.amazonaws.com/:path*',
+      },
+    ]
+  },
 }
 
 const withNextIntl = createNextIntlPlugin()
