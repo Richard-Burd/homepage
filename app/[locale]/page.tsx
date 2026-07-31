@@ -6,9 +6,10 @@ import { SiSketchup } from 'react-icons/si'
 import DomainsPieChart from '@/components/DomainsPieChart'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import RotatingBlenderTestObject from '@/components/RotatingBlenderTestObject'
-import RotatingCube from '@/components/RotatingCube'
+// import RotatingCube from '@/components/RotatingCube'
 import ThemeToggle from '@/components/ThemeToggle'
 import domainsPieData from '@/data/domains-pie.json'
+import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
   {
@@ -93,7 +94,7 @@ export default async function Home({ params }: Props) {
 
         <div className="mt-6">
           <Image
-            src="https://richard-burd-homepage.s3.us-east-1.amazonaws.com/columbia-test-image.jpg"
+            src={assetUrl('columbia-test-image.jpg')}
             alt={t('imageAlt')}
             width={800}
             height={600}

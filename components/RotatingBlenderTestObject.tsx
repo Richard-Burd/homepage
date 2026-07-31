@@ -5,8 +5,10 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Box3, Mesh, Vector3, type Group, type Object3D } from 'three'
 
-// Served via next.config rewrite → S3 (avoids browser CORS on the bucket).
-const MODEL_URL = '/s3/test-object.1.glb'
+import { proxiedAssetUrl } from '@/lib/assets'
+
+// Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
+const MODEL_URL = proxiedAssetUrl('test-object.1.glb')
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
 const TARGET_SIZE = 4

@@ -1,12 +1,23 @@
 import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
+const assetsBaseUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL?.replace(
+  /\/$/,
+  '',
+)
+
+if (!assetsBaseUrl) {
+  throw new Error('NEXT_PUBLIC_ASSETS_BASE_URL is not set')
+}
+
+const assetsHostname = new URL(assetsBaseUrl).hostname
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'richard-burd-homepage.s3.us-east-1.amazonaws.com',
+        hostname: assetsHostname,
         pathname: '/**',
       },
     ],
@@ -16,8 +27,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/s3/:path*',
-        destination:
-          'https://richard-burd-homepage.s3.us-east-1.amazonaws.com/:path*',
+        destination: `${assetsBaseUrl}/:path*`,
       },
     ]
   },
