@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Omit<Props, 'children'>) {
       url: 'https://richardburd.dev',
       images: [
         {
-          url: 'https://richard-burd-homepage.s3.us-east-1.amazonaws.com/open-graph-image.jpg',
+          url: 'https://richard-burd-homepage.s3.us-east-1.amazonaws.com/open-graph-image.3.jpg',
           width: 1200,
           height: 630,
           alt: t('ogAlt'),
