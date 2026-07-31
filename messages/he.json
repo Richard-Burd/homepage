@@ -8,10 +8,16 @@
     "title": "דף הבית של עקיבא ציפור",
     "subtitle": "זהו דף הבית החדש והמשודרג.",
     "imageAlt": "צילום קמפוס קולומביה",
+    "ketubahImageAlt": "כתובה",
     "socialNav": "קישורים חברתיים",
     "linkedin": "LinkedIn",
+    "instagram": "Instagram",
     "sketchup": "מחסן התלת־ממד של SketchUp",
-    "github": "GitHub"
+    "github": "GitHub",
+    "audius": "Audius",
+    "paypal": "PayPal",
+    "x": "X",
+    "reddit": "Reddit"
   },
   "LocaleSwitcher": {
     "label": "שפה",

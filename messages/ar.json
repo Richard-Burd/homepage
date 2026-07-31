@@ -8,10 +8,16 @@
     "title": "الصفحة الرئيسية لريچارد قلب الاسد العصفور",
     "subtitle": "هذه هي الصفحة الرئيسية الجديدة فائقة الإمكانيات.",
     "imageAlt": "صورة لحرم جامعة كولومبيا",
+    "ketubahImageAlt": "كتباه",
     "socialNav": "روابط التواصل الاجتماعي",
     "linkedin": "لينكد إن",
+    "instagram": "إنستغرام",
     "sketchup": "مستودع SketchUp ثلاثي الأبعاد",
-    "github": "GitHub"
+    "github": "GitHub",
+    "audius": "Audius",
+    "paypal": "PayPal",
+    "x": "X",
+    "reddit": "Reddit"
   },
   "LocaleSwitcher": {
     "label": "اللغة",
