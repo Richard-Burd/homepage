@@ -3,9 +3,11 @@ import Image from 'next/image'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa'
 import { SiSketchup } from 'react-icons/si'
 
+import DomainsPieChart from '@/components/DomainsPieChart'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import RotatingCube from '@/components/RotatingCube'
 import ThemeToggle from '@/components/ThemeToggle'
+import domainsPieData from '@/data/domains-pie.json'
 
 const socialLinks = [
   {
@@ -34,16 +36,24 @@ export default async function Home({ params }: Props) {
   setRequestLocale(locale)
 
   const t = await getTranslations('HomePage')
+  const tDomains = await getTranslations('DomainsPie')
+
+  const pieData = domainsPieData.map((slice) => ({
+    id: slice.id,
+    label: tDomains(`slices.${slice.id}`),
+    value: slice.value,
+    color: slice.color,
+  }))
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
+      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black">
         <div className="mb-8 flex w-full items-center gap-3 sm:mb-0">
           <LanguageSwitcher />
           <ThemeToggle />
         </div>
 
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-start">
+        <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
           <h1
             className={`leading-10 text-zinc-700 dark:text-zinc-50 ${
               locale === 'ar'
@@ -67,15 +77,17 @@ export default async function Home({ params }: Props) {
             {t('subtitle')}
           </p>
           <RotatingCube />
+          <DomainsPieChart data={pieData} />
         </div>
-
-        <Image
-          src="https://richard-burd-homepage.s3.us-east-1.amazonaws.com/columbia-test-image.jpg"
-          alt={t('imageAlt')}
-          width={800}
-          height={600}
-          priority
-        />
+        <div className="mt-6">
+          <Image
+            src="https://richard-burd-homepage.s3.us-east-1.amazonaws.com/columbia-test-image.jpg"
+            alt={t('imageAlt')}
+            width={800}
+            height={600}
+            priority
+          />
+        </div>
 
         <nav
           aria-label={t('socialNav')}

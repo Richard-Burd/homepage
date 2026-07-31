@@ -23,5 +23,16 @@
     "label": "Theme",
     "light": "Light",
     "dark": "Dark"
+  },
+  "DomainsPie": {
+    "slices": {
+      "Category1": "Systems Engineering",
+      "Category2": "Data Visualization",
+      "Category3": "Unmanned Aviation",
+      "Category4": "Software Development",
+      "Category5": "Military Affairs",
+      "Category6": "3D Modeling",
+      "Category7": "Architecture & Urban Design"
+    }
   }
 }
