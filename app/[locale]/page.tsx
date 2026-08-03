@@ -12,7 +12,7 @@ import {
 import { FaXTwitter } from 'react-icons/fa6'
 import { SiSketchup } from 'react-icons/si'
 
-import DomainsDataCharts from '@/components/data-charts/DomainsDataCharts'
+import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
 import RotatingBlenderTestObject from '@/components/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import domainsChartData from '@/data/domains-chart.json'
@@ -121,7 +121,7 @@ export default async function Home({ params }: Props) {
         </div>
 
         <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
-          <DomainsDataCharts data={chartData} />
+          <PieAndBarCharts data={chartData} />
         </div>
 
         <div className="mt-6">
