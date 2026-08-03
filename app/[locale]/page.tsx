@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
+import { BiLogoVenmo } from 'react-icons/bi'
 import {
   FaGithub,
   FaInstagramSquare,
@@ -49,6 +50,11 @@ const socialLinks = [
     href: 'https://www.paypal.com/biz/profile/RichardBurdOR',
     labelKey: 'paypal' as const,
     Icon: FaPaypal,
+  },
+  {
+    href: 'https://account.venmo.com/u/Richard-A-Burd',
+    labelKey: 'venmo' as const,
+    Icon: BiLogoVenmo,
   },
   {
     href: 'https://x.com/Richard_A_Burd',
