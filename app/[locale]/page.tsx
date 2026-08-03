@@ -12,10 +12,10 @@ import {
 import { FaXTwitter } from 'react-icons/fa6'
 import { SiSketchup } from 'react-icons/si'
 
-import DomainsPieChart from '@/components/DomainsPieChart'
+import DomainsChart from '@/components/DomainsChart'
 import RotatingBlenderTestObject from '@/components/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
-import domainsPieData from '@/data/domains-pie.json'
+import domainsChartData from '@/data/domains-chart.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -77,7 +77,7 @@ export default async function Home({ params }: Props) {
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')
 
-  const pieData = domainsPieData.map((slice) => ({
+  const chartData = domainsChartData.map((slice) => ({
     id: slice.id,
     label: tDomains(`slices.${slice.id}`),
     value: slice.value,
@@ -121,7 +121,7 @@ export default async function Home({ params }: Props) {
         </div>
 
         <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
-          <DomainsPieChart data={pieData} />
+          <DomainsChart data={chartData} />
         </div>
 
         <div className="mt-6">
