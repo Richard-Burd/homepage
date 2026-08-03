@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 import { InlineScript } from '@/components/InlineScript'
+import Navbar from '@/components/Navbar'
 import { routing, type Locale } from '@/i18n/routing'
 import { assetUrl } from '@/lib/assets'
 import { themeInitScript } from '@/lib/theme'
@@ -114,7 +115,10 @@ export default async function LocaleLayout({ children, params }: Props) {
               : 'font-sans'
         }`}
       >
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <Navbar />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   )
