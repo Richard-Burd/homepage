@@ -12,6 +12,7 @@ import type { ReactNode } from 'react'
 
 import { InlineScript } from '@/components/InlineScript'
 import Navbar from '@/components/Navbar'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import { routing, type Locale } from '@/i18n/routing'
 import { assetUrl } from '@/lib/assets'
 import { themeInitScript } from '@/lib/theme'
@@ -89,18 +90,15 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale)
 
   const isRtl = rtlLocales.includes(locale as Locale)
-  const localeFont =
-    locale === 'ar'
-      ? notoArabic.variable
-      : locale === 'he'
-        ? rubik.variable
-        : ''
 
+  // Keep <html> className stable across locales so React does not rewrite
+  // documentElement.class (and wipe the imperatively applied `dark` class).
+  // Locale-specific faces are selected on <body> via font-family.
   return (
     <html
       lang={locale}
       dir={isRtl ? 'rtl' : 'ltr'}
-      className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${localeFont} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${notoArabic.variable} ${rubik.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -116,8 +114,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         }`}
       >
         <NextIntlClientProvider>
-          <Navbar />
-          {children}
+          <ThemeProvider>
+            <Navbar />
+            {children}
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
