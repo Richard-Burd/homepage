@@ -116,7 +116,7 @@ export default async function Home({ params }: Props) {
           {/* <RotatingCube /> */}
         </div>
 
-        <div className="flex w-full items-center justify-center pb-12">
+        <div className="flex w-full items-center justify-center">
           <RotatingBlenderTestObject />
         </div>
 

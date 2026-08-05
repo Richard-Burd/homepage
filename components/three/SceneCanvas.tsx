@@ -1,13 +1,14 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
-import { Suspense, type ReactNode } from 'react'
+import { Suspense, type CSSProperties, type ReactNode } from 'react'
 
 type ShadowType = 'basic' | 'percentage' | 'variance'
 
 type SceneCanvasProps = {
   children: ReactNode
   className?: string
+  style?: CSSProperties
   cameraPosition: [number, number, number]
   cameraFov: number
   ambientLightIntensity: number
@@ -29,6 +30,7 @@ type SceneCanvasProps = {
 export default function SceneCanvas({
   children,
   className,
+  style,
   cameraPosition,
   cameraFov,
   ambientLightIntensity,
@@ -47,7 +49,7 @@ export default function SceneCanvas({
   shadowCameraFar,
 }: SceneCanvasProps) {
   return (
-    <div className={className}>
+    <div className={className} style={style}>
       <Canvas
         camera={{ position: cameraPosition, fov: cameraFov }}
         shadows={shadows ? shadowType : false}

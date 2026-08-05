@@ -22,6 +22,32 @@ const AUTO_ROTATE_SPEED = 0.25
 /** How far the model turns per pixel dragged. */
 const DRAG_SENSITIVITY = 0.008
 
+/**
+ * The point the model spins around, [x, y, z] in world units measured from the
+ * bounding-box center. [0, 0, 0] keeps the default pivot; positive x moves the
+ * pivot right, positive y up, positive z toward the camera. The model shifts
+ * the opposite way on screen, since the pivot itself stays put.
+ */
+const PIVOT_POINT: [number, number, number] = [0, -0.6, 0]
+
+/**
+ * Canvas width on the page as a CSS length. `clamp(min, preferred, max)` keeps
+ * it responsive between a floor and a ceiling.
+ */
+const CANVAS_WIDTH = '100%'
+
+/**
+ * Canvas aspect ratio as [width, height]. [1, 1] is square, [16, 9] widescreen,
+ * [4, 3] classic — any positive pair works.
+ */
+const CANVAS_ASPECT: [number, number] = [2, 1]
+
+/**
+ * Canvas backdrop color. Use any CSS color (`'#fff'`, `'rgb(…)'`, etc.) or
+ * `'transparent'` to let the page show through (the current default).
+ */
+const CANVAS_BACKGROUND_COLOR = 'transparent'
+
 /** Camera location in world space [x, y, z]. Higher/farther values pull the view back. */
 const CAMERA_POSITION: [number, number, number] = [8, 7, 10]
 
@@ -29,7 +55,7 @@ const CAMERA_POSITION: [number, number, number] = [8, 7, 10]
 const CAMERA_FOV = 28
 
 /** Soft fill light from every direction. Higher values lift shadows and flatten contrast. */
-const AMBIENT_LIGHT_INTENSITY = 0.4
+const AMBIENT_LIGHT_INTENSITY = 0.2
 
 /**
  * Directional light location [x, y, z]. The light aims at the origin, so this
@@ -38,7 +64,7 @@ const AMBIENT_LIGHT_INTENSITY = 0.4
 const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [4, 10, 4]
 
 /** Brightness of the directional “sun” light that casts shadows. */
-const DIRECTIONAL_LIGHT_INTENSITY = 1
+const DIRECTIONAL_LIGHT_INTENSITY = 1.5
 
 /** Draw black outline edges on mesh faces (drei Edges helper). */
 const SHOW_EDGES = true
@@ -105,16 +131,18 @@ function RotatingObject() {
 
   return (
     <group ref={groupRef}>
-      <BlenderModel
-        url={MODEL_URL}
-        targetSize={TARGET_SIZE}
-        showEdges={SHOW_EDGES}
-        edgeColor={EDGE_COLOR}
-        edgeThreshold={EDGE_THRESHOLD}
-        edgeWidth={EDGE_WIDTH}
-        castShadow={CAST_SHADOW}
-        receiveShadow={RECEIVE_SHADOW}
-      />
+      <group position={[-PIVOT_POINT[0], -PIVOT_POINT[1], -PIVOT_POINT[2]]}>
+        <BlenderModel
+          url={MODEL_URL}
+          targetSize={TARGET_SIZE}
+          showEdges={SHOW_EDGES}
+          edgeColor={EDGE_COLOR}
+          edgeThreshold={EDGE_THRESHOLD}
+          edgeWidth={EDGE_WIDTH}
+          castShadow={CAST_SHADOW}
+          receiveShadow={RECEIVE_SHADOW}
+        />
+      </group>
     </group>
   )
 }
@@ -122,7 +150,12 @@ function RotatingObject() {
 export default function RotatingBlenderTestObject() {
   return (
     <SceneCanvas
-      className="aspect-square w-[clamp(12rem,40vw,28rem)] cursor-grab active:cursor-grabbing"
+      className="cursor-grab active:cursor-grabbing"
+      style={{
+        width: CANVAS_WIDTH,
+        aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
+        backgroundColor: CANVAS_BACKGROUND_COLOR,
+      }}
       cameraPosition={CAMERA_POSITION}
       cameraFov={CAMERA_FOV}
       ambientLightIntensity={AMBIENT_LIGHT_INTENSITY}
