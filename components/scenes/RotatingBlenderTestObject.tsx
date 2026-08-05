@@ -40,7 +40,7 @@ const CANVAS_WIDTH = '100%'
  * Canvas aspect ratio as [width, height]. [1, 1] is square, [16, 9] widescreen,
  * [4, 3] classic — any positive pair works.
  */
-const CANVAS_ASPECT: [number, number] = [2, 1]
+const CANVAS_ASPECT: [number, number] = [1.2, 1]
 
 /**
  * Canvas backdrop color. Use any CSS color (`'#fff'`, `'rgb(…)'`, etc.) or
