@@ -13,7 +13,7 @@ import { FaXTwitter } from 'react-icons/fa6'
 import { SiSketchup } from 'react-icons/si'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
-import RotatingBlenderTestObject from '@/components/RotatingBlenderTestObject'
+import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import domainsChartData from '@/data/domains-chart.json'
 import { assetUrl } from '@/lib/assets'
