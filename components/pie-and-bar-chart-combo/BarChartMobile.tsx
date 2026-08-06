@@ -29,6 +29,10 @@ const OFFSET_WHEN_SELECTED = 12
 const BAR_ENTER_OFFSET_Y = 40
 const BAR_ENTER_DURATION_S = 0.55
 const BAR_ENTER_STAGGER_S = 0.1
+/** How far the title starts below its final spot before rising into place. */
+const TITLE_ENTER_OFFSET_Y = 900
+/** Title entrance duration in seconds — higher = slower rise/fade. */
+const TITLE_ENTER_DURATION_S = 1.3
 
 type Props = {
   data: DomainsChartDatum[]
@@ -87,15 +91,24 @@ export default function BarChartMobile({ data }: Props) {
   const showChart = width != null && width > 0
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <h2
+    <div ref={containerRef} className="flex w-full flex-col gap-4">
+      <motion.h2
         className="text-center font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
         style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
+        initial={reduceMotion ? false : { opacity: 0, y: TITLE_ENTER_OFFSET_Y }}
+        animate={
+          isInView
+            ? { opacity: 1, y: 0 }
+            : { opacity: 0, y: TITLE_ENTER_OFFSET_Y }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : TITLE_ENTER_DURATION_S,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         {t('title')}
-      </h2>
+      </motion.h2>
       <div
-        ref={containerRef}
         dir="ltr"
         className="relative w-full overflow-visible"
         style={{ height: barHeight }}

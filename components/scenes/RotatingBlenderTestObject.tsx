@@ -95,6 +95,34 @@ const CAMERA_POSITION: [number, number, number] = [8, 7, 10]
 /** Vertical field of view in degrees — lower = more telephoto / zoomed-in. */
 const CAMERA_FOV = 28
 
+/** Master switch for depth-of-field postprocessing (near sharp / far soft). */
+const DEPTH_OF_FIELD_ENABLED = false
+
+/**
+ * Distance from the camera to the sharp plane, in world units.
+ * With the default CAMERA_POSITION the origin is ~14.6 away — lower values
+ * focus closer to the camera (front of the model), higher focuses farther back.
+ */
+const DEPTH_OF_FIELD_FOCUS_DISTANCE = 13
+
+/**
+ * Thickness of the sharp band around the focus plane, in world units.
+ * Smaller = thinner slice in focus; larger = more of the model stays sharp.
+ */
+const DEPTH_OF_FIELD_FOCUS_RANGE = 3
+
+/**
+ * Strength of the out-of-focus bokeh blur.
+ * 0 = no DOF blur, 2–4 subtle, 8+ heavy. Ignored when DEPTH_OF_FIELD_ENABLED is false.
+ */
+const DEPTH_OF_FIELD_BOKEH_SCALE = 5
+
+/**
+ * Uniform soft blur on the whole canvas, in CSS pixels. 0 = off.
+ * Stacks on top of depth of field — use for an overall soft look.
+ */
+const OVERALL_BLUR = 0
+
 /** Soft fill light from every direction. Higher values lift shadows and flatten contrast. */
 const AMBIENT_LIGHT_INTENSITY = 0.2
 
@@ -212,9 +240,14 @@ export default function RotatingBlenderTestObject() {
           width: '100%',
           aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
           backgroundColor: CANVAS_BACKGROUND_COLOR,
+          filter: OVERALL_BLUR > 0 ? `blur(${OVERALL_BLUR}px)` : undefined,
         }}
         cameraPosition={CAMERA_POSITION}
         cameraFov={CAMERA_FOV}
+        depthOfField={DEPTH_OF_FIELD_ENABLED}
+        depthOfFieldFocusDistance={DEPTH_OF_FIELD_FOCUS_DISTANCE}
+        depthOfFieldFocusRange={DEPTH_OF_FIELD_FOCUS_RANGE}
+        depthOfFieldBokehScale={DEPTH_OF_FIELD_BOKEH_SCALE}
         ambientLightIntensity={AMBIENT_LIGHT_INTENSITY}
         directionalLightPosition={DIRECTIONAL_LIGHT_POSITION}
         directionalLightIntensity={DIRECTIONAL_LIGHT_INTENSITY}
