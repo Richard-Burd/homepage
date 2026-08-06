@@ -91,8 +91,12 @@ export function useDragOrbit(
       isDragging.current = false
       isScrolling.current = false
 
-      if (element.hasPointerCapture(event.pointerId)) {
-        element.releasePointerCapture(event.pointerId)
+      try {
+        if (element.hasPointerCapture(event.pointerId)) {
+          element.releasePointerCapture(event.pointerId)
+        }
+      } catch {
+        // Browser already released capture for this pointer.
       }
     }
 
