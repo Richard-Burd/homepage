@@ -1,16 +1,13 @@
 'use client'
 
 import { useGLTF } from '@react-three/drei'
-import { useRef } from 'react'
+import { useState, useRef, type RefObject } from 'react'
 import type { Group } from 'three'
 
 import BlenderModel from '@/components/three/BlenderModel'
 import SceneCanvas from '@/components/three/SceneCanvas'
 import { useAutoRotate } from '@/components/three/hooks/useAutoRotate'
-import {
-  useDragOrbit,
-  type DragHitBox,
-} from '@/components/three/hooks/useDragOrbit'
+import { useDragOrbit } from '@/components/three/hooks/useDragOrbit'
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
@@ -25,21 +22,32 @@ const AUTO_ROTATE_SPEED = 0.25
 /** How far the model turns per pixel dragged. */
 const DRAG_SENSITIVITY = 0.008
 
+type DragHitBox = {
+  /** Left edge as a fraction of canvas width (0–1). */
+  x: number
+  /** Top edge as a fraction of canvas height (0–1). */
+  y: number
+  /** Width as a fraction of canvas width (0–1). */
+  width: number
+  /** Height as a fraction of canvas height (0–1). */
+  height: number
+}
+
 /**
- * Screen-space region inside the canvas where drag-to-rotate works, as
- * fractions of the canvas size (0–1). Touches outside this box scroll the page
- * instead of rotating the model.
+ * Screen-space region where drag-to-rotate works, as fractions of the canvas
+ * size (0–1). The WebGL canvas ignores pointers so the page can scroll; only
+ * this overlay captures drag. Touches outside it scroll normally.
  *
  * Shape: { x, y, width, height }
  *   - x, y = top-left of the box (0 = left/top of the canvas)
  *   - width, height = size as a fraction of canvas width/height
  *
  * Examples:
- *   null                                            → off (drag anywhere on canvas)
+ *   null                                            → drag anywhere on canvas
  *   { x: 0.2, y: 0.2, width: 0.6, height: 0.6 }     → center 60%
  *   { x: 0, y: 0, width: 1, height: 1 }             → full canvas (same as null)
  *
- * Set to `null` to disable.
+ * Set to `null` for a full-canvas drag surface (vertical swipes still scroll).
  */
 const DRAG_HIT_BOX: DragHitBox | null = {
   x: 0.3,
@@ -51,7 +59,7 @@ const DRAG_HIT_BOX: DragHitBox | null = {
 /**
  * Debug fill for DRAG_HIT_BOX so you can see the interactive region.
  * Use a translucent color while tuning (e.g. `'rgba(255, 0, 0, 0.25)'`),
- * then set to `'transparent'` when finished. Ignored when DRAG_HIT_BOX is null.
+ * then set to `'transparent'` when finished.
  */
 const DRAG_HIT_BOX_COLOR = 'transparent'
 
@@ -156,10 +164,13 @@ const SHADOW_CAMERA_NEAR = 0.1
 /** Far clip of the shadow camera — geometry farther than this won’t cast. */
 const SHADOW_CAMERA_FAR = 50
 
-function RotatingObject() {
-  const groupRef = useRef<Group>(null)
-  const isDragging = useDragOrbit(groupRef, DRAG_SENSITIVITY, DRAG_HIT_BOX)
-
+function RotatingObject({
+  groupRef,
+  isDragging,
+}: {
+  groupRef: RefObject<Group | null>
+  isDragging: RefObject<boolean>
+}) {
   useAutoRotate(groupRef, AUTO_ROTATE_SPEED, isDragging)
 
   return (
@@ -181,10 +192,22 @@ function RotatingObject() {
 }
 
 export default function RotatingBlenderTestObject() {
+  const groupRef = useRef<Group | null>(null)
+  const [interactEl, setInteractEl] = useState<HTMLDivElement | null>(null)
+  // Full-canvas overlay must allow vertical pan; a small hit box can capture all drags.
+  const allowVerticalScroll = DRAG_HIT_BOX === null
+  const isDragging = useDragOrbit(
+    groupRef,
+    DRAG_SENSITIVITY,
+    interactEl,
+    allowVerticalScroll
+  )
+
+  const hit = DRAG_HIT_BOX
+
   return (
     <div style={{ position: 'relative', width: CANVAS_WIDTH }}>
       <SceneCanvas
-        className="cursor-grab active:cursor-grabbing"
         style={{
           width: '100%',
           aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
@@ -207,22 +230,23 @@ export default function RotatingBlenderTestObject() {
         shadowCameraNear={SHADOW_CAMERA_NEAR}
         shadowCameraFar={SHADOW_CAMERA_FAR}
       >
-        <RotatingObject />
+        <RotatingObject groupRef={groupRef} isDragging={isDragging} />
       </SceneCanvas>
-      {DRAG_HIT_BOX ? (
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            left: `${DRAG_HIT_BOX.x * 100}%`,
-            top: `${DRAG_HIT_BOX.y * 100}%`,
-            width: `${DRAG_HIT_BOX.width * 100}%`,
-            height: `${DRAG_HIT_BOX.height * 100}%`,
-            backgroundColor: DRAG_HIT_BOX_COLOR,
-            pointerEvents: 'none',
-          }}
-        />
-      ) : null}
+      <div
+        ref={setInteractEl}
+        aria-hidden
+        className="cursor-grab active:cursor-grabbing"
+        style={{
+          position: 'absolute',
+          left: hit ? `${hit.x * 100}%` : 0,
+          top: hit ? `${hit.y * 100}%` : 0,
+          width: hit ? `${hit.width * 100}%` : '100%',
+          height: hit ? `${hit.height * 100}%` : '100%',
+          backgroundColor: DRAG_HIT_BOX_COLOR,
+          // Small hit box: capture all drags. Full canvas: let vertical swipes scroll.
+          touchAction: hit ? 'none' : 'pan-y',
+        }}
+      />
     </div>
   )
 }

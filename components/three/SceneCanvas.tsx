@@ -53,7 +53,8 @@ export default function SceneCanvas({
       <Canvas
         camera={{ position: cameraPosition, fov: cameraFov }}
         shadows={shadows ? shadowType : false}
-        style={{ touchAction: 'none' }}
+        // Let page scroll pass through; orbit is handled by a DOM overlay instead.
+        style={{ pointerEvents: 'none' }}
       >
         <ambientLight intensity={ambientLightIntensity} />
         <directionalLight
