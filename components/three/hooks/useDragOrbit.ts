@@ -1,103 +1,97 @@
 'use client'
 
-import { useThree } from '@react-three/fiber'
 import { useEffect, useRef, type RefObject } from 'react'
 import type { Group } from 'three'
 
-export type DragHitBox = {
-  /** Left edge as a fraction of canvas width (0–1). */
-  x: number
-  /** Top edge as a fraction of canvas height (0–1). */
-  y: number
-  /** Width as a fraction of canvas width (0–1). */
-  width: number
-  /** Height as a fraction of canvas height (0–1). */
-  height: number
-}
+/** Pixels of movement before a touch on a pan-y surface becomes an orbit drag. */
+const DRAG_THRESHOLD_PX = 8
 
+/**
+ * Attach orbit dragging to an HTML element (typically a hit-box overlay).
+ * Keep this off the WebGL canvas so the canvas never blocks page scroll.
+ */
 export function useDragOrbit(
   groupRef: RefObject<Group | null>,
   sensitivity: number,
-  hitBox: DragHitBox | null = null
+  eventTarget: HTMLElement | null,
+  /**
+   * When true, vertical-dominant touches are left alone so the page can scroll
+   * (`touch-action: pan-y` on the target). When false, any drag orbits immediately
+   * (`touch-action: none` on a small hit-box overlay).
+   */
+  allowVerticalScroll = false
 ) {
   const isDragging = useRef(false)
-  const isScrolling = useRef(false)
+  const pendingPointerId = useRef<number | null>(null)
+  const startPointer = useRef({ x: 0, y: 0 })
   const lastPointer = useRef({ x: 0, y: 0 })
-  const gl = useThree((state) => state.gl)
 
   useEffect(() => {
-    const element = gl.domElement
+    if (!eventTarget) return
 
-    const isInsideHitBox = (clientX: number, clientY: number) => {
-      if (!hitBox) return true
+    const element = eventTarget
 
-      const rect = element.getBoundingClientRect()
-      if (rect.width <= 0 || rect.height <= 0) return false
+    const releaseCapture = (pointerId: number) => {
+      try {
+        if (element.hasPointerCapture(pointerId)) {
+          element.releasePointerCapture(pointerId)
+        }
+      } catch {
+        // Browser already released capture for this pointer.
+      }
+    }
 
-      const u = (clientX - rect.left) / rect.width
-      const v = (clientY - rect.top) / rect.height
-
-      return (
-        u >= hitBox.x &&
-        u <= hitBox.x + hitBox.width &&
-        v >= hitBox.y &&
-        v <= hitBox.y + hitBox.height
-      )
+    const beginDrag = (event: PointerEvent) => {
+      isDragging.current = true
+      pendingPointerId.current = null
+      lastPointer.current = { x: event.clientX, y: event.clientY }
+      element.setPointerCapture(event.pointerId)
+      event.preventDefault()
     }
 
     const handlePointerDown = (event: PointerEvent) => {
       if (event.button !== 0) return
 
+      startPointer.current = { x: event.clientX, y: event.clientY }
       lastPointer.current = { x: event.clientX, y: event.clientY }
 
-      if (isInsideHitBox(event.clientX, event.clientY)) {
-        event.preventDefault()
-        isDragging.current = true
-        isScrolling.current = false
-        element.setPointerCapture(event.pointerId)
+      if (allowVerticalScroll && event.pointerType === 'touch') {
+        pendingPointerId.current = event.pointerId
         return
       }
 
-      // Outside the hit box: scroll the page instead of rotating the model.
-      if (hitBox) {
-        event.preventDefault()
-        isScrolling.current = true
-        isDragging.current = false
-        element.setPointerCapture(event.pointerId)
-      }
+      beginDrag(event)
     }
 
     const handlePointerMove = (event: PointerEvent) => {
-      if (isDragging.current && groupRef.current) {
-        event.preventDefault()
-        const deltaX = event.clientX - lastPointer.current.x
-        const deltaY = event.clientY - lastPointer.current.y
+      if (pendingPointerId.current === event.pointerId && !isDragging.current) {
+        const dx = event.clientX - startPointer.current.x
+        const dy = event.clientY - startPointer.current.y
+        if (Math.hypot(dx, dy) < DRAG_THRESHOLD_PX) return
 
-        lastPointer.current = { x: event.clientX, y: event.clientY }
-        groupRef.current.rotation.y += deltaX * sensitivity
-        groupRef.current.rotation.x += deltaY * sensitivity
-        return
+        if (Math.abs(dy) > Math.abs(dx)) {
+          pendingPointerId.current = null
+          return
+        }
+
+        beginDrag(event)
       }
 
-      if (isScrolling.current) {
-        event.preventDefault()
-        const deltaY = event.clientY - lastPointer.current.y
-        lastPointer.current = { x: event.clientX, y: event.clientY }
-        window.scrollBy(0, -deltaY)
-      }
+      if (!isDragging.current || !groupRef.current) return
+
+      event.preventDefault()
+      const deltaX = event.clientX - lastPointer.current.x
+      const deltaY = event.clientY - lastPointer.current.y
+
+      lastPointer.current = { x: event.clientX, y: event.clientY }
+      groupRef.current.rotation.y += deltaX * sensitivity
+      groupRef.current.rotation.x += deltaY * sensitivity
     }
 
     const handlePointerUp = (event: PointerEvent) => {
       isDragging.current = false
-      isScrolling.current = false
-
-      try {
-        if (element.hasPointerCapture(event.pointerId)) {
-          element.releasePointerCapture(event.pointerId)
-        }
-      } catch {
-        // Browser already released capture for this pointer.
-      }
+      pendingPointerId.current = null
+      releaseCapture(event.pointerId)
     }
 
     element.addEventListener('pointerdown', handlePointerDown)
@@ -111,7 +105,7 @@ export function useDragOrbit(
       element.removeEventListener('pointerup', handlePointerUp)
       element.removeEventListener('pointercancel', handlePointerUp)
     }
-  }, [gl, groupRef, hitBox, sensitivity])
+  }, [allowVerticalScroll, eventTarget, groupRef, sensitivity])
 
   return isDragging
 }
