@@ -1,6 +1,7 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
+import { DepthOfField, EffectComposer } from '@react-three/postprocessing'
 import { Suspense, type CSSProperties, type ReactNode } from 'react'
 
 type ShadowType = 'basic' | 'percentage' | 'variance'
@@ -25,6 +26,14 @@ type SceneCanvasProps = {
   shadowCameraSize: number
   shadowCameraNear: number
   shadowCameraFar: number
+  /** When true, applies depth-of-field postprocessing. */
+  depthOfField?: boolean
+  /** World-unit distance from the camera to the sharp focus plane. */
+  depthOfFieldFocusDistance?: number
+  /** World-unit thickness of the sharp band around the focus plane. */
+  depthOfFieldFocusRange?: number
+  /** Out-of-focus bokeh strength. */
+  depthOfFieldBokehScale?: number
 }
 
 export default function SceneCanvas({
@@ -47,6 +56,10 @@ export default function SceneCanvas({
   shadowCameraSize,
   shadowCameraNear,
   shadowCameraFar,
+  depthOfField = false,
+  depthOfFieldFocusDistance = 13,
+  depthOfFieldFocusRange = 3,
+  depthOfFieldBokehScale = 5,
 }: SceneCanvasProps) {
   return (
     <div className={className} style={style}>
@@ -81,6 +94,15 @@ export default function SceneCanvas({
           />
         </directionalLight>
         <Suspense fallback={null}>{children}</Suspense>
+        {depthOfField && depthOfFieldBokehScale > 0 ? (
+          <EffectComposer multisampling={0}>
+            <DepthOfField
+              focusDistance={depthOfFieldFocusDistance}
+              focusRange={depthOfFieldFocusRange}
+              bokehScale={depthOfFieldBokehScale}
+            />
+          </EffectComposer>
+        ) : null}
       </Canvas>
     </div>
   )
