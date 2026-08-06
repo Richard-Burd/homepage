@@ -7,7 +7,10 @@ import type { Group } from 'three'
 import BlenderModel from '@/components/three/BlenderModel'
 import SceneCanvas from '@/components/three/SceneCanvas'
 import { useAutoRotate } from '@/components/three/hooks/useAutoRotate'
-import { useDragOrbit } from '@/components/three/hooks/useDragOrbit'
+import {
+  useDragOrbit,
+  type DragHitBox,
+} from '@/components/three/hooks/useDragOrbit'
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
@@ -21,6 +24,36 @@ const AUTO_ROTATE_SPEED = 0.25
 
 /** How far the model turns per pixel dragged. */
 const DRAG_SENSITIVITY = 0.008
+
+/**
+ * Screen-space region inside the canvas where drag-to-rotate works, as
+ * fractions of the canvas size (0–1). Touches outside this box scroll the page
+ * instead of rotating the model.
+ *
+ * Shape: { x, y, width, height }
+ *   - x, y = top-left of the box (0 = left/top of the canvas)
+ *   - width, height = size as a fraction of canvas width/height
+ *
+ * Examples:
+ *   null                                            → off (drag anywhere on canvas)
+ *   { x: 0.2, y: 0.2, width: 0.6, height: 0.6 }     → center 60%
+ *   { x: 0, y: 0, width: 1, height: 1 }             → full canvas (same as null)
+ *
+ * Set to `null` to disable.
+ */
+const DRAG_HIT_BOX: DragHitBox | null = {
+  x: 0.3,
+  y: 0.3,
+  width: 0.4,
+  height: 0.5,
+}
+
+/**
+ * Debug fill for DRAG_HIT_BOX so you can see the interactive region.
+ * Use a translucent color while tuning (e.g. `'rgba(255, 0, 0, 0.25)'`),
+ * then set to `'transparent'` when finished. Ignored when DRAG_HIT_BOX is null.
+ */
+const DRAG_HIT_BOX_COLOR = 'transparent'
 
 /**
  * The point the model spins around, [x, y, z] in world units measured from the
@@ -125,7 +158,7 @@ const SHADOW_CAMERA_FAR = 50
 
 function RotatingObject() {
   const groupRef = useRef<Group>(null)
-  const isDragging = useDragOrbit(groupRef, DRAG_SENSITIVITY)
+  const isDragging = useDragOrbit(groupRef, DRAG_SENSITIVITY, DRAG_HIT_BOX)
 
   useAutoRotate(groupRef, AUTO_ROTATE_SPEED, isDragging)
 
@@ -149,32 +182,48 @@ function RotatingObject() {
 
 export default function RotatingBlenderTestObject() {
   return (
-    <SceneCanvas
-      className="cursor-grab active:cursor-grabbing"
-      style={{
-        width: CANVAS_WIDTH,
-        aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
-        backgroundColor: CANVAS_BACKGROUND_COLOR,
-      }}
-      cameraPosition={CAMERA_POSITION}
-      cameraFov={CAMERA_FOV}
-      ambientLightIntensity={AMBIENT_LIGHT_INTENSITY}
-      directionalLightPosition={DIRECTIONAL_LIGHT_POSITION}
-      directionalLightIntensity={DIRECTIONAL_LIGHT_INTENSITY}
-      shadows={SHADOWS_ENABLED}
-      shadowType={SHADOW_TYPE}
-      shadowMapSize={SHADOW_MAP_SIZE}
-      shadowRadius={SHADOW_RADIUS}
-      shadowBlurSamples={SHADOW_BLUR_SAMPLES}
-      shadowIntensity={SHADOW_INTENSITY}
-      shadowBias={SHADOW_BIAS}
-      shadowNormalBias={SHADOW_NORMAL_BIAS}
-      shadowCameraSize={SHADOW_CAMERA_SIZE}
-      shadowCameraNear={SHADOW_CAMERA_NEAR}
-      shadowCameraFar={SHADOW_CAMERA_FAR}
-    >
-      <RotatingObject />
-    </SceneCanvas>
+    <div style={{ position: 'relative', width: CANVAS_WIDTH }}>
+      <SceneCanvas
+        className="cursor-grab active:cursor-grabbing"
+        style={{
+          width: '100%',
+          aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
+          backgroundColor: CANVAS_BACKGROUND_COLOR,
+        }}
+        cameraPosition={CAMERA_POSITION}
+        cameraFov={CAMERA_FOV}
+        ambientLightIntensity={AMBIENT_LIGHT_INTENSITY}
+        directionalLightPosition={DIRECTIONAL_LIGHT_POSITION}
+        directionalLightIntensity={DIRECTIONAL_LIGHT_INTENSITY}
+        shadows={SHADOWS_ENABLED}
+        shadowType={SHADOW_TYPE}
+        shadowMapSize={SHADOW_MAP_SIZE}
+        shadowRadius={SHADOW_RADIUS}
+        shadowBlurSamples={SHADOW_BLUR_SAMPLES}
+        shadowIntensity={SHADOW_INTENSITY}
+        shadowBias={SHADOW_BIAS}
+        shadowNormalBias={SHADOW_NORMAL_BIAS}
+        shadowCameraSize={SHADOW_CAMERA_SIZE}
+        shadowCameraNear={SHADOW_CAMERA_NEAR}
+        shadowCameraFar={SHADOW_CAMERA_FAR}
+      >
+        <RotatingObject />
+      </SceneCanvas>
+      {DRAG_HIT_BOX ? (
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            left: `${DRAG_HIT_BOX.x * 100}%`,
+            top: `${DRAG_HIT_BOX.y * 100}%`,
+            width: `${DRAG_HIT_BOX.width * 100}%`,
+            height: `${DRAG_HIT_BOX.height * 100}%`,
+            backgroundColor: DRAG_HIT_BOX_COLOR,
+            pointerEvents: 'none',
+          }}
+        />
+      ) : null}
+    </div>
   )
 }
 
