@@ -18,7 +18,7 @@ import { proxiedAssetUrl } from '@/lib/assets'
 const MODEL_URL = proxiedAssetUrl('Gazebo.3.4.glb')
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
-const TARGET_SIZE = 4
+const TARGET_SIZE = 5
 
 /** Radians per second while idle — much slower than the cube. */
 const AUTO_ROTATE_SPEED = 0.25
@@ -92,7 +92,7 @@ const CANVAS_WIDTH = '100%'
  * Canvas aspect ratio as [width, height]. [1, 1] is square, [16, 9] widescreen,
  * [4, 3] classic — any positive pair works.
  */
-const CANVAS_ASPECT: [number, number] = [1.2, 1]
+const CANVAS_ASPECT: [number, number] = [1.2, 1.2]
 
 /**
  * Canvas backdrop color. Use any CSS color (`'#fff'`, `'rgb(…)'`, etc.) or
@@ -243,10 +243,7 @@ function RotatingObject({
 export default function Gazebo() {
   const groupRef = useRef<Group | null>(null)
   const anglesRef = useRef<TurntableAngles>({ yaw: 0, pitch: 0 })
-  const pitchAxis = useMemo(
-    () => viewportPitchAxis(CAMERA_POSITION),
-    []
-  )
+  const pitchAxis = useMemo(() => viewportPitchAxis(CAMERA_POSITION), [])
   const [interactEl, setInteractEl] = useState<HTMLDivElement | null>(null)
   // Full-canvas overlay must allow vertical pan; a small hit box can capture all drags.
   const allowVerticalScroll = DRAG_HIT_BOX === null

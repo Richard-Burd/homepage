@@ -38,6 +38,11 @@ type Props = {
   data: DomainsChartDatum[]
 }
 
+/** Biggest segment on top, smallest on bottom — mobile bar only. */
+function stackLargestOnTop(data: DomainsChartDatum[]): DomainsChartDatum[] {
+  return [...data].sort((a, b) => b.value - a.value)
+}
+
 export default function BarChartMobile({ data }: Props) {
   const t = useTranslations('DomainsPie')
   const locale = useLocale()
@@ -84,7 +89,13 @@ export default function BarChartMobile({ data }: Props) {
   const labelAnchorX = columnX + columnWidth + linkGap + linkLength
 
   const barSegments = useMemo(
-    () => layoutSegments(data, barMargin.top, plotHeight, segmentGap),
+    () =>
+      layoutSegments(
+        stackLargestOnTop(data),
+        barMargin.top,
+        plotHeight,
+        segmentGap,
+      ),
     [data, barMargin.top, plotHeight, segmentGap]
   )
 
