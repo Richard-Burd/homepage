@@ -121,9 +121,9 @@ export default async function Home({ params }: Props) {
           <Gazebo />
         </div>
 
-        <div className="flex w-full items-center justify-center">
+        {/* <div className="flex w-full items-center justify-center">
           <RotatingBlenderTestObject />
-        </div>
+        </div> */}
 
         <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
           <PieAndBarCharts data={chartData} />
