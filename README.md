@@ -26,7 +26,7 @@ This section describes the complete workflow for exporting a textured 3D model f
 
 You cannot modify the System defined metadata of a file on an AWS S3 Bucket as of 8/10/2026. This is a known bug. The 3D `.glb` files should have the correct system defined metadata in order to ensure they work with `react-three-fiber` and all its dependencies.
 
-## Workaround to Add Proper Metadata for 3D (`.glb`) Files
+### Workaround to Add Proper Metadata for 3D (`.glb`) Files
 
 1. First, go to the S3 bucket and select the `.glb` file.
 2. In the upper righthand corner, click on **Object actions** and then select **copy**
