@@ -101,7 +101,7 @@ const CANVAS_ASPECT: [number, number] = [1.2, 1.2]
 const CANVAS_BACKGROUND_COLOR = 'transparent'
 
 /** Camera location in world space [x, y, z]. Higher/farther values pull the view back. */
-const CAMERA_POSITION: [number, number, number] = [8, 7, 10]
+const CAMERA_POSITION: [number, number, number] = [8, 0.4, 12]
 
 /** Vertical field of view in degrees — lower = more telephoto / zoomed-in. */
 const CAMERA_FOV = 28
@@ -141,7 +141,7 @@ const AMBIENT_LIGHT_INTENSITY = 0.2
  * Directional light location [x, y, z]. The light aims at the origin, so this
  * vector sets the sun angle (y = height, x/z = side/front).
  */
-const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [10, 10, 4]
+const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [10, 4, 7]
 
 /** Brightness of the directional “sun” light that casts shadows. */
 const DIRECTIONAL_LIGHT_INTENSITY = 1.5

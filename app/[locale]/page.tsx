@@ -14,7 +14,7 @@ import { SiSketchup } from 'react-icons/si'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
 import Gazebo from '@/components/scenes/Gazebo'
-import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
+// import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import domainsChartData from '@/data/domains-chart.json'
 import { assetUrl } from '@/lib/assets'
