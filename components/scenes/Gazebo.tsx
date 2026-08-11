@@ -15,7 +15,7 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const MODEL_URL = proxiedAssetUrl('Gazebo.3.4.glb')
+const MODEL_URL = proxiedAssetUrl('Gazebo.5.glb')
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
 const TARGET_SIZE = 5
@@ -61,10 +61,10 @@ type DragHitBox = {
  * Set to `null` for a full-canvas drag surface (vertical swipes still scroll).
  */
 const DRAG_HIT_BOX: DragHitBox | null = {
-  x: 0.3,
-  y: 0.3,
-  width: 0.4,
-  height: 0.5,
+  x: 0.2,
+  y: 0.15,
+  width: 0.6,
+  height: 0.65,
 }
 
 /**
@@ -141,7 +141,7 @@ const AMBIENT_LIGHT_INTENSITY = 0.2
  * Directional light location [x, y, z]. The light aims at the origin, so this
  * vector sets the sun angle (y = height, x/z = side/front).
  */
-const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [4, 10, 4]
+const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [10, 10, 4]
 
 /** Brightness of the directional “sun” light that casts shadows. */
 const DIRECTIONAL_LIGHT_INTENSITY = 1.5
