@@ -15,10 +15,10 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const MODEL_URL = proxiedAssetUrl('Gazebo.5.glb')
+const MODEL_URL = proxiedAssetUrl('Gazebo.6.4.1.glb')
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
-const TARGET_SIZE = 5
+const TARGET_SIZE = 4.5
 
 /** Radians per second while idle — much slower than the cube. */
 const AUTO_ROTATE_SPEED = 0.25
