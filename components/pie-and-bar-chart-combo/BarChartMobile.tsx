@@ -33,6 +33,8 @@ const BAR_ENTER_STAGGER_S = 0.1
 const TITLE_ENTER_OFFSET_Y = 900
 /** Title entrance duration in seconds — higher = slower rise/fade. */
 const TITLE_ENTER_DURATION_S = 1.3
+/** `true`: largest % on top. `false`: keep the data file's stacking order. */
+const STACKING_ORDER = true
 
 type Props = {
   data: DomainsChartDatum[]
@@ -91,10 +93,10 @@ export default function BarChartMobile({ data }: Props) {
   const barSegments = useMemo(
     () =>
       layoutSegments(
-        stackLargestOnTop(data),
+        STACKING_ORDER ? stackLargestOnTop(data) : data,
         barMargin.top,
         plotHeight,
-        segmentGap,
+        segmentGap
       ),
     [data, barMargin.top, plotHeight, segmentGap]
   )
