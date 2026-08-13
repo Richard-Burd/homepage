@@ -16,11 +16,14 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const MODEL_FILE = 'Gazebo.9.1.1.glb'
+const MODEL_FILE = 'Gazebo.10.glb'
 const MODEL_URL = proxiedAssetUrl(MODEL_FILE)
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
-const TARGET_SIZE = 4.5
+const TARGET_SIZE = 8
+
+/** Play the GLB timeline animation once on load, then idle-spin. */
+const PLAY_INTRO_ONCE = true
 
 /** Radians per second while idle — much slower than the cube. */
 const AUTO_ROTATE_SPEED = 0.25
@@ -82,7 +85,7 @@ const DRAG_HIT_BOX_COLOR = 'transparent'
  * pivot right, positive y up, positive z toward the camera. The model shifts
  * the opposite way on screen, since the pivot itself stays put.
  */
-const PIVOT_POINT: [number, number, number] = [0, -0.6, 0]
+const PIVOT_POINT: [number, number, number] = [0, -0.35, 0]
 
 /**
  * Canvas width on the page as a CSS length. `clamp(min, preferred, max)` keeps
@@ -94,7 +97,7 @@ const CANVAS_WIDTH = '100%'
  * Canvas aspect ratio as [width, height]. [1, 1] is square, [16, 9] widescreen,
  * [4, 3] classic — any positive pair works.
  */
-const CANVAS_ASPECT: [number, number] = [1.2, 1.2]
+const CANVAS_ASPECT: [number, number] = [1.2, 1.3]
 
 /**
  * Canvas backdrop color. Use any CSS color (`'#fff'`, `'rgb(…)'`, etc.) or
@@ -103,7 +106,7 @@ const CANVAS_ASPECT: [number, number] = [1.2, 1.2]
 const CANVAS_BACKGROUND_COLOR = 'transparent'
 
 /** Camera location in world space [x, y, z]. Higher/farther values pull the view back. */
-const CAMERA_POSITION: [number, number, number] = [8, 0.4, 12]
+const CAMERA_POSITION: [number, number, number] = [8, 0.6, 12]
 
 /** Vertical field of view in degrees — lower = more telephoto / zoomed-in. */
 const CAMERA_FOV = 28
@@ -210,18 +213,21 @@ function RotatingObject({
   anglesRef,
   pitchAxis,
   isDragging,
+  introCompleteRef,
 }: {
   groupRef: RefObject<Group | null>
   anglesRef: RefObject<TurntableAngles>
   pitchAxis: ReturnType<typeof viewportPitchAxis>
   isDragging: RefObject<boolean>
+  introCompleteRef: RefObject<boolean>
 }) {
   useTurntableAutoRotate(
     groupRef,
     anglesRef,
     pitchAxis,
     AUTO_ROTATE_SPEED,
-    isDragging
+    isDragging,
+    introCompleteRef
   )
 
   return (
@@ -236,6 +242,10 @@ function RotatingObject({
           edgeWidth={EDGE_WIDTH}
           castShadow={CAST_SHADOW}
           receiveShadow={RECEIVE_SHADOW}
+          playOnce={PLAY_INTRO_ONCE}
+          onPlaybackFinished={() => {
+            introCompleteRef.current = true
+          }}
         />
       </group>
     </group>
@@ -245,6 +255,7 @@ function RotatingObject({
 export default function Gazebo() {
   const groupRef = useRef<Group | null>(null)
   const anglesRef = useRef<TurntableAngles>({ yaw: 0, pitch: 0 })
+  const introCompleteRef = useRef(!PLAY_INTRO_ONCE)
   const pitchAxis = useMemo(() => viewportPitchAxis(CAMERA_POSITION), [])
   const [interactEl, setInteractEl] = useState<HTMLDivElement | null>(null)
   // Full-canvas overlay must allow vertical pan; a small hit box can capture all drags.
@@ -303,6 +314,7 @@ export default function Gazebo() {
             anglesRef={anglesRef}
             pitchAxis={pitchAxis}
             isDragging={isDragging}
+            introCompleteRef={introCompleteRef}
           />
         </SceneCanvas>
         <div
