@@ -5,13 +5,15 @@ import { useState, useRef, type RefObject } from 'react'
 import type { Group } from 'three'
 
 import BlenderModel from '@/components/three/BlenderModel'
+import ModelErrorBoundary from '@/components/three/ModelErrorBoundary'
 import SceneCanvas from '@/components/three/SceneCanvas'
 import { useAutoRotate } from '@/components/three/hooks/useAutoRotate'
 import { useDragOrbit } from '@/components/three/hooks/useDragOrbit'
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const MODEL_URL = proxiedAssetUrl('test-object.1.glb')
+const MODEL_FILE = 'test-object.1.glb'
+const MODEL_URL = proxiedAssetUrl(MODEL_FILE)
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
 const TARGET_SIZE = 4
@@ -233,54 +235,61 @@ export default function RotatingBlenderTestObject() {
 
   const hit = DRAG_HIT_BOX
 
+  const canvasStyle = {
+    width: '100%' as const,
+    aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
+    backgroundColor: CANVAS_BACKGROUND_COLOR,
+    filter: OVERALL_BLUR > 0 ? `blur(${OVERALL_BLUR}px)` : undefined,
+  }
+
   return (
-    <div style={{ position: 'relative', width: CANVAS_WIDTH }}>
-      <SceneCanvas
-        style={{
-          width: '100%',
-          aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
-          backgroundColor: CANVAS_BACKGROUND_COLOR,
-          filter: OVERALL_BLUR > 0 ? `blur(${OVERALL_BLUR}px)` : undefined,
-        }}
-        cameraPosition={CAMERA_POSITION}
-        cameraFov={CAMERA_FOV}
-        depthOfField={DEPTH_OF_FIELD_ENABLED}
-        depthOfFieldFocusDistance={DEPTH_OF_FIELD_FOCUS_DISTANCE}
-        depthOfFieldFocusRange={DEPTH_OF_FIELD_FOCUS_RANGE}
-        depthOfFieldBokehScale={DEPTH_OF_FIELD_BOKEH_SCALE}
-        ambientLightIntensity={AMBIENT_LIGHT_INTENSITY}
-        directionalLightPosition={DIRECTIONAL_LIGHT_POSITION}
-        directionalLightIntensity={DIRECTIONAL_LIGHT_INTENSITY}
-        shadows={SHADOWS_ENABLED}
-        shadowType={SHADOW_TYPE}
-        shadowMapSize={SHADOW_MAP_SIZE}
-        shadowRadius={SHADOW_RADIUS}
-        shadowBlurSamples={SHADOW_BLUR_SAMPLES}
-        shadowIntensity={SHADOW_INTENSITY}
-        shadowBias={SHADOW_BIAS}
-        shadowNormalBias={SHADOW_NORMAL_BIAS}
-        shadowCameraSize={SHADOW_CAMERA_SIZE}
-        shadowCameraNear={SHADOW_CAMERA_NEAR}
-        shadowCameraFar={SHADOW_CAMERA_FAR}
-      >
-        <RotatingObject groupRef={groupRef} isDragging={isDragging} />
-      </SceneCanvas>
-      <div
-        ref={setInteractEl}
-        aria-hidden
-        className="cursor-grab active:cursor-grabbing"
-        style={{
-          position: 'absolute',
-          left: hit ? `${hit.x * 100}%` : 0,
-          top: hit ? `${hit.y * 100}%` : 0,
-          width: hit ? `${hit.width * 100}%` : '100%',
-          height: hit ? `${hit.height * 100}%` : '100%',
-          backgroundColor: DRAG_HIT_BOX_COLOR,
-          // Small hit box: capture all drags. Full canvas: let vertical swipes scroll.
-          touchAction: hit ? 'none' : 'pan-y',
-        }}
-      />
-    </div>
+    <ModelErrorBoundary
+      modelName={MODEL_FILE}
+      style={{ ...canvasStyle, width: CANVAS_WIDTH }}
+    >
+      <div style={{ position: 'relative', width: CANVAS_WIDTH }}>
+        <SceneCanvas
+          style={canvasStyle}
+          cameraPosition={CAMERA_POSITION}
+          cameraFov={CAMERA_FOV}
+          depthOfField={DEPTH_OF_FIELD_ENABLED}
+          depthOfFieldFocusDistance={DEPTH_OF_FIELD_FOCUS_DISTANCE}
+          depthOfFieldFocusRange={DEPTH_OF_FIELD_FOCUS_RANGE}
+          depthOfFieldBokehScale={DEPTH_OF_FIELD_BOKEH_SCALE}
+          ambientLightIntensity={AMBIENT_LIGHT_INTENSITY}
+          directionalLightPosition={DIRECTIONAL_LIGHT_POSITION}
+          directionalLightIntensity={DIRECTIONAL_LIGHT_INTENSITY}
+          shadows={SHADOWS_ENABLED}
+          shadowType={SHADOW_TYPE}
+          shadowMapSize={SHADOW_MAP_SIZE}
+          shadowRadius={SHADOW_RADIUS}
+          shadowBlurSamples={SHADOW_BLUR_SAMPLES}
+          shadowIntensity={SHADOW_INTENSITY}
+          shadowBias={SHADOW_BIAS}
+          shadowNormalBias={SHADOW_NORMAL_BIAS}
+          shadowCameraSize={SHADOW_CAMERA_SIZE}
+          shadowCameraNear={SHADOW_CAMERA_NEAR}
+          shadowCameraFar={SHADOW_CAMERA_FAR}
+        >
+          <RotatingObject groupRef={groupRef} isDragging={isDragging} />
+        </SceneCanvas>
+        <div
+          ref={setInteractEl}
+          aria-hidden
+          className="cursor-grab active:cursor-grabbing"
+          style={{
+            position: 'absolute',
+            left: hit ? `${hit.x * 100}%` : 0,
+            top: hit ? `${hit.y * 100}%` : 0,
+            width: hit ? `${hit.width * 100}%` : '100%',
+            height: hit ? `${hit.height * 100}%` : '100%',
+            backgroundColor: DRAG_HIT_BOX_COLOR,
+            // Small hit box: capture all drags. Full canvas: let vertical swipes scroll.
+            touchAction: hit ? 'none' : 'pan-y',
+          }}
+        />
+      </div>
+    </ModelErrorBoundary>
   )
 }
 
