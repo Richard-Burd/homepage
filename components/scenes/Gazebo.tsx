@@ -16,7 +16,7 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const MODEL_FILE = 'Gazebo.7.glb'
+const MODEL_FILE = 'Gazebo.8.1.glb'
 const MODEL_URL = proxiedAssetUrl(MODEL_FILE)
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
