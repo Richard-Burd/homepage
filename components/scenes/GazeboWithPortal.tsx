@@ -29,7 +29,7 @@ import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
 const GAZEBO_FILE = 'Gazebo.12.6.glb'
-const SECRET_WORLD_FILE = 'SecretWorld.1.1.glb'
+const SECRET_WORLD_FILE = 'SecretWorld.1.2.glb'
 const GAZEBO_URL = proxiedAssetUrl(GAZEBO_FILE)
 const SECRET_WORLD_URL = proxiedAssetUrl(SECRET_WORLD_FILE)
 
@@ -42,19 +42,34 @@ const SECRET_WORLD_URL = proxiedAssetUrl(SECRET_WORLD_FILE)
 const PORTAL_MESH_NAME = 'Portal-1'
 
 /**
- * Empty that exists in both GLBs and links them. The Secret World is positioned
- * so this marker lands on PORTAL_TARGET_ANCHOR in Gazebo space.
+ * Empty that links the two GLBs when present. The Secret World is positioned so
+ * this marker lands on PORTAL_TARGET_ANCHOR in Gazebo space. Newer Secret World
+ * exports may omit it — then DEFAULT_PORTAL_TARGET_POSITION is used instead.
  */
 const PORTAL_TARGET_NAME = 'Portal-1 Target'
 
 /**
- * Where the Secret World's `Portal-1 Target` marker is pinned, in Gazebo-space
- * units (before the TARGET_SIZE normalization below). The marker sits 15.4
- * units above the green room's floor, so pinning it at the gazebo origin puts
- * the viewer inside the room, level with the gazebo. Raise y to sink the room,
- * lower it to lift the room's floor into view.
- * NOTE: 0,0,0 sets it to the 'Mapping' coordinates in the Shader window for
- * the portal material in the original Blender file.
+ * Fallback viewpoint in Secret World space when `Portal-1 Target` is missing.
+ * Matches the Blender Ray Portal Mapping Z of 150' (45.72 m) used on Portal-1.
+ */
+const DEFAULT_PORTAL_TARGET_POSITION: [number, number, number] = [0, 45.72, 0]
+
+/**
+ * The Blender portal material feeds Ray Portal BSDF through a Mapping node whose
+ * Scale is 10, so a ray's entry point is multiplied by 10 before it is traced into
+ * the Secret World. Amplifying the viewpoint like that is the same as viewing a
+ * world 10x smaller, so the Secret World is divided by the same factor here.
+ * Without it, everything in the room sits 10x too far from the portal — the Sphere
+ * in particular ends up far above the opening.
+ */
+const PORTAL_WORLD_SCALE = 1 / 10
+
+/**
+ * Where the Secret World's portal viewpoint is pinned, in Gazebo-space units
+ * (before the TARGET_SIZE normalization below). Pinning it at the gazebo origin
+ * puts the viewer inside the room, level with the gazebo. Raise y to sink the
+ * room, lower it to lift the room's floor into view.
+ * NOTE: 0,0,0 matches the Mapping coordinates on the portal material in Blender.
  */
 const PORTAL_TARGET_ANCHOR: [number, number, number] = [0, 0, 0]
 
@@ -286,18 +301,17 @@ function usePortalScene() {
     const secretWorld = secretWorldScene.clone(true)
     secretWorld.updateMatrixWorld(true)
 
+    // Prefer the Blender empty when present; otherwise use the same 150' Mapping
+    // offset the Ray Portal material used so newer Secret World exports still line up.
     const marker = findByBlenderName(secretWorld, PORTAL_TARGET_NAME)
-    if (!marker) {
-      throw new Error(
-        `"${PORTAL_TARGET_NAME}" is missing from ${SECRET_WORLD_FILE}`
-      )
-    }
-
-    // The green room is modeled hundreds of units off-origin; align it to the
-    // gazebo through the shared marker instead of trusting its raw transform.
-    const markerPosition = marker.getWorldPosition(new Vector3())
+    const markerPosition = marker
+      ? marker.getWorldPosition(new Vector3())
+      : new Vector3(...DEFAULT_PORTAL_TARGET_POSITION)
+    // Blender's Mapping node computes `Location + Scale * point`, so undoing it is
+    // `(point - Location) / Scale`: shrink the world, then move its viewpoint to
+    // the anchor.
     const secretWorldOffset = new Vector3(...PORTAL_TARGET_ANCHOR).sub(
-      markerPosition
+      markerPosition.multiplyScalar(PORTAL_WORLD_SCALE)
     )
 
     gazebo.traverse((object) => {
@@ -371,7 +385,10 @@ function GazeboPortal() {
               position={DIRECTIONAL_LIGHT_POSITION}
               intensity={PORTAL_DIRECTIONAL_LIGHT_INTENSITY}
             />
-            <group position={secretWorldOffset.toArray()}>
+            <group
+              position={secretWorldOffset.toArray()}
+              scale={PORTAL_WORLD_SCALE}
+            >
               <primitive object={secretWorld} dispose={null} />
             </group>
           </MeshPortalMaterial>
