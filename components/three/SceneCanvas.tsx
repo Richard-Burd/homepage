@@ -34,6 +34,8 @@ type SceneCanvasProps = {
   depthOfFieldFocusRange?: number
   /** Out-of-focus bokeh strength. */
   depthOfFieldBokehScale?: number
+  /** Request a stencil buffer. Three omits one by default; stencil-masked portals need it. */
+  stencil?: boolean
 }
 
 export default function SceneCanvas({
@@ -60,12 +62,14 @@ export default function SceneCanvas({
   depthOfFieldFocusDistance = 13,
   depthOfFieldFocusRange = 3,
   depthOfFieldBokehScale = 5,
+  stencil = false,
 }: SceneCanvasProps) {
   return (
     <div className={className} style={style}>
       <Canvas
         camera={{ position: cameraPosition, fov: cameraFov }}
         shadows={shadows ? shadowType : false}
+        gl={{ stencil }}
         // Let page scroll pass through; orbit is handled by a DOM overlay instead.
         style={{ pointerEvents: 'none' }}
       >
