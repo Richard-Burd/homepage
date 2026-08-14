@@ -20,7 +20,7 @@ const MODEL_FILE = 'Gazebo.11.2.glb'
 const MODEL_URL = proxiedAssetUrl(MODEL_FILE)
 
 /** Max axis length in world units (cube is 3). Bump this to enlarge the model. */
-const TARGET_SIZE = 8
+const TARGET_SIZE = 9.2
 
 /** Play the GLB timeline animation once on load, then idle-spin. */
 const PLAY_INTRO_ONCE = true

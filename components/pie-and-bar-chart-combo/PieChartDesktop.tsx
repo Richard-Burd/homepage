@@ -1,7 +1,7 @@
 'use client'
 
 import { ResponsivePie } from '@nivo/pie'
-import { useInView } from 'motion/react'
+import { motion, useInView } from 'motion/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
@@ -13,6 +13,9 @@ import {
 import type { DomainsChartDatum } from './types'
 
 const TITLE_FONT_SIZE = 40
+/** How far left of its final spot the title starts before sliding in. */
+const TITLE_ENTER_OFFSET_X = -80
+const TITLE_ENTER_DURATION_S = 1.3
 /** Baseline chart size used for proportional scaling. */
 const BASE_WIDTH = 688 // 43rem
 const BASE_HEIGHT = 380 // ~23.75rem
@@ -108,15 +111,26 @@ export default function PieChartDesktop({ data }: Props) {
   const showChart = width != null && width > 0 && visibleData.length > 0
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <h2
+    <div ref={containerRef} className="flex w-full flex-col gap-4">
+      <motion.h2
         className="text-center font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
         style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
+        initial={
+          reduceMotion ? false : { opacity: 0, x: TITLE_ENTER_OFFSET_X }
+        }
+        animate={
+          isInView
+            ? { opacity: 1, x: 0 }
+            : { opacity: 0, x: TITLE_ENTER_OFFSET_X }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : TITLE_ENTER_DURATION_S,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         {t('title')}
-      </h2>
+      </motion.h2>
       <div
-        ref={containerRef}
         dir="ltr"
         className="relative w-full overflow-visible"
         style={{ height: pieHeight }}
