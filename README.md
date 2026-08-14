@@ -26,9 +26,38 @@ This section describes the complete workflow for exporting a textured 3D model f
 
 You cannot modify the System defined metadata of a file on an AWS S3 Bucket as of 8/10/2026. This is a known bug. The 3D `.glb` files should have the correct system defined metadata in order to ensure they work with `react-three-fiber` and all its dependencies.
 
+### Exporting 3D Models (from Blender) with Animations
+
+Use these glTF/GLB settings when the model should play an intro (or other) animation in the app (Three.js / React Three Fiber). The browser does **not** auto-play GLB clips — the app still needs a mixer — but the right export keeps the file to **one clear clip** instead of many loose Actions.
+
+These instructions are optimized for Blender 5.x, for situations where you have an introductory animation that you want to play once when the page loads, then, after that, you have other animations that you want to play continuously, along with user interaction.
+
+#### Recommended export (Blender 5.x → glTF 2.0 / `.glb`)
+
+1. **File → Export → glTF 2.0 (.glb/.gltf)**
+
+2. Click **Remember Export Settings** for next time.
+
+3. Include **Visible Objects** only.
+
+4. Under **Mesh**, make sure you have these selected:
+   - **Apply Modifiers** to ensure that the modifiers are applied to the mesh.
+   - **UVs** to export texture coordinates.
+   - **Normals** to export shade-smooth where applicable.
+
+5. Check **Animation**:
+   - **Active actions merged** to ensure that the actions are merged into one clip.
+
+6. **Bake All Objects Animations:**
+   - Turn **off** as the default.
+     - Straight keyframed objects (an animation runs first, then it finishes, then the objects are locked in place, only to be manipulated by follow-on settings in `react-three-fiber` (or other libraries) within this app [as opposed to anumations in Blender]) → **Off**
+     - Something moves in Blender but is dead/wrong in the GLB → in that case, set this to → **On**
+
 ### Workaround to Add Proper Metadata for 3D (`.glb`) Files
 
-1. First, go to the S3 bucket and select the `.glb` file.
+The `.glb` file may not display correctly in the browser if the metadata is not set correctly. This did not matter as of 8/13/2026, but with future browser or Blender updates, it may be required once again. Here is how to set the metadata correctly:
+
+1. First, in the AWS S3 console, go to the S3 bucket and select the `.glb` file.
 2. In the upper righthand corner, click on **Object actions** and then select **copy**
 3. Here are the settings you need to set on the _copy_ page:
 

@@ -185,12 +185,14 @@ export function useTurntableAutoRotate(
   anglesRef: RefObject<TurntableAngles>,
   pitchAxis: Vector3,
   speed: number,
-  isPaused?: RefObject<boolean>
+  isPaused?: RefObject<boolean>,
+  enabled?: RefObject<boolean>
 ) {
   const qYaw = useMemo(() => new Quaternion(), [])
   const qPitch = useMemo(() => new Quaternion(), [])
 
   useFrame((_, delta) => {
+    if (enabled && !enabled.current) return
     if (!groupRef.current || isPaused?.current) return
 
     anglesRef.current.yaw += delta * speed
