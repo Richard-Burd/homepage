@@ -29,7 +29,7 @@ import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
 const GAZEBO_FILE = 'Gazebo.12.6.glb'
-const SECRET_WORLD_FILE = 'SecretWorld.1.1.glb'
+const SECRET_WORLD_FILE = 'SecretWorld.1.5.glb'
 const GAZEBO_URL = proxiedAssetUrl(GAZEBO_FILE)
 const SECRET_WORLD_URL = proxiedAssetUrl(SECRET_WORLD_FILE)
 
@@ -49,14 +49,23 @@ const PORTAL_TARGET_NAME = 'Portal-1 Target'
 
 /**
  * Where the Secret World's `Portal-1 Target` marker is pinned, in Gazebo-space
- * units (before the TARGET_SIZE normalization below). The marker sits 15.4
- * units above the green room's floor, so pinning it at the gazebo origin puts
- * the viewer inside the room, level with the gazebo. Raise y to sink the room,
- * lower it to lift the room's floor into view.
+ * units (before the TARGET_SIZE normalization below). Once PORTAL_WORLD_SCALE
+ * is applied the marker sits 1.54 units above the green room's floor, so
+ * pinning it at the gazebo origin drops that floor just below the portal's
+ * sill. Raise y to sink the room, lower it to lift the floor into view.
  * NOTE: 0,0,0 sets it to the 'Mapping' coordinates in the Shader window for
  * the portal material in the original Blender file.
  */
 const PORTAL_TARGET_ANCHOR: [number, number, number] = [0, 0, 0]
+
+/**
+ * Reciprocal of the Scale on the Mapping node feeding Blender's Ray Portal
+ * BSDF. Blender's portal shrinks the Secret World by 10 on the way in, so the
+ * green room (200 units wide, floor 15.4 below the marker) reads as a ~20 unit
+ * room whose floor sits just under the portal's sill. Without it the room is
+ * ten times too big and the reference sphere floats far above the opening.
+ */
+const PORTAL_WORLD_SCALE = 1 / 10
 
 /** Max axis length in world units for the gazebo. The portal world scales with it. */
 const TARGET_SIZE = 4.3
@@ -295,7 +304,9 @@ function usePortalScene() {
 
     // The green room is modeled hundreds of units off-origin; align it to the
     // gazebo through the shared marker instead of trusting its raw transform.
-    const markerPosition = marker.getWorldPosition(new Vector3())
+    const markerPosition = marker
+      .getWorldPosition(new Vector3())
+      .multiplyScalar(PORTAL_WORLD_SCALE)
     const secretWorldOffset = new Vector3(...PORTAL_TARGET_ANCHOR).sub(
       markerPosition
     )
@@ -371,7 +382,10 @@ function GazeboPortal() {
               position={DIRECTIONAL_LIGHT_POSITION}
               intensity={PORTAL_DIRECTIONAL_LIGHT_INTENSITY}
             />
-            <group position={secretWorldOffset.toArray()}>
+            <group
+              position={secretWorldOffset.toArray()}
+              scale={PORTAL_WORLD_SCALE}
+            >
               <primitive object={secretWorld} dispose={null} />
             </group>
           </MeshPortalMaterial>
