@@ -28,8 +28,8 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const GAZEBO_FILE = 'Gazebo.12.6.glb'
-const SECRET_WORLD_FILE = 'SecretWorld.1.5.glb'
+const GAZEBO_FILE = 'Gazebo.15.glb'
+const SECRET_WORLD_FILE = 'SecretWorld.1.7.glb'
 const GAZEBO_URL = proxiedAssetUrl(GAZEBO_FILE)
 const SECRET_WORLD_URL = proxiedAssetUrl(SECRET_WORLD_FILE)
 
@@ -49,23 +49,11 @@ const PORTAL_TARGET_NAME = 'Portal-1 Target'
 
 /**
  * Where the Secret World's `Portal-1 Target` marker is pinned, in Gazebo-space
- * units (before the TARGET_SIZE normalization below). Once PORTAL_WORLD_SCALE
- * is applied the marker sits 1.54 units above the green room's floor, so
- * pinning it at the gazebo origin drops that floor just below the portal's
- * sill. Raise y to sink the room, lower it to lift the floor into view.
- * NOTE: 0,0,0 sets it to the 'Mapping' coordinates in the Shader window for
- * the portal material in the original Blender file.
+ * units (before the TARGET_SIZE normalization below). Raise y to sink the room,
+ * lower it to lift the floor into view. `[0, 0, 0]` matches Blender's Mapping
+ * Location when the portal Mapping Scale is 1.
  */
 const PORTAL_TARGET_ANCHOR: [number, number, number] = [0, 0, 0]
-
-/**
- * Reciprocal of the Scale on the Mapping node feeding Blender's Ray Portal
- * BSDF. Blender's portal shrinks the Secret World by 10 on the way in, so the
- * green room (200 units wide, floor 15.4 below the marker) reads as a ~20 unit
- * room whose floor sits just under the portal's sill. Without it the room is
- * ten times too big and the reference sphere floats far above the opening.
- */
-const PORTAL_WORLD_SCALE = 1 / 10
 
 /** Max axis length in world units for the gazebo. The portal world scales with it. */
 const TARGET_SIZE = 4.3
@@ -87,8 +75,15 @@ const CANVAS_WIDTH = '100%'
 const CANVAS_ASPECT: [number, number] = [1.2, 1.3]
 const CANVAS_BACKGROUND_COLOR = 'transparent'
 
-const CAMERA_POSITION: [number, number, number] = [8, 0.6, 12]
-const CAMERA_FOV = 28
+/**
+ * Where the camera sits in world space, looking toward the origin.
+ * - [0] X — left/right. Positive = right of the model (orbiting around Y).
+ * - [1] Y — up/down. Positive = above; negative = below eye level.
+ * - [2] Z — toward/away. Positive = in front; larger = farther back.
+ * Distance from origin (with FOV) sets how large the gazebo reads in frame.
+ */
+const CAMERA_POSITION: [number, number, number] = [8, -0.5, 5]
+const CAMERA_FOV = 45
 
 const AMBIENT_LIGHT_INTENSITY = 0.2
 const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [10, 4, 7]
@@ -302,11 +297,9 @@ function usePortalScene() {
       )
     }
 
-    // The green room is modeled hundreds of units off-origin; align it to the
-    // gazebo through the shared marker instead of trusting its raw transform.
-    const markerPosition = marker
-      .getWorldPosition(new Vector3())
-      .multiplyScalar(PORTAL_WORLD_SCALE)
+    // Align Secret World to the gazebo through the shared marker. Sizes match
+    // Blender 1:1 now that the portal Mapping Scale is 1 (no extra shrink).
+    const markerPosition = marker.getWorldPosition(new Vector3())
     const secretWorldOffset = new Vector3(...PORTAL_TARGET_ANCHOR).sub(
       markerPosition
     )
@@ -382,10 +375,7 @@ function GazeboPortal() {
               position={DIRECTIONAL_LIGHT_POSITION}
               intensity={PORTAL_DIRECTIONAL_LIGHT_INTENSITY}
             />
-            <group
-              position={secretWorldOffset.toArray()}
-              scale={PORTAL_WORLD_SCALE}
-            >
+            <group position={secretWorldOffset.toArray()}>
               <primitive object={secretWorld} dispose={null} />
             </group>
           </MeshPortalMaterial>
