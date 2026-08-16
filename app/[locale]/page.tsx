@@ -13,7 +13,7 @@ import { FaXTwitter } from 'react-icons/fa6'
 import { SiSketchup } from 'react-icons/si'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
-import GazeboWithPortal from '@/components/scenes/GazeboWithPortal'
+import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import domainsChartData from '@/data/domains-chart.json'
@@ -118,7 +118,7 @@ export default async function Home({ params }: Props) {
         </div>
 
         <div className="flex w-full items-center justify-center">
-          <GazeboWithPortal />
+          <GazeboWithTwoOppositePortals />
         </div>
 
         {/* <div className="flex w-full items-center justify-center">
