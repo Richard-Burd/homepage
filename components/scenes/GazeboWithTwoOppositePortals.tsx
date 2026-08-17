@@ -34,9 +34,9 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const GAZEBO_FILE = 'Gazebo.24.8.glb'
-const SECRET_WORLD_1_FILE = 'SecretWorld.1.10.glb'
-const SECRET_WORLD_2_FILE = 'SecretWorld.2.3.glb'
+const GAZEBO_FILE = 'Gazebo.24.9.glb'
+const SECRET_WORLD_1_FILE = 'SecretWorld.1.16.glb'
+const SECRET_WORLD_2_FILE = 'SecretWorld.2.5.glb'
 const GAZEBO_URL = proxiedAssetUrl(GAZEBO_FILE)
 const SECRET_WORLD_1_URL = proxiedAssetUrl(SECRET_WORLD_1_FILE)
 const SECRET_WORLD_2_URL = proxiedAssetUrl(SECRET_WORLD_2_FILE)
