@@ -53,6 +53,101 @@ These instructions are optimized for Blender 5.x, for situations where you have 
      - Straight keyframed objects (an animation runs first, then it finishes, then the objects are locked in place, only to be manipulated by follow-on settings in `react-three-fiber` (or other libraries) within this app [as opposed to anumations in Blender]) → **Off**
      - Something moves in Blender but is dead/wrong in the GLB → in that case, set this to → **On**
 
+---
+
+### How to Export Dual Opposite-Facing Portals on Gazebo
+
+### How to Export Dual Opposite-Facing Portals on Gazebo
+
+When exporting the Gazebo and Secret Worlds from Blender to `.glb` for use in React Three Fiber / Three.js:
+
+#### Gazebo Export
+
+Include the real portal geometry:
+
+```text
+Portals
+├── Portal-1
+└── Portal-2
+```
+
+These meshes are required by Three.js because they define the actual portal surfaces.
+
+Do **not** export:
+
+```text
+__PORTAL_IDENTITY_FIX__
+```
+
+or any objects inside it, such as:
+
+```text
+__PID_PROXY__Portal-1
+__PID_PROXY__Portal-2
+```
+
+Those objects exist only to make the portals behave correctly inside Blender/Cycles.
+
+The portal behavior itself will be recreated in React Three Fiber / Three.js.
+
+#### Secret World Exports
+
+When exporting each Secret World as its own `.glb`, export only the actual Secret World geometry and assets.
+
+Do **not** include:
+
+```text
+__PORTAL_IDENTITY_FIX__
+```
+
+Do **not** include any:
+
+```text
+__PID_PROXY__...
+```
+
+objects.
+
+#### Final Asset Structure
+
+You should end up with separate files similar to:
+
+```text
+Gazebo.glb
+SecretWorld-1.glb
+SecretWorld-2.glb
+```
+
+`Gazebo.glb` contains:
+
+```text
+Gazebo geometry
+Portals
+├── Portal-1
+└── Portal-2
+```
+
+The Secret World files contain only their respective world geometry.
+
+The Blender-specific portal helper system is excluded from **all `.glb` exports**.
+
+#### Important
+
+The following Blender/Cycles features do not carry over as functional portal logic into Three.js:
+
+```text
+Ray Portal BSDF
+Portal Depth
+Transparent Depth
+Light Path logic
+__PORTAL_IDENTITY_FIX__
+__PID_PROXY__ objects
+```
+
+Three.js / React Three Fiber must use `Portal-1` and `Portal-2` as the real portal meshes and recreate the portal rendering behavior in code.
+
+---
+
 ### Workaround to Add Proper Metadata for 3D (`.glb`) Files
 
 The `.glb` file may not display correctly in the browser if the metadata is not set correctly. This did not matter as of 8/13/2026, but with future browser or Blender updates, it may be required once again. Here is how to set the metadata correctly:
