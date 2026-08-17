@@ -1,7 +1,13 @@
 'use client'
 
 import { MeshPortalMaterial, useGLTF } from '@react-three/drei'
-import { useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
+import {
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import {
   AlwaysStencilFunc,
   BackSide,
@@ -28,9 +34,9 @@ import {
 import { proxiedAssetUrl } from '@/lib/assets'
 
 // Served via next.config rewrite → assets host (avoids browser CORS on the bucket).
-const GAZEBO_FILE = 'Gazebo.24.6.glb'
-const SECRET_WORLD_1_FILE = 'SecretWorld.1.9.glb'
-const SECRET_WORLD_2_FILE = 'SecretWorld.2.1.glb'
+const GAZEBO_FILE = 'Gazebo.24.8.glb'
+const SECRET_WORLD_1_FILE = 'SecretWorld.1.10.glb'
+const SECRET_WORLD_2_FILE = 'SecretWorld.2.3.glb'
 const GAZEBO_URL = proxiedAssetUrl(GAZEBO_FILE)
 const SECRET_WORLD_1_URL = proxiedAssetUrl(SECRET_WORLD_1_FILE)
 const SECRET_WORLD_2_URL = proxiedAssetUrl(SECRET_WORLD_2_FILE)
@@ -227,7 +233,9 @@ function usePortalScene() {
       {
         name: PORTAL_1_MESH_NAME,
         stencilBit: PORTAL_1_STENCIL_BIT,
-        geometry: portal1Mesh.geometry.clone().applyMatrix4(portal1Mesh.matrixWorld),
+        geometry: portal1Mesh.geometry
+          .clone()
+          .applyMatrix4(portal1Mesh.matrixWorld),
         secretWorld: secretWorld1,
         secretWorldOffset: secretWorldOffset(
           requireMarker(secretWorld1, PORTAL_1_TARGET_NAME, SECRET_WORLD_1_FILE)
@@ -236,7 +244,9 @@ function usePortalScene() {
       {
         name: PORTAL_2_MESH_NAME,
         stencilBit: PORTAL_2_STENCIL_BIT,
-        geometry: portal2Mesh.geometry.clone().applyMatrix4(portal2Mesh.matrixWorld),
+        geometry: portal2Mesh.geometry
+          .clone()
+          .applyMatrix4(portal2Mesh.matrixWorld),
         secretWorld: secretWorld2,
         secretWorldOffset: secretWorldOffset(
           requireMarker(secretWorld2, PORTAL_2_TARGET_NAME, SECRET_WORLD_2_FILE)
