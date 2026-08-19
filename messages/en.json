@@ -6,7 +6,7 @@
   },
   "HomePage": {
     "title": "Richard Burd's Homepage",
-    "subtitle": "I bend reality to build what’s next",
+    "subtitle": "Let's build a portal to your success!",
     "imageAlt": "Columbia campus photograph",
     "ketubahImageAlt": "Ketubah",
     "socialNav": "Social links",
@@ -35,11 +35,23 @@
     "title": "Knowledge Domains",
     "slices": {
       "Category1": "Product Engineering",
-      "Category2": "Graphic Design & Animation",
+      "Category2": "Design Presentation",
       "Category3": "Unmanned Aviation",
       "Category4": "Military Affairs",
       "Category5": "The Middle East",
       "Category6": "Architecture & Urban Planning",
+      "Category7": "Persuasion & Influence"
+    }
+  },
+  "CapabilitiesPie": {
+    "title": "Core Capabilities",
+    "slices": {
+      "Category1": "Full Stack Web Development",
+      "Category2": "Data & Design Visualization",
+      "Category3": "3D Modeling",
+      "Category4": "Video & Animation Production",
+      "Category5": "Rapid Prototyping",
+      "Category6": "Product Ownership",
       "Category7": "Policy Research"
     }
   }

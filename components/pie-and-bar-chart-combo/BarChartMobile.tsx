@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useInView } from 'motion/react'
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
@@ -38,6 +38,7 @@ const STACKING_ORDER = true
 
 type Props = {
   data: DomainsChartDatum[]
+  title: string
 }
 
 /** Biggest segment on top, smallest on bottom — mobile bar only. */
@@ -45,8 +46,7 @@ function stackLargestOnTop(data: DomainsChartDatum[]): DomainsChartDatum[] {
   return [...data].sort((a, b) => b.value - a.value)
 }
 
-export default function BarChartMobile({ data }: Props) {
-  const t = useTranslations('DomainsPie')
+export default function BarChartMobile({ data, title }: Props) {
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -119,7 +119,7 @@ export default function BarChartMobile({ data }: Props) {
           ease: [0.22, 1, 0.36, 1],
         }}
       >
-        {t('title')}
+        {title}
       </motion.h2>
       <div
         dir="ltr"
@@ -133,7 +133,7 @@ export default function BarChartMobile({ data }: Props) {
             height={barHeight}
             viewBox={`0 0 ${chartWidth} ${barHeight}`}
             role="img"
-            aria-label={t('title')}
+            aria-label={title}
             style={{ overflow: 'hidden' }}
           >
             {barSegments.map((segment, index) => {

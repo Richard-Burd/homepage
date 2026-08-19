@@ -17,6 +17,7 @@ import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppos
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
+import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -77,10 +78,18 @@ export default async function Home({ params }: Props) {
 
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')
+  const tCapabilities = await getTranslations('CapabilitiesPie')
 
-  const chartData = domainsChartData.slices.map((slice) => ({
+  const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
     label: tDomains(`slices.${slice.id}`),
+    value: slice.value,
+    color: slice.color,
+  }))
+
+  const capabilitiesChart = capabilitiesChartData.slices.map((slice) => ({
+    id: slice.id,
+    label: tCapabilities(`slices.${slice.id}`),
     value: slice.value,
     color: slice.color,
   }))
@@ -88,7 +97,7 @@ export default async function Home({ params }: Props) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
       <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black">
-        <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
+        <div className="flex w-full flex-col items-center gap-6 text-center">
           <h1
             className={`leading-10 text-zinc-700 dark:text-zinc-50 ${
               locale === 'ar'
@@ -101,7 +110,7 @@ export default async function Home({ params }: Props) {
             {t('title')}
           </h1>
           <p
-            className={`max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400 ${
+            className={`max-w-md text-center text-lg leading-8 text-zinc-600 dark:text-zinc-400 ${
               locale === 'ar'
                 ? 'font-(family-name:--font-arabic) font-normal'
                 : locale === 'he'
@@ -125,10 +134,16 @@ export default async function Home({ params }: Props) {
           <RotatingBlenderTestObject />
         </div> */}
 
-        <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
+        <div className="flex w-full flex-col items-center gap-40 text-center sm:items-start sm:text-start">
           <PieAndBarCharts
-            data={chartData}
+            data={domainsChart}
             pieOrder={domainsChartData.pieOrder}
+            title={tDomains('title')}
+          />
+          <PieAndBarCharts
+            data={capabilitiesChart}
+            pieOrder={capabilitiesChartData.pieOrder}
+            title={tCapabilities('title')}
           />
         </div>
 

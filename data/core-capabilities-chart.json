@@ -1,0 +1,48 @@
+{
+  "pieOrder": [
+    "Category2",
+    "Category3",
+    "Category1",
+    "Category6",
+    "Category5",
+    "Category7",
+    "Category4"
+  ],
+  "slices": [
+    {
+      "id": "Category1",
+      "value": 25,
+      "color": "#f1e15b"
+    },
+    {
+      "id": "Category2",
+      "value": 18,
+      "color": "#61cdbb"
+    },
+    {
+      "id": "Category3",
+      "value": 17,
+      "color": "#f47560"
+    },
+    {
+      "id": "Category4",
+      "value": 15,
+      "color": "#e8c1a0"
+    },
+    {
+      "id": "Category5",
+      "value": 10,
+      "color": "#e8a838"
+    },
+    {
+      "id": "Category6",
+      "value": 9,
+      "color": "#a0c9e4"
+    },
+    {
+      "id": "Category7",
+      "value": 6,
+      "color": "#a0e8a0"
+    }
+  ]
+}

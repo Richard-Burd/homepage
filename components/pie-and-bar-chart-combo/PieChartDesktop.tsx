@@ -2,7 +2,7 @@
 
 import { ResponsivePie } from '@nivo/pie'
 import { motion, useInView } from 'motion/react'
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import {
@@ -30,10 +30,10 @@ const SLICE_STAGGER_MS = 180
 
 type Props = {
   data: DomainsChartDatum[]
+  title: string
 }
 
-export default function PieChartDesktop({ data }: Props) {
-  const t = useTranslations('DomainsPie')
+export default function PieChartDesktop({ data, title }: Props) {
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -123,7 +123,7 @@ export default function PieChartDesktop({ data }: Props) {
           ease: [0.22, 1, 0.36, 1],
         }}
       >
-        {t('title')}
+        {title}
       </motion.h2>
       <div
         dir="ltr"
