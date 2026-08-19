@@ -97,11 +97,6 @@ export default function PieChartDesktop({ data }: Props) {
   }, [isInView, data, reduceMotion])
 
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'
-  const tooltipBg = isDark ? '#18181b' : '#ffffff'
-  const tooltipText = isDark ? '#f4f4f5' : '#333333'
-  const tooltipShadow = isDark
-    ? '0 1px 2px rgba(0, 0, 0, 0.5)'
-    : '0 1px 2px rgba(0, 0, 0, 0.25)'
 
   const visibleData =
     visibleCount > 0 ? data.slice(data.length - visibleCount) : []
@@ -132,7 +127,7 @@ export default function PieChartDesktop({ data }: Props) {
       </motion.h2>
       <div
         dir="ltr"
-        className="relative w-full overflow-visible"
+        className="relative w-full overflow-visible [&>div]:overflow-visible [&_svg]:overflow-visible"
         style={{ height: pieHeight }}
       >
         {showChart ? (
@@ -155,20 +150,13 @@ export default function PieChartDesktop({ data }: Props) {
             animate
             motionConfig="gentle"
             transitionMode="startAngle"
+            tooltip={() => null}
             theme={{
               labels: {
                 text: {
                   fontSize: Math.max(1, LABELS_FONT_SIZE * pieScale),
                   fontFamily,
                   fill: labelTextColor,
-                },
-              },
-              tooltip: {
-                container: {
-                  background: tooltipBg,
-                  color: tooltipText,
-                  boxShadow: tooltipShadow,
-                  fontFamily,
                 },
               },
             }}

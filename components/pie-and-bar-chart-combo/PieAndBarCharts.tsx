@@ -9,7 +9,7 @@ import type { DomainsChartDatum } from './types'
 
 export type { DomainsChartDatum } from './types'
 
-const NARROW_VIEWPORT_PX = 500
+const NARROW_VIEWPORT_PX = 800
 
 type Props = {
   data: DomainsChartDatum[]
@@ -32,7 +32,9 @@ export default function PieAndBarCharts({ data, pieOrder }: Props) {
   }, [])
 
   return (
-    <div className="flex w-full max-w-172 flex-col self-center">
+    <div
+      className={`flex w-full flex-col self-center ${isNarrowViewport ? 'max-w-172' : ''}`}
+    >
       {isNarrowViewport ? (
         <BarChartMobile data={data} />
       ) : (
