@@ -107,27 +107,34 @@ export default async function Home({ params }: Props) {
                   : 'font-(family-name:--font-roboto) text-3xl font-bold tracking-wide'
             }`}
           >
-            {t('title')}
+            {t.rich('title', {
+              phrase: (chunks) => (
+                <span className="inline-block whitespace-nowrap">{chunks}</span>
+              ),
+            })}
           </h1>
-          <p
-            className={`max-w-md text-center text-lg leading-8 text-zinc-600 dark:text-zinc-400 ${
-              locale === 'ar'
-                ? 'font-(family-name:--font-arabic) font-normal'
-                : locale === 'he'
-                  ? 'font-(family-name:--font-hebrew) font-normal'
-                  : 'font-(family-name:--font-roboto) font-normal'
-            }`}
-          >
-            {t('subtitle')}
-          </p>
         </div>
 
         <div className="flex w-full items-center justify-center">
           {/* <RotatingCube /> */}
         </div>
 
-        <div className="flex w-full items-center justify-center">
+        <div className="flex w-full flex-col items-center">
           <GazeboWithTwoOppositePortals />
+          <p className="mt-6 mb-40 text-[1rem] md:text-[1.4rem]">
+            {t.rich('intro', {
+              existingHomepage: (chunks) => (
+                <a
+                  href="https://richard-burd.github.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline dark:text-blue-400"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
         </div>
 
         {/* <div className="flex w-full items-center justify-center">
