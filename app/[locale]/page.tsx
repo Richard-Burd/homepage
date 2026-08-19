@@ -121,7 +121,7 @@ export default async function Home({ params }: Props) {
 
         <div className="flex w-full flex-col items-center">
           <GazeboWithTwoOppositePortals />
-          <p className="mt-6 mb-40 text-[1rem] md:text-[1.4rem]">
+          <p className="mt-6 mb-40 text-[1.1rem] md:text-[1.4rem]">
             {t.rich('intro', {
               existingHomepage: (chunks) => (
                 <a
