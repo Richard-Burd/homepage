@@ -39,6 +39,17 @@ export function darkenHex(hex: string, amount = 0.45) {
   return `#${channel(0)}${channel(2)}${channel(4)}`
 }
 
+export function orderSlicesByIds(
+  data: DomainsChartDatum[],
+  ids: string[],
+): DomainsChartDatum[] {
+  const byId = new Map(data.map((slice) => [slice.id, slice]))
+  return ids.flatMap((id) => {
+    const slice = byId.get(id)
+    return slice ? [slice] : []
+  })
+}
+
 export function layoutSegments(
   data: DomainsChartDatum[],
   plotTop: number,

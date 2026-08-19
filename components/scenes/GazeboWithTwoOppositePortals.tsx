@@ -396,15 +396,12 @@ function RotatingPortalGazebo({
   pitchAxis: ReturnType<typeof viewportPitchAxis>
   isDragging: RefObject<boolean>
 }) {
-  const introCompleteRef = useRef(true)
-
   useTurntableAutoRotate(
     groupRef,
     anglesRef,
     pitchAxis,
     AUTO_ROTATE_SPEED,
-    isDragging,
-    introCompleteRef
+    isDragging
   )
 
   return (

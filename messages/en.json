@@ -6,7 +6,7 @@
   },
   "HomePage": {
     "title": "Richard Burd's Homepage",
-    "subtitle": "This is the new supercharged homepage.",
+    "subtitle": "Let's build a portal to your success!",
     "imageAlt": "Columbia campus photograph",
     "ketubahImageAlt": "Ketubah",
     "socialNav": "Social links",
@@ -32,15 +32,27 @@
     "dark": "Dark"
   },
   "DomainsPie": {
-    "title": "Areas of Expertise",
+    "title": "Knowledge Domains",
     "slices": {
-      "Category1": "Graphic Design & Animation",
-      "Category2": "Data Visualization",
+      "Category1": "Product Engineering",
+      "Category2": "Design Presentation",
       "Category3": "Unmanned Aviation",
-      "Category4": "Software Development",
-      "Category5": "Military Affairs",
-      "Category6": "3D Modeling",
-      "Category7": "Architecture & Urban Design"
+      "Category4": "Military Affairs",
+      "Category5": "The Middle East",
+      "Category6": "Architecture & Urban Planning",
+      "Category7": "Persuasion & Influence"
+    }
+  },
+  "CapabilitiesPie": {
+    "title": "Core Capabilities",
+    "slices": {
+      "Category1": "Full Stack Web Development",
+      "Category2": "Data & Design Visualization",
+      "Category3": "3D Modeling",
+      "Category4": "Video & Animation Production",
+      "Category5": "Rapid Prototyping",
+      "Category6": "Product Ownership",
+      "Category7": "Policy Research"
     }
   }
 }
