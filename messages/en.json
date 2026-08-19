@@ -6,7 +6,7 @@
   },
   "HomePage": {
     "title": "Richard Burd's Homepage",
-    "subtitle": "Let's build a portal to your success!",
+    "intro": "Hi I’m Richard Burd, welcome to my new, supercharged, homepage. This place is under construction, you can visit my existing homepage <existingHomepage>here</existingHomepage>.",
     "imageAlt": "Columbia campus photograph",
     "ketubahImageAlt": "Ketubah",
     "socialNav": "Social links",
