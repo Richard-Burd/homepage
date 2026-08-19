@@ -107,7 +107,11 @@ export default async function Home({ params }: Props) {
                   : 'font-(family-name:--font-roboto) text-3xl font-bold tracking-wide'
             }`}
           >
-            {t('title')}
+            {t.rich('title', {
+              phrase: (chunks) => (
+                <span className="inline-block whitespace-nowrap">{chunks}</span>
+              ),
+            })}
           </h1>
         </div>
 
