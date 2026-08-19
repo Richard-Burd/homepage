@@ -16,7 +16,7 @@ import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarChart
 import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
-import domainsChartData from '@/data/domains-chart.json'
+import domainsChartData from '@/data/knowledge-domains-chart.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -78,7 +78,7 @@ export default async function Home({ params }: Props) {
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')
 
-  const chartData = domainsChartData.map((slice) => ({
+  const chartData = domainsChartData.slices.map((slice) => ({
     id: slice.id,
     label: tDomains(`slices.${slice.id}`),
     value: slice.value,
@@ -126,7 +126,10 @@ export default async function Home({ params }: Props) {
         </div> */}
 
         <div className="flex w-full flex-col items-center gap-6 text-center sm:items-start sm:text-start">
-          <PieAndBarCharts data={chartData} />
+          <PieAndBarCharts
+            data={chartData}
+            pieOrder={domainsChartData.pieOrder}
+          />
         </div>
 
         <div className="mt-6">

@@ -32,15 +32,15 @@
     "dark": "Dark"
   },
   "DomainsPie": {
-    "title": "Areas of Expertise",
+    "title": "Knowledge Domains",
     "slices": {
-      "Category1": "Graphic Design & Animation",
-      "Category2": "Data Visualization",
+      "Category1": "Product Engineering",
+      "Category2": "Graphic Design & Animation",
       "Category3": "Unmanned Aviation",
-      "Category4": "Software Development",
-      "Category5": "Military Affairs",
-      "Category6": "3D Modeling",
-      "Category7": "Architecture & Urban Design"
+      "Category4": "Military Affairs",
+      "Category5": "The Middle East",
+      "Category6": "Architecture & Urban Planning",
+      "Category7": "Policy Research"
     }
   }
 }

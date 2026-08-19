@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import PieChartDesktop from './PieChartDesktop'
 import BarChartMobile from './BarChartMobile'
+import { orderSlicesByIds } from './shared'
 import type { DomainsChartDatum } from './types'
 
 export type { DomainsChartDatum } from './types'
@@ -12,9 +13,10 @@ const NARROW_VIEWPORT_PX = 500
 
 type Props = {
   data: DomainsChartDatum[]
+  pieOrder: string[]
 }
 
-export default function PieAndBarCharts({ data }: Props) {
+export default function PieAndBarCharts({ data, pieOrder }: Props) {
   const [isNarrowViewport, setIsNarrowViewport] = useState(false)
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function PieAndBarCharts({ data }: Props) {
       {isNarrowViewport ? (
         <BarChartMobile data={data} />
       ) : (
-        <PieChartDesktop data={data} />
+        <PieChartDesktop data={orderSlicesByIds(data, pieOrder)} />
       )}
     </div>
   )
