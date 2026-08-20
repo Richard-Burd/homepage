@@ -136,8 +136,17 @@ export default memo(function PieChartDesktop({
       </motion.h2>
       <div
         dir="ltr"
-        className="relative w-full overflow-visible [&>div]:overflow-visible [&_svg]:overflow-visible"
+        className="relative w-full overflow-visible [&>div]:overflow-visible [&_svg]:overflow-visible [&_text]:cursor-pointer"
         style={{ height: pieHeight }}
+        onClick={(event) => {
+          const target = event.target
+          if (!(target instanceof SVGTextElement)) return
+          const text = target.textContent?.trim()
+          // Skip in-slice percentage labels like "30%".
+          if (!text || /^\d+%$/.test(text)) return
+          const slice = data.find((datum) => datum.label === text)
+          if (slice) onSelectSlice(slice)
+        }}
       >
         {showChart ? (
           <ResponsivePie

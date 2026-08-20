@@ -10,6 +10,8 @@ import type { DomainsChartDatum } from './types'
 
 const PANEL_ENTER_Y = 48
 const PANEL_DURATION_S = 0.35
+/** Max panel height in px; longer descriptions scroll inside. */
+const MAX_HEIGHT = 420
 
 type Props = {
   slice: DomainsChartDatum | null
@@ -60,29 +62,32 @@ export default function SliceDetailPanel({ slice, onClose }: Props) {
             exit={{ opacity: 0, y: PANEL_ENTER_Y }}
             transition={transition}
           >
-            <div className="pointer-events-auto mx-auto w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)]">
+            <div
+              className="pointer-events-auto mx-auto flex w-full max-w-lg flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
+              style={{ maxHeight: MAX_HEIGHT }}
+            >
               <div
-                className="h-2 w-full"
+                className="h-2 w-full shrink-0"
                 style={{ backgroundColor: slice.color }}
                 aria-hidden
               />
               <div
-                className="flex flex-col gap-4 px-5 py-5 text-start"
+                className="flex min-h-0 flex-1 flex-col gap-4 px-5 py-5 text-start"
                 style={{ fontFamily: 'var(--font-roboto)' }}
               >
                 <h3
                   id="slice-detail-title"
-                  className="text-xl font-bold tracking-wide text-zinc-800 dark:text-zinc-50"
+                  className="shrink-0 text-xl font-bold tracking-wide text-zinc-800 dark:text-zinc-50"
                 >
                   {slice.label}
                 </h3>
-                <p className="text-base leading-relaxed font-normal text-zinc-600 dark:text-zinc-300">
+                <p className="min-h-0 flex-1 overflow-y-auto text-base leading-relaxed font-normal text-zinc-600 dark:text-zinc-300">
                   {slice.description}
                 </p>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="inline-flex items-center gap-2 self-start rounded-md px-1 py-1 text-sm font-medium text-zinc-700 transition-colors hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                  className="inline-flex shrink-0 items-center gap-2 self-start rounded-md px-1 py-1 text-sm font-medium text-zinc-700 transition-colors hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
                 >
                   <span>{t('close')}</span>
                   <IoClose aria-hidden className="size-4" />
