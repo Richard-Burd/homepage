@@ -1,6 +1,7 @@
 export type DomainsChartDatum = {
   id: string
   label: string
+  description: string
   value: number
   color: string
 }

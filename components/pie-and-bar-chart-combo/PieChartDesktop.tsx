@@ -3,7 +3,7 @@
 import { ResponsivePie } from '@nivo/pie'
 import { motion, useInView } from 'motion/react'
 import { useLocale } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   getLocaleFontFamily,
@@ -31,9 +31,14 @@ const SLICE_STAGGER_MS = 180
 type Props = {
   data: DomainsChartDatum[]
   title: string
+  onSelectSlice: (slice: DomainsChartDatum) => void
 }
 
-export default function PieChartDesktop({ data, title }: Props) {
+export default memo(function PieChartDesktop({
+  data,
+  title,
+  onSelectSlice,
+}: Props) {
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -66,10 +71,11 @@ export default function PieChartDesktop({ data, title }: Props) {
 
     let cancelled = false
     let timeoutId = 0
+    const total = data.length
 
     if (reduceMotion) {
       timeoutId = window.setTimeout(() => {
-        if (!cancelled) setVisibleCount(data.length)
+        if (!cancelled) setVisibleCount(total)
       }, 0)
       return () => {
         cancelled = true
@@ -83,7 +89,7 @@ export default function PieChartDesktop({ data, title }: Props) {
       if (cancelled) return
       revealed += 1
       setVisibleCount(revealed)
-      if (revealed < data.length) {
+      if (revealed < total) {
         timeoutId = window.setTimeout(revealNext, SLICE_STAGGER_MS)
       }
     }
@@ -94,12 +100,15 @@ export default function PieChartDesktop({ data, title }: Props) {
       cancelled = true
       window.clearTimeout(timeoutId)
     }
+    // `data` is memoized by the parent; identity only changes when slice content does.
   }, [isInView, data, reduceMotion])
 
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'
 
-  const visibleData =
-    visibleCount > 0 ? data.slice(data.length - visibleCount) : []
+  const visibleData = useMemo(
+    () => (visibleCount > 0 ? data.slice(data.length - visibleCount) : []),
+    [data, visibleCount]
+  )
 
   const pieScale = width == null ? 1 : Math.min(1, width / BASE_WIDTH)
   const pieHeight = BASE_HEIGHT * pieScale
@@ -151,6 +160,9 @@ export default function PieChartDesktop({ data, title }: Props) {
             motionConfig="gentle"
             transitionMode="startAngle"
             tooltip={() => null}
+            onClick={(datum) => {
+              onSelectSlice(datum.data)
+            }}
             theme={{
               labels: {
                 text: {
@@ -179,4 +191,4 @@ export default function PieChartDesktop({ data, title }: Props) {
       </div>
     </div>
   )
-}
+})

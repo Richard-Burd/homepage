@@ -43,6 +43,7 @@ const STACKING_ORDER = true
 type Props = {
   data: DomainsChartDatum[]
   title: string
+  onSelectSlice: (slice: DomainsChartDatum) => void
 }
 
 /** Biggest segment on top, smallest on bottom — mobile bar only. */
@@ -50,7 +51,11 @@ function stackLargestOnTop(data: DomainsChartDatum[]): DomainsChartDatum[] {
   return [...data].sort((a, b) => b.value - a.value)
 }
 
-export default function BarChartMobile({ data, title }: Props) {
+export default function BarChartMobile({
+  data,
+  title,
+  onSelectSlice,
+}: Props) {
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const isRtl = isRtlLocale(locale)
@@ -181,6 +186,7 @@ export default function BarChartMobile({ data, title }: Props) {
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   onPointerEnter={() => setHoveredId(segment.id)}
+                  onClick={() => onSelectSlice(segment)}
                   style={{ cursor: 'pointer' }}
                 >
                   <g opacity={dimmed ? 0.55 : 1}>

@@ -31,28 +31,73 @@
     "light": "Light",
     "dark": "Dark"
   },
+  "SliceDetailPanel": {
+    "close": "close"
+  },
   "DomainsPie": {
     "title": "Knowledge Domains",
     "slices": {
-      "Category1": "Product Engineering",
-      "Category2": "Design Presentation",
-      "Category3": "Unmanned Aviation",
-      "Category4": "Military Affairs",
-      "Category5": "The Middle East",
-      "Category6": "Architecture & Urban Planning",
-      "Category7": "Persuasion & Influence"
+      "Category1": {
+        "title": "Product Engineering",
+        "Description": "Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch. Designing, building, and shipping product systems from idea through launch."
+      },
+      "Category2": {
+        "title": "Design Presentation",
+        "Description": "Turning complex ideas into clear visual narratives that stakeholders can follow."
+      },
+      "Category3": {
+        "title": "Unmanned Aviation",
+        "Description": "Exploring drone systems, flight operations, and the technology behind uncrewed aircraft."
+      },
+      "Category4": {
+        "title": "Military Affairs",
+        "Description": "Studying defense institutions, strategy, and how armed forces organize and operate."
+      },
+      "Category5": {
+        "title": "The Middle East",
+        "Description": "Following the region’s politics, culture, and history with attention to local context."
+      },
+      "Category6": {
+        "title": "Architecture & Urban Planning",
+        "Description": "Thinking about how cities and buildings shape the way people live and move."
+      },
+      "Category7": {
+        "title": "Persuasion & Influence",
+        "Description": "Understanding how messages, framing, and rhetoric move people toward action."
+      }
     }
   },
   "CapabilitiesPie": {
     "title": "Core Capabilities",
     "slices": {
-      "Category1": "Full Stack Web Development",
-      "Category2": "Data & Design Visualization",
-      "Category3": "3D Modeling",
-      "Category4": "Video & Animation Production",
-      "Category5": "Rapid Prototyping",
-      "Category6": "Product Ownership",
-      "Category7": "Policy Research"
+      "Category1": {
+        "title": "Full Stack Web Development",
+        "Description": "Building end-to-end web apps across interfaces, APIs, and data layers."
+      },
+      "Category2": {
+        "title": "Data & Design Visualization",
+        "Description": "Making data readable through charts, maps, and purposeful visual design."
+      },
+      "Category3": {
+        "title": "3D Modeling",
+        "Description": "Creating spatial models for products, places, and interactive experiences."
+      },
+      "Category4": {
+        "title": "Video & Animation Production",
+        "Description": "Producing motion pieces that explain ideas and bring concepts to life."
+      },
+      "Category5": {
+        "title": "Rapid Prototyping",
+        "Description": "Quickly testing concepts in working form so feedback can arrive early."
+      },
+      "Category6": {
+        "title": "Product Ownership",
+        "Description": "Setting priorities, aligning teams, and guiding a product from backlog to release."
+      },
+      "Category7": {
+        "title": "Policy Research",
+        "Description": "Investigating policy questions and turning findings into practical recommendations."
+      }
     }
   }
 }
