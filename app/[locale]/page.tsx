@@ -82,14 +82,16 @@ export default async function Home({ params }: Props) {
 
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
-    label: tDomains(`slices.${slice.id}`),
+    label: tDomains(`slices.${slice.id}.title`),
+    description: tDomains(`slices.${slice.id}.Description`),
     value: slice.value,
     color: slice.color,
   }))
 
   const capabilitiesChart = capabilitiesChartData.slices.map((slice) => ({
     id: slice.id,
-    label: tCapabilities(`slices.${slice.id}`),
+    label: tCapabilities(`slices.${slice.id}.title`),
+    description: tCapabilities(`slices.${slice.id}.Description`),
     value: slice.value,
     color: slice.color,
   }))
@@ -121,7 +123,7 @@ export default async function Home({ params }: Props) {
 
         <div className="flex w-full flex-col items-center">
           <GazeboWithTwoOppositePortals />
-          <p className="mt-6 mb-40 text-[1.1rem] md:text-[1.4rem]">
+          <p className="mt-6 mb-40 text-[1.2rem] md:text-[1.4rem]">
             {t.rich('intro', {
               existingHomepage: (chunks) => (
                 <a
@@ -164,7 +166,7 @@ export default async function Home({ params }: Props) {
           />
         </div>
 
-        {locale === 'he' ? (
+        {/* {locale === 'he' ? (
           <div className="mt-6">
             <Image
               src={assetUrl('ketubah-test-image.jpg')}
@@ -173,7 +175,7 @@ export default async function Home({ params }: Props) {
               height={1100}
             />
           </div>
-        ) : null}
+        ) : null} */}
 
         <nav
           aria-label={t('socialNav')}

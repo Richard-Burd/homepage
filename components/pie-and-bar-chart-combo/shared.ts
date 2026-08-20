@@ -8,6 +8,12 @@ export function getLocaleFontFamily(locale: string) {
   return 'var(--font-roboto)'
 }
 
+// Arabiv and Hebrew are right to left languages,
+// so we need to flip the layout of the charts and labels
+export function isRtlLocale(locale: string) {
+  return locale === 'ar' || locale === 'he'
+}
+
 function prefersReducedMotion() {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -23,7 +29,7 @@ export function usePrefersReducedMotion() {
   return useSyncExternalStore(
     subscribeReducedMotion,
     prefersReducedMotion,
-    () => false,
+    () => false
   )
 }
 
@@ -41,7 +47,7 @@ export function darkenHex(hex: string, amount = 0.45) {
 
 export function orderSlicesByIds(
   data: DomainsChartDatum[],
-  ids: string[],
+  ids: string[]
 ): DomainsChartDatum[] {
   const byId = new Map(data.map((slice) => [slice.id, slice]))
   return ids.flatMap((id) => {
@@ -54,7 +60,7 @@ export function layoutSegments(
   data: DomainsChartDatum[],
   plotTop: number,
   plotHeight: number,
-  gap: number,
+  gap: number
 ): SegmentLayout[] {
   const total = data.reduce((sum, d) => sum + d.value, 0)
   if (total <= 0 || data.length === 0) return []
@@ -83,6 +89,6 @@ export function useIsDarkMode() {
       return () => observer.disconnect()
     },
     () => document.documentElement.classList.contains('dark'),
-    () => false,
+    () => false
   )
 }

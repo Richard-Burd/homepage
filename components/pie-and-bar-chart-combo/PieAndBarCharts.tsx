@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import PieChartDesktop from './PieChartDesktop'
 import BarChartMobile from './BarChartMobile'
+import SliceDetailPanel from './SliceDetailPanel'
 import { orderSlicesByIds } from './shared'
 import type { DomainsChartDatum } from './types'
 
@@ -19,6 +20,14 @@ type Props = {
 
 export default function PieAndBarCharts({ data, pieOrder, title }: Props) {
   const [isNarrowViewport, setIsNarrowViewport] = useState(false)
+  const [selectedSlice, setSelectedSlice] = useState<DomainsChartDatum | null>(
+    null
+  )
+
+  const pieData = useMemo(
+    () => orderSlicesByIds(data, pieOrder),
+    [data, pieOrder]
+  )
 
   useEffect(() => {
     const media = window.matchMedia(`(max-width: ${NARROW_VIEWPORT_PX - 1}px)`)
@@ -32,18 +41,32 @@ export default function PieAndBarCharts({ data, pieOrder, title }: Props) {
     return () => media.removeEventListener('change', syncViewport)
   }, [])
 
+  const handleSelect = useCallback((slice: DomainsChartDatum) => {
+    setSelectedSlice(slice)
+  }, [])
+
+  const handleClose = useCallback(() => {
+    setSelectedSlice(null)
+  }, [])
+
   return (
     <div
       className={`flex w-full flex-col self-center ${isNarrowViewport ? 'max-w-172' : ''}`}
     >
       {isNarrowViewport ? (
-        <BarChartMobile data={data} title={title} />
+        <BarChartMobile
+          data={data}
+          title={title}
+          onSelectSlice={handleSelect}
+        />
       ) : (
         <PieChartDesktop
-          data={orderSlicesByIds(data, pieOrder)}
+          data={pieData}
           title={title}
+          onSelectSlice={handleSelect}
         />
       )}
+      <SliceDetailPanel slice={selectedSlice} onClose={handleClose} />
     </div>
   )
 }

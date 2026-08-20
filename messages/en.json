@@ -6,7 +6,7 @@
   },
   "HomePage": {
     "title": "Richard Burd's Homepage",
-    "intro": "Hi I’m Richard Burd, welcome to my new, supercharged, homepage. This place is under construction, you can visit my existing homepage <existingHomepage>here</existingHomepage>.",
+    "intro": "Hi I’m Richard Burd, welcome to my new, supercharged, homepage. I built everything you see here including charts, diagrams, 3D models, and animations. This place is under construction, you can visit my existing homepage <existingHomepage>here</existingHomepage>.",
     "imageAlt": "Columbia campus photograph",
     "ketubahImageAlt": "Ketubah",
     "socialNav": "Social links",
@@ -31,28 +31,73 @@
     "light": "Light",
     "dark": "Dark"
   },
+  "SliceDetailPanel": {
+    "close": "close"
+  },
   "DomainsPie": {
     "title": "Knowledge Domains",
     "slices": {
-      "Category1": "Product Engineering",
-      "Category2": "Design Presentation",
-      "Category3": "Unmanned Aviation",
-      "Category4": "Military Affairs",
-      "Category5": "The Middle East",
-      "Category6": "Architecture & Urban Planning",
-      "Category7": "Persuasion & Influence"
+      "Category1": {
+        "title": "Product Engineering",
+        "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "Category2": {
+        "title": "Design Presentation",
+        "Description": "Turning complex ideas into clear visual narratives that stakeholders can follow."
+      },
+      "Category3": {
+        "title": "Unmanned Aviation",
+        "Description": "Exploring drone systems, flight operations, and the technology behind uncrewed aircraft."
+      },
+      "Category4": {
+        "title": "Military Affairs",
+        "Description": "Studying defense institutions, strategy, and how armed forces organize and operate."
+      },
+      "Category5": {
+        "title": "The Middle East",
+        "Description": "Following the region’s politics, culture, and history with attention to local context."
+      },
+      "Category6": {
+        "title": "Architecture & Urban Planning",
+        "Description": "Thinking about how cities and buildings shape the way people live and move."
+      },
+      "Category7": {
+        "title": "Persuasion & Influence",
+        "Description": "Understanding how messages, framing, and rhetoric move people toward action."
+      }
     }
   },
   "CapabilitiesPie": {
     "title": "Core Capabilities",
     "slices": {
-      "Category1": "Full Stack Web Development",
-      "Category2": "Data & Design Visualization",
-      "Category3": "3D Modeling",
-      "Category4": "Video & Animation Production",
-      "Category5": "Rapid Prototyping",
-      "Category6": "Product Ownership",
-      "Category7": "Policy Research"
+      "Category1": {
+        "title": "Full Stack Web Development",
+        "Description": "Building end-to-end web apps across interfaces, APIs, and data layers."
+      },
+      "Category2": {
+        "title": "Data & Design Visualization",
+        "Description": "Making data readable through charts, maps, and purposeful visual design."
+      },
+      "Category3": {
+        "title": "3D Modeling",
+        "Description": "Creating spatial models for products, places, and interactive experiences."
+      },
+      "Category4": {
+        "title": "Video & Animation Production",
+        "Description": "Producing motion pieces that explain ideas and bring concepts to life."
+      },
+      "Category5": {
+        "title": "Rapid Prototyping",
+        "Description": "Quickly testing concepts in working form so feedback can arrive early."
+      },
+      "Category6": {
+        "title": "Product Ownership",
+        "Description": "Setting priorities, aligning teams, and guiding a product from backlog to release."
+      },
+      "Category7": {
+        "title": "Policy Research",
+        "Description": "Investigating policy questions and turning findings into practical recommendations."
+      }
     }
   }
 }
