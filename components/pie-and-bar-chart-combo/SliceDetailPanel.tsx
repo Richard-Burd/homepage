@@ -1,17 +1,22 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { IoClose } from 'react-icons/io5'
 
-import { usePrefersReducedMotion } from './shared'
+import {
+  getLocaleFontFamily,
+  isRtlLocale,
+  usePrefersReducedMotion,
+} from './shared'
 import type { DomainsChartDatum } from './types'
 
 const PANEL_ENTER_Y = 48
 const PANEL_DURATION_S = 0.35
 /** Max panel height in px; longer descriptions scroll inside. */
 const MAX_HEIGHT = 420
+const COLOR_SWATCH_SIZE = 16
 
 type Props = {
   slice: DomainsChartDatum | null
@@ -20,6 +25,9 @@ type Props = {
 
 export default function SliceDetailPanel({ slice, onClose }: Props) {
   const t = useTranslations('SliceDetailPanel')
+  const locale = useLocale()
+  const isRtl = isRtlLocale(locale)
+  const fontFamily = getLocaleFontFamily(locale)
   const reduceMotion = usePrefersReducedMotion()
 
   useEffect(() => {
@@ -63,24 +71,31 @@ export default function SliceDetailPanel({ slice, onClose }: Props) {
             transition={transition}
           >
             <div
-              className="pointer-events-auto mx-auto flex w-full max-w-lg flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
+              dir={isRtl ? 'rtl' : 'ltr'}
+              className="pointer-events-auto mx-auto flex w-full max-w-lg flex-col overflow-hidden rounded-md border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
               style={{ maxHeight: MAX_HEIGHT }}
             >
               <div
-                className="h-2 w-full shrink-0"
-                style={{ backgroundColor: slice.color }}
-                aria-hidden
-              />
-              <div
                 className="flex min-h-0 flex-1 flex-col gap-4 px-5 py-5 text-start"
-                style={{ fontFamily: 'var(--font-roboto)' }}
+                style={{ fontFamily }}
               >
-                <h3
-                  id="slice-detail-title"
-                  className="shrink-0 text-xl font-bold tracking-wide text-zinc-800 dark:text-zinc-50"
-                >
-                  {slice.label}
-                </h3>
+                <div className="flex shrink-0 items-center gap-3">
+                  <span
+                    className="shrink-0"
+                    style={{
+                      width: COLOR_SWATCH_SIZE,
+                      height: COLOR_SWATCH_SIZE,
+                      backgroundColor: slice.color,
+                    }}
+                    aria-hidden
+                  />
+                  <h3
+                    id="slice-detail-title"
+                    className="text-xl font-bold tracking-wide text-zinc-800 dark:text-zinc-50"
+                  >
+                    {slice.label}
+                  </h3>
+                </div>
                 <p className="min-h-0 flex-1 overflow-y-auto text-base leading-relaxed font-normal text-zinc-600 dark:text-zinc-300">
                   {slice.description}
                 </p>
