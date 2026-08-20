@@ -78,7 +78,7 @@ export default function LanguageSwitcher() {
           id={listId}
           role="listbox"
           aria-label={t('label')}
-          className="absolute top-full end-0 z-50 mt-1 min-w-full overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
+          className="absolute top-full inset-e-0 z-50 mt-1 min-w-full overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
         >
           {routing.locales.map((code) => {
             const selected = code === locale
