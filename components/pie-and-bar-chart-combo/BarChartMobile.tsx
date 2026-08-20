@@ -7,6 +7,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   darkenHex,
   getLocaleFontFamily,
+
+  // Arabic and Hebrew are right to left languages,
+  // so we need to flip the layout of the charts and labels
+  isRtlLocale,
   layoutSegments,
   useIsDarkMode,
   usePrefersReducedMotion,
@@ -23,7 +27,7 @@ const LINK_LENGTH = 14
 const LEADER_ARM_THICKNESS = 2
 const BAR_SEGMENT_CORNER = 3
 const GAP_BETWEEN_BAR_SEGMENTS = 3
-/** How far a hovered segment stretches to the right (mirrors pie activeOuterRadiusOffset). */
+/** How far a hovered segment stretches toward the labels (mirrors pie activeOuterRadiusOffset). */
 const OFFSET_WHEN_SELECTED = 12
 /** Bottom → top entrance: travel + stagger between segments. */
 const BAR_ENTER_OFFSET_Y = 40
@@ -49,6 +53,7 @@ function stackLargestOnTop(data: DomainsChartDatum[]): DomainsChartDatum[] {
 export default function BarChartMobile({ data, title }: Props) {
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
+  const isRtl = isRtlLocale(locale)
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.4 })
   const [width, setWidth] = useState<number | null>(null)
@@ -87,8 +92,13 @@ export default function BarChartMobile({ data, title }: Props) {
 
   const chartWidth = width ?? 320
   const plotHeight = Math.max(0, barHeight - barMargin.top - barMargin.bottom)
-  const columnX = barMargin.left
-  const labelAnchorX = columnX + columnWidth + linkGap + linkLength
+  // Keep SVG x=0 on the left; mirror the column to the inline-start edge for RTL.
+  const columnX = isRtl
+    ? chartWidth - barMargin.left - columnWidth
+    : barMargin.left
+  const labelAnchorX = isRtl
+    ? columnX - linkGap - linkLength
+    : columnX + columnWidth + linkGap + linkLength
 
   const barSegments = useMemo(
     () =>
@@ -139,11 +149,15 @@ export default function BarChartMobile({ data, title }: Props) {
             {barSegments.map((segment, index) => {
               const isHovered = hoveredId === segment.id
               const hoverGrow = isHovered ? OFFSET_WHEN_SELECTED : 0
+              const hoverShift = isRtl ? -hoverGrow : hoverGrow
               const activeWidth = columnWidth + hoverGrow
-              const linkStartX = columnX + columnWidth
-              const linkElbowX = linkStartX + linkGap
+              const barX = isRtl ? columnX - hoverGrow : columnX
+              const linkStartX = isRtl ? columnX : columnX + columnWidth
+              const linkElbowX = isRtl
+                ? linkStartX - linkGap
+                : linkStartX + linkGap
               const linkEndX = labelAnchorX
-              const labelX = linkEndX + 6
+              const labelX = isRtl ? linkEndX - 6 : linkEndX + 6
               const fromBottom = barSegments.length - 1 - index
               const enterDelay = reduceMotion
                 ? 0
@@ -171,7 +185,7 @@ export default function BarChartMobile({ data, title }: Props) {
                 >
                   <g opacity={dimmed ? 0.55 : 1}>
                     <rect
-                      x={columnX}
+                      x={barX}
                       y={segment.y}
                       width={activeWidth}
                       height={Math.max(0, segment.height)}
@@ -181,7 +195,7 @@ export default function BarChartMobile({ data, title }: Props) {
                     />
                     {segment.height > fontSize * 1.4 ? (
                       <text
-                        x={columnX + activeWidth / 2}
+                        x={barX + activeWidth / 2}
                         y={segment.midY}
                         textAnchor="middle"
                         dominantBaseline="central"
@@ -193,7 +207,7 @@ export default function BarChartMobile({ data, title }: Props) {
                         {`${segment.value}%`}
                       </text>
                     ) : null}
-                    <g transform={`translate(${hoverGrow} 0)`}>
+                    <g transform={`translate(${hoverShift} 0)`}>
                       <path
                         d={`M ${linkStartX} ${segment.midY} L ${linkElbowX} ${segment.midY} L ${linkEndX} ${segment.midY}`}
                         fill="none"
@@ -204,6 +218,7 @@ export default function BarChartMobile({ data, title }: Props) {
                       <text
                         x={labelX}
                         y={segment.midY}
+                        textAnchor={isRtl ? 'end' : 'start'}
                         dominantBaseline="central"
                         fill={labelTextColor}
                         fontFamily={fontFamily}
