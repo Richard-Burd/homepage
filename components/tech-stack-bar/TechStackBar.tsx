@@ -8,6 +8,7 @@ import SliceDetailPanel from '../pie-and-bar-chart-combo/SliceDetailPanel'
 import {
   getLocaleFontFamily,
   isRtlLocale,
+  useDelayedTouchSelect,
   useIsDarkMode,
   usePrefersReducedMotion,
 } from '../pie-and-bar-chart-combo/shared'
@@ -165,6 +166,10 @@ export default function TechStackBar({
   )
   const isDark = useIsDarkMode()
   const reduceMotion = usePrefersReducedMotion()
+  const { isCoarsePointer, runSelect } = useDelayedTouchSelect(
+    HOVER_DURATION_S * 1000,
+    reduceMotion
+  )
 
   const [revealedGroups, setRevealedGroups] = useState<ReadonlySet<string>>(
     () => new Set()
@@ -309,7 +314,11 @@ export default function TechStackBar({
         <div
           className="relative w-full overflow-visible"
           style={{ height: totalHeight }}
-          onPointerLeave={() => setHoveredKey(null)}
+          onPointerLeave={() => {
+            // Touch lifts fire pointerleave; keep the highlight until the
+            // delayed panel opens (or the next tap changes it).
+            if (!isCoarsePointer) setHoveredKey(null)
+          }}
         >
           {showChart ? (
             <>
@@ -385,16 +394,24 @@ export default function TechStackBar({
                                 : TIER3_ENTER_DURATION_S,
                               ease: EASE,
                             }}
-                            onPointerEnter={() => setHoveredKey(hoverKey)}
-                            onPointerLeave={() => setHoveredKey(null)}
+                            onPointerEnter={() => {
+                              if (!isCoarsePointer) setHoveredKey(hoverKey)
+                            }}
+                            onPointerLeave={() => {
+                              if (!isCoarsePointer) setHoveredKey(null)
+                            }}
                             onClick={() =>
-                              setSelectedSlice({
-                                id: item.id,
-                                label: item.label,
-                                description: item.description,
-                                value: item.value,
-                                color: item.color,
-                              })
+                              runSelect(
+                                () => setHoveredKey(hoverKey),
+                                () =>
+                                  setSelectedSlice({
+                                    id: item.id,
+                                    label: item.label,
+                                    description: item.description,
+                                    value: item.value,
+                                    color: item.color,
+                                  })
+                              )
                             }
                             style={{ cursor: 'pointer' }}
                           >
@@ -493,16 +510,24 @@ export default function TechStackBar({
                           duration: reduceMotion ? 0 : TIER2_ENTER_DURATION_S,
                           ease: EASE,
                         }}
-                        onPointerEnter={() => setHoveredKey(hoverKey)}
-                        onPointerLeave={() => setHoveredKey(null)}
+                        onPointerEnter={() => {
+                          if (!isCoarsePointer) setHoveredKey(hoverKey)
+                        }}
+                        onPointerLeave={() => {
+                          if (!isCoarsePointer) setHoveredKey(null)
+                        }}
                         onClick={() =>
-                          setSelectedSlice({
-                            id: layout.group.id,
-                            label: layout.group.label,
-                            description: layout.group.description,
-                            value: groupValue,
-                            color: layout.group.color,
-                          })
+                          runSelect(
+                            () => setHoveredKey(hoverKey),
+                            () =>
+                              setSelectedSlice({
+                                id: layout.group.id,
+                                label: layout.group.label,
+                                description: layout.group.description,
+                                value: groupValue,
+                                color: layout.group.color,
+                              })
+                          )
                         }
                         style={{ cursor: 'pointer' }}
                       >
@@ -540,16 +565,24 @@ export default function TechStackBar({
                     duration: reduceMotion ? 0 : TIER1_ENTER_DURATION_S,
                     ease: EASE,
                   }}
-                  onPointerEnter={() => setHoveredKey(ROOT_HOVER_KEY)}
-                  onPointerLeave={() => setHoveredKey(null)}
+                  onPointerEnter={() => {
+                    if (!isCoarsePointer) setHoveredKey(ROOT_HOVER_KEY)
+                  }}
+                  onPointerLeave={() => {
+                    if (!isCoarsePointer) setHoveredKey(null)
+                  }}
                   onClick={() =>
-                    setSelectedSlice({
-                      id: ROOT_HOVER_KEY,
-                      label: title,
-                      description,
-                      value: totalValue,
-                      color,
-                    })
+                    runSelect(
+                      () => setHoveredKey(ROOT_HOVER_KEY),
+                      () =>
+                        setSelectedSlice({
+                          id: ROOT_HOVER_KEY,
+                          label: title,
+                          description,
+                          value: totalValue,
+                          color,
+                        })
+                    )
                   }
                   style={{ cursor: 'pointer' }}
                 >
