@@ -58,6 +58,7 @@ export default function PieAndBarCharts({ data, pieOrder, title }: Props) {
           data={data}
           title={title}
           onSelectSlice={handleSelect}
+          panelOpen={selectedSlice != null}
         />
       ) : (
         <PieChartDesktop

@@ -360,6 +360,7 @@ export default function TechStackBar({
                   return (
                     <motion.g
                       key={`items-${layout.group.id}`}
+                      initial={{ x: 0 }}
                       animate={{
                         x: tier1Shift + groupShift(layout.group.id),
                       }}
@@ -379,7 +380,7 @@ export default function TechStackBar({
                             key={item.id}
                             initial={
                               reduceMotion
-                                ? false
+                                ? { opacity: 1, x: 0 }
                                 : { opacity: 0, x: popOffsetX }
                             }
                             animate={
@@ -416,6 +417,7 @@ export default function TechStackBar({
                             style={{ cursor: 'pointer' }}
                           >
                             <motion.g
+                              initial={{ opacity: 1 }}
                               animate={{
                                 opacity: dimmed(hoverKey)
                                   ? DIMMED_OPACITY
@@ -429,7 +431,10 @@ export default function TechStackBar({
                                 rx={BAR_CORNER}
                                 ry={BAR_CORNER}
                                 fill={item.color}
-                                initial={false}
+                                initial={{
+                                  x: tier3X,
+                                  width: columnWidth,
+                                }}
                                 animate={{
                                   x: grownBarX(tier3X, isHovered),
                                   width: grownBarWidth(isHovered),
@@ -437,7 +442,11 @@ export default function TechStackBar({
                                 transition={hoverTransition}
                               />
                               <motion.g
-                                initial={reduceMotion ? false : { opacity: 0 }}
+                                initial={
+                                  reduceMotion
+                                    ? { opacity: 1 }
+                                    : { opacity: 0 }
+                                }
                                 animate={
                                   revealed ? { opacity: 1 } : { opacity: 0 }
                                 }
@@ -451,6 +460,7 @@ export default function TechStackBar({
                                 }}
                               >
                                 <motion.g
+                                  initial={{ x: 0 }}
                                   animate={{ x: labelShift }}
                                   transition={hoverTransition}
                                 >
@@ -493,12 +503,15 @@ export default function TechStackBar({
                   return (
                     <motion.g
                       key={`group-bar-${layout.group.id}`}
+                      initial={{ x: 0 }}
                       animate={{ x: tier1Shift }}
                       transition={hoverTransition}
                     >
                       <motion.g
                         initial={
-                          reduceMotion ? false : { opacity: 0, x: popOffsetX }
+                          reduceMotion
+                            ? { opacity: 1, x: 0 }
+                            : { opacity: 0, x: popOffsetX }
                         }
                         animate={
                           revealed
@@ -537,7 +550,11 @@ export default function TechStackBar({
                           rx={BAR_CORNER}
                           ry={BAR_CORNER}
                           fill={layout.group.color}
-                          initial={false}
+                          initial={{
+                            x: tier2X,
+                            width: columnWidth,
+                            opacity: 1,
+                          }}
                           animate={{
                             x: grownBarX(tier2X, isHovered),
                             width: grownBarWidth(isHovered),
@@ -553,7 +570,7 @@ export default function TechStackBar({
                 <motion.g
                   initial={
                     reduceMotion
-                      ? false
+                      ? { opacity: 1, x: 0 }
                       : { opacity: 0, x: tier1EnterOffsetX }
                   }
                   animate={
@@ -587,6 +604,7 @@ export default function TechStackBar({
                   style={{ cursor: 'pointer' }}
                 >
                   <motion.g
+                    initial={{ opacity: 1 }}
                     animate={{
                       opacity: dimmed(ROOT_HOVER_KEY) ? DIMMED_OPACITY : 1,
                     }}
@@ -598,7 +616,10 @@ export default function TechStackBar({
                       rx={BAR_CORNER}
                       ry={BAR_CORNER}
                       fill={color}
-                      initial={false}
+                      initial={{
+                        x: tier1X,
+                        width: columnWidth,
+                      }}
                       animate={{
                         x: grownBarX(tier1X, isRootHovered),
                         width: grownBarWidth(isRootHovered),
@@ -639,7 +660,9 @@ export default function TechStackBar({
                   return (
                     <motion.g
                       key={`group-header-${layout.group.id}`}
-                      initial={reduceMotion ? false : { opacity: 0 }}
+                      initial={
+                        reduceMotion ? { opacity: 1 } : { opacity: 0 }
+                      }
                       animate={revealed ? { opacity: 1 } : { opacity: 0 }}
                       transition={{
                         delay: reduceMotion
@@ -649,6 +672,7 @@ export default function TechStackBar({
                       }}
                     >
                       <motion.g
+                        initial={{ x: 0, opacity: 1 }}
                         animate={{
                           x: tier1Shift,
                           opacity: dimmed(hoverKey) ? DIMMED_OPACITY : 1,
@@ -684,7 +708,10 @@ export default function TechStackBar({
       </div>
       <SliceDetailPanel
         slice={selectedSlice}
-        onClose={() => setSelectedSlice(null)}
+        onClose={() => {
+          setSelectedSlice(null)
+          setHoveredKey(null)
+        }}
         desktopPlacement="side"
       />
     </div>
