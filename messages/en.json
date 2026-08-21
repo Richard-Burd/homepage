@@ -105,11 +105,45 @@
     "sectionSubtitle": "Tools I use to build the stuff I make",
     "fullStackWebDev": {
       "title": "Full Stack Web Development",
+      "description": "Full stack web development means building every layer of a website or web application: the part users see and click, the server logic behind it, and the database where information lives. The tools below are the ones I use to take a product from idea to a live, working site.",
       "groups": {
-        "uxUiDesign": "UX/UI Design",
-        "frontend": "Frontend",
-        "backend": "Backend",
-        "cloudServices": "Cloud Services"
+        "uxUiDesign": {
+          "label": "UX/UI Design",
+          "description": "UX/UI design is the craft of deciding how a product looks and how it feels to use — laying out screens, choosing colors and type, and making sure everything is intuitive before any code is written."
+        },
+        "frontend": {
+          "label": "Frontend",
+          "description": "The frontend is everything a user sees and interacts with in the browser: pages, buttons, charts, and animations. These tools shape the visual, interactive layer of a web application."
+        },
+        "backend": {
+          "label": "Backend",
+          "description": "The backend is the behind-the-scenes machinery of a web application: it processes requests, enforces rules, and stores and retrieves data. Users never see it, but nothing works without it."
+        },
+        "cloudServices": {
+          "label": "Cloud Services",
+          "description": "Cloud services are third-party platforms that host applications, store files, and handle jobs like sign-ins and content delivery, so a product can run reliably on the internet without owning any physical servers."
+        }
+      },
+      "items": {
+        "figma": "Figma is a design tool used to sketch and prototype how websites and apps will look before they are built. Designers and developers use it to agree on layouts, colors, and screens, so everyone builds toward the same picture.",
+        "calvary": "Cavalry is a professional 2D animation tool used to create moving graphics — animated logos, explainer visuals, and motion effects — that can be exported for use on the web and in video.",
+        "react": "React Native and Expo are tools for building mobile apps for iPhone and Android using the same programming language as the web. They let one codebase serve multiple platforms, saving time and cost.",
+        "d3": "D3.js is a JavaScript library for turning raw data into custom interactive charts and visualizations — like the charts on this page. It gives fine-grained control that off-the-shelf chart tools can't match.",
+        "three": "Three.js is a JavaScript library for displaying 3D graphics in a web browser — rotating product models, virtual scenes, and interactive environments — without any special software installed.",
+        "tanstack": "TanStack is a collection of JavaScript libraries that handle common app plumbing, such as fetching data from servers and displaying large tables, in a fast and reliable way.",
+        "tailwind": "TailwindCSS is a styling toolkit that lets developers design polished, consistent interfaces quickly by composing small, reusable style utilities instead of writing custom styling from scratch.",
+        "typescriptJavascript": "JavaScript is the programming language of the web browser, and TypeScript is a safer version of it that catches mistakes before the code runs. Together they power nearly everything interactive on this site.",
+        "motion": "Motion is an animation library for React that powers smooth movements and transitions — like the way these charts slide and fade into view as you scroll.",
+        "graphql": "GraphQL is a way for an application to request exactly the data it needs from a server — no more, no less — which makes apps faster and easier to evolve.",
+        "elysia": "Elysia.js is a lightweight framework for building the server side of web applications — REST APIs, the structured question-and-answer endpoints that let apps and services exchange data quickly.",
+        "typescript": "TypeScript on the server brings the same error-catching safety to backend code, so business logic and data handling are less likely to break in production.",
+        "postgres": "PostgreSQL is a battle-tested database system that stores an application's information — users, records, transactions — and retrieves it reliably, even at large scale.",
+        "clerk": "Clerk is a service that handles user sign-up, sign-in, and account security for web applications, so those sensitive features don't have to be built — and secured — from scratch.",
+        "render": "Render.com is a cloud platform that hosts web servers and databases, automatically deploying a new version of an application whenever the code is updated.",
+        "cloudflare": "Cloudflare is a service that sits between a website and its visitors, making the site faster around the world and protecting it from attacks and malicious traffic.",
+        "vercel": "Vercel is a cloud platform built for modern websites like this one; it publishes updates globally in seconds and keeps pages loading fast anywhere in the world.",
+        "awsS3Lambda": "Amazon's S3 stores files — images, videos, 3D models — cheaply and reliably, while Lambda runs small pieces of code on demand without a dedicated server. Together they handle storage and background work.",
+        "github": "GitHub is where the source code lives. It tracks every change to a project, backs it up, and lets multiple people (and automated checks) collaborate on the same codebase safely."
       }
     }
   },

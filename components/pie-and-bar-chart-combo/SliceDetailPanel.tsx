@@ -21,9 +21,19 @@ const COLOR_SWATCH_SIZE = 16
 type Props = {
   slice: DomainsChartDatum | null
   onClose: () => void
+  /**
+   * 'center' (default): dialog is centered in the viewport.
+   * 'side': on wide viewports (>=800px) the dialog docks to the inline-end
+   * whitespace (right in LTR, left in RTL); below 800px it stays centered.
+   */
+  desktopPlacement?: 'center' | 'side'
 }
 
-export default function SliceDetailPanel({ slice, onClose }: Props) {
+export default function SliceDetailPanel({
+  slice,
+  onClose,
+  desktopPlacement = 'center',
+}: Props) {
   const t = useTranslations('SliceDetailPanel')
   const locale = useLocale()
   const isRtl = isRtlLocale(locale)
@@ -64,7 +74,13 @@ export default function SliceDetailPanel({ slice, onClose }: Props) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="slice-detail-title"
-            className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6"
+            className={`pointer-events-none fixed inset-0 z-50 flex items-center px-4 sm:px-6 ${
+              // justify-end follows the document direction, so 'side' docks
+              // to the right in LTR and to the left in RTL automatically.
+              desktopPlacement === 'side'
+                ? 'justify-center min-[800px]:justify-end'
+                : 'justify-center'
+            }`}
             initial={{ opacity: 0, y: PANEL_ENTER_Y }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: PANEL_ENTER_Y }}
@@ -72,7 +88,13 @@ export default function SliceDetailPanel({ slice, onClose }: Props) {
           >
             <div
               dir={isRtl ? 'rtl' : 'ltr'}
-              className="pointer-events-auto mx-auto flex w-full max-w-lg flex-col overflow-hidden rounded-md border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
+              className={`pointer-events-auto flex w-full max-w-lg flex-col overflow-hidden rounded-md border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)] ${
+                // mx-auto would re-center the panel inside the flex row, so
+                // drop it on wide viewports when docking to the side.
+                desktopPlacement === 'side'
+                  ? 'mx-auto min-[800px]:mx-0'
+                  : 'mx-auto'
+              }`}
               style={{ maxHeight: MAX_HEIGHT }}
             >
               <div

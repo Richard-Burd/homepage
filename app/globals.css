@@ -21,7 +21,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-// special animation for NIVO pie chart
+/* special animation for NIVO pie chart */
 @theme {
   --animate-pie-fade-in: pie-fade-in 0.9s ease-out backwards;
 

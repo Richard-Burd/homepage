@@ -101,13 +101,18 @@ export default async function Home({ params }: Props) {
   }))
 
   // Tier 1 & 2 labels are translated; tier-3 tool names stay in Latin script
-  // and come straight from the data file.
+  // and come straight from the data file. Descriptions for all tiers are
+  // translated and appear in the detail panel when a bar is clicked.
   const fullStackWebDevGroups = fullStackWebDevStackData.groups.map(
     (group) => ({
       id: group.id,
-      label: tFullStackWebDev(`groups.${group.id}`),
+      label: tFullStackWebDev(`groups.${group.id}.label`),
+      description: tFullStackWebDev(`groups.${group.id}.description`),
       color: group.color,
-      items: group.items,
+      items: group.items.map((item) => ({
+        ...item,
+        description: tFullStackWebDev(`items.${item.id}`),
+      })),
     })
   )
 
@@ -196,6 +201,7 @@ export default async function Home({ params }: Props) {
             </div>
             <TechStackBar
               title={tFullStackWebDev('title')}
+              description={tFullStackWebDev('description')}
               color={fullStackWebDevStackData.color}
               groups={fullStackWebDevGroups}
             />
