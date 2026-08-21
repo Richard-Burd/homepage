@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   getLocaleFontFamily,
+  isRtlLocale,
   useIsDarkMode,
   usePrefersReducedMotion,
 } from '../pie-and-bar-chart-combo/shared'
@@ -131,6 +132,7 @@ function layoutGroups(groups: TechStackGroup[]): {
 
 export default function TechStackBar({ title, color, groups }: Props) {
   const locale = useLocale()
+  const isRtl = isRtlLocale(locale)
   const localeFontFamily = getLocaleFontFamily(locale)
   const latinFontFamily = 'var(--font-roboto)'
   const containerRef = useRef<HTMLDivElement>(null)
@@ -182,8 +184,14 @@ export default function TechStackBar({ title, color, groups }: Props) {
   const itemLabelFontSize = ITEM_LABEL_FONT_SIZE * fontScale
   const groupLabelFontSize = GROUP_LABEL_FONT_SIZE * fontScale
   const titleFontSize = TITLE_FONT_SIZE * fontScale
-  /** Bars start exactly one column + gap to the left, hidden behind their parent. */
-  const popOffsetX = columnWidth + SEGMENT_GAP
+  /**
+   * Bars start exactly one column + gap behind their parent, then pop out
+   * toward the open side (right in LTR, left in RTL).
+   */
+  const popOffsetX = isRtl
+    ? columnWidth + SEGMENT_GAP
+    : -(columnWidth + SEGMENT_GAP)
+  const tier1EnterOffsetX = isRtl ? TIER1_ENTER_OFFSET_X : -TIER1_ENTER_OFFSET_X
 
   // Each group only animates in once its own sentinel scrolls into view.
   useEffect(() => {
@@ -215,16 +223,29 @@ export default function TechStackBar({ title, color, groups }: Props) {
 
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'
   const chartWidth = width ?? 320
+  const sideMargin = MARGIN_LEFT
 
-  const tier1X = MARGIN_LEFT
-  const tier2X = tier1X + columnWidth + SEGMENT_GAP
-  const tier3X = tier2X + columnWidth + SEGMENT_GAP
-  const tickStartX = tier3X + columnWidth
-  const itemLabelX = tickStartX + LINK_LENGTH + 6
+  // Keep SVG x=0 on the left; mirror the columns to the inline-start edge for RTL.
+  const tier1X = isRtl
+    ? chartWidth - sideMargin - columnWidth
+    : sideMargin
+  const tier2X = isRtl
+    ? tier1X - SEGMENT_GAP - columnWidth
+    : tier1X + columnWidth + SEGMENT_GAP
+  const tier3X = isRtl
+    ? tier2X - SEGMENT_GAP - columnWidth
+    : tier2X + columnWidth + SEGMENT_GAP
+  const tickStartX = isRtl ? tier3X : tier3X + columnWidth
+  const tickEndX = isRtl
+    ? tickStartX - LINK_LENGTH
+    : tickStartX + LINK_LENGTH
+  const itemLabelX = isRtl ? tickEndX - 6 : tickEndX + 6
+  const labelAnchor = isRtl ? 'end' : 'start'
 
   const titleMidY = TITLE_SPACE / 2
   const titleElbowX = tier1X + columnWidth / 2
-  const titleTextX = titleElbowX + 14
+  const titleTextX = isRtl ? titleElbowX - 14 : titleElbowX + 14
+  const titleLeaderEndX = isRtl ? titleTextX + 4 : titleTextX - 4
 
   return (
     <div ref={containerRef} dir="ltr" className="w-full">
@@ -265,7 +286,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                * Paint order matters for the pop-out illusion: tier-3 bars are
                * painted first (bottom), then tier-2 bars, then the tier-1 bar
                * on top. A child bar starts exactly behind its parent column
-               * and emerges as it slides right.
+               * and emerges as it slides toward the open side.
                */}
               {groupLayouts.map((layout) => {
                 const revealed = revealedGroups.has(layout.group.id)
@@ -281,12 +302,12 @@ export default function TechStackBar({ title, color, groups }: Props) {
                           initial={
                             reduceMotion
                               ? false
-                              : { opacity: 0, x: -popOffsetX }
+                              : { opacity: 0, x: popOffsetX }
                           }
                           animate={
                             revealed
                               ? { opacity: 1, x: 0 }
-                              : { opacity: 0, x: -popOffsetX }
+                              : { opacity: 0, x: popOffsetX }
                           }
                           transition={{
                             delay: barDelay,
@@ -316,7 +337,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                             }}
                           >
                             <path
-                              d={`M ${tickStartX} ${item.midY} L ${tickStartX + LINK_LENGTH} ${item.midY}`}
+                              d={`M ${tickStartX} ${item.midY} L ${tickEndX} ${item.midY}`}
                               fill="none"
                               stroke={item.color}
                               strokeWidth={LEADER_ARM_THICKNESS}
@@ -324,7 +345,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                             <text
                               x={itemLabelX}
                               y={item.midY}
-                              textAnchor="start"
+                              textAnchor={labelAnchor}
                               dominantBaseline="central"
                               fill={labelTextColor}
                               fontFamily={latinFontFamily}
@@ -346,12 +367,12 @@ export default function TechStackBar({ title, color, groups }: Props) {
                   <motion.g
                     key={`group-bar-${layout.group.id}`}
                     initial={
-                      reduceMotion ? false : { opacity: 0, x: -popOffsetX }
+                      reduceMotion ? false : { opacity: 0, x: popOffsetX }
                     }
                     animate={
                       revealed
                         ? { opacity: 1, x: 0 }
-                        : { opacity: 0, x: -popOffsetX }
+                        : { opacity: 0, x: popOffsetX }
                     }
                     transition={{
                       delay: reduceMotion ? 0 : TIER2_DELAY_S,
@@ -376,12 +397,12 @@ export default function TechStackBar({ title, color, groups }: Props) {
                 initial={
                   reduceMotion
                     ? false
-                    : { opacity: 0, x: -TIER1_ENTER_OFFSET_X }
+                    : { opacity: 0, x: tier1EnterOffsetX }
                 }
                 animate={
                   isInView
                     ? { opacity: 1, x: 0 }
-                    : { opacity: 0, x: -TIER1_ENTER_OFFSET_X }
+                    : { opacity: 0, x: tier1EnterOffsetX }
                 }
                 transition={{
                   duration: reduceMotion ? 0 : TIER1_ENTER_DURATION_S,
@@ -398,7 +419,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                   fill={color}
                 />
                 <path
-                  d={`M ${titleElbowX} ${tier1Top} L ${titleElbowX} ${titleMidY} L ${titleTextX - 4} ${titleMidY}`}
+                  d={`M ${titleElbowX} ${tier1Top} L ${titleElbowX} ${titleMidY} L ${titleLeaderEndX} ${titleMidY}`}
                   fill="none"
                   stroke={color}
                   strokeWidth={LEADER_ARM_THICKNESS}
@@ -406,7 +427,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                 <text
                   x={titleTextX}
                   y={titleMidY}
-                  textAnchor="start"
+                  textAnchor={labelAnchor}
                   dominantBaseline="central"
                   fill={labelTextColor}
                   fontFamily={localeFontFamily}
@@ -420,7 +441,12 @@ export default function TechStackBar({ title, color, groups }: Props) {
               {groupLayouts.map((layout) => {
                 const revealed = revealedGroups.has(layout.group.id)
                 const headerElbowX = tier2X + columnWidth / 2
-                const headerTextX = headerElbowX + 14
+                const headerTextX = isRtl
+                  ? headerElbowX - 14
+                  : headerElbowX + 14
+                const headerLeaderEndX = isRtl
+                  ? headerTextX + 4
+                  : headerTextX - 4
                 return (
                   <motion.g
                     key={`group-header-${layout.group.id}`}
@@ -434,7 +460,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                     }}
                   >
                     <path
-                      d={`M ${headerElbowX} ${layout.barTop} L ${headerElbowX} ${layout.headerMidY} L ${headerTextX - 4} ${layout.headerMidY}`}
+                      d={`M ${headerElbowX} ${layout.barTop} L ${headerElbowX} ${layout.headerMidY} L ${headerLeaderEndX} ${layout.headerMidY}`}
                       fill="none"
                       stroke={layout.group.color}
                       strokeWidth={LEADER_ARM_THICKNESS}
@@ -442,7 +468,7 @@ export default function TechStackBar({ title, color, groups }: Props) {
                     <text
                       x={headerTextX}
                       y={layout.headerMidY}
-                      textAnchor="start"
+                      textAnchor={labelAnchor}
                       dominantBaseline="central"
                       fill={labelTextColor}
                       fontFamily={localeFontFamily}
