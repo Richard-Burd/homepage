@@ -148,6 +148,6 @@
     }
   },
   "Footer": {
-    "copyright": "<name>© 2026 Richard Burd.</name> All rights reserved."
+    "copyright": "<name>© {year} Richard Burd.</name> All rights reserved."
   }
 }

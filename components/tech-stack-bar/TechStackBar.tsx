@@ -712,7 +712,8 @@ export default function TechStackBar({
           setSelectedSlice(null)
           setHoveredKey(null)
         }}
-        desktopPlacement="side"
+        desktopPlacement="anchor"
+        anchorRef={containerRef}
       />
     </div>
   )

@@ -148,6 +148,6 @@
     }
   },
   "Footer": {
-    "copyright": "<name>© 2026 Richard Burd.</name> جميع الحقوق محفوظة."
+    "copyright": "<name>© {year} Richard Burd.</name> جميع الحقوق محفوظة."
   }
 }
