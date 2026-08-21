@@ -7,7 +7,7 @@ export default async function Footer() {
     <footer>
       <p
         dir="ltr"
-        className="mx-auto max-w-3xl px-4 py-8 text-center text-[1.4rem] text-zinc-700 dark:text-zinc-50"
+        className="mx-auto max-w-3xl px-4 py-8 text-center text-[0.98rem] text-zinc-700 min-[800px]:text-[1.4rem] dark:text-zinc-50"
       >
         {t.rich('copyright', {
           name: (chunks) => <span dir="ltr">{chunks}</span>,
