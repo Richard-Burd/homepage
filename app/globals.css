@@ -3,13 +3,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
+  --background: #e4e4e7; /* zinc-200 */
   --foreground: #171717;
   color-scheme: light;
 }
 
 .dark {
-  --background: #0a0a0a;
+  --background: #27272a; /* zinc-800 */
   --foreground: #ededed;
   color-scheme: dark;
 }

@@ -112,5 +112,8 @@
         "cloudServices": "الخدمات السحابية"
       }
     }
+  },
+  "Footer": {
+    "copyright": "<name>© 2026 Richard Burd.</name> جميع الحقوق محفوظة."
   }
 }
