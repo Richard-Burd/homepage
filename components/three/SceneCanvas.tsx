@@ -2,9 +2,19 @@
 
 import { Canvas } from '@react-three/fiber'
 import { DepthOfField, EffectComposer } from '@react-three/postprocessing'
-import { Suspense, type CSSProperties, type ReactNode } from 'react'
+import {
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 
 type ShadowType = 'basic' | 'percentage' | 'variance'
+
+/** Cap fill rate on high-DPI phones (e.g. ~3x) without softening desktop. */
+const CANVAS_DPR: [number, number] = [1, 2]
 
 type SceneCanvasProps = {
   children: ReactNode
@@ -64,12 +74,37 @@ export default function SceneCanvas({
   depthOfFieldBokehScale = 5,
   stencil = false,
 }: SceneCanvasProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  // Assume visible until the observer reports otherwise so the first paint
+  // still runs when the canvas is in the initial viewport.
+  const [isInView, setIsInView] = useState(true)
+
+  useEffect(() => {
+    const node = wrapperRef.current
+    if (!node) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting)
+      },
+      // Tiny threshold: pause as soon as the canvas fully leaves the viewport.
+      { threshold: 0 }
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className={className} style={style}>
+    <div ref={wrapperRef} className={className} style={style}>
       <Canvas
         camera={{ position: cameraPosition, fov: cameraFov }}
         shadows={shadows ? shadowType : false}
         gl={{ stencil }}
+        dpr={CANVAS_DPR}
+        // Stop the WebGL loop while scrolled offscreen so page scrolling
+        // (especially on high-refresh phones) isn't fighting a continuous
+        // shadow + portal render.
+        frameloop={isInView ? 'always' : 'never'}
         // Let page scroll pass through; orbit is handled by a DOM overlay instead.
         style={{ pointerEvents: 'none' }}
       >
