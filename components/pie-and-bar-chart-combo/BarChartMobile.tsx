@@ -17,7 +17,7 @@ import {
 } from './shared'
 import type { DomainsChartDatum } from './types'
 
-const TITLE_FONT_SIZE = 24
+const TITLE_FONT_SIZE = 28.8
 const HEIGHT = 420
 const MARGIN = { top: 12, right: 8, bottom: 12, left: 20 }
 const COLUMN_WIDTH = 40

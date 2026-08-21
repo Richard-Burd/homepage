@@ -101,6 +101,8 @@
     }
   },
   "TechStacks": {
+    "sectionTitle": "My Technology Stack",
+    "sectionSubtitle": "Tools I use to build the stuff I make",
     "fullStackWebDev": {
       "title": "Full Stack Web Development",
       "groups": {

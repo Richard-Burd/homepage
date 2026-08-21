@@ -101,6 +101,8 @@
     }
   },
   "TechStacks": {
+    "sectionTitle": "מחסנית הטכנולוגיה שלי",
+    "sectionSubtitle": "כלים שאני משתמש בהם כדי לבנות את מה שאני יוצר",
     "fullStackWebDev": {
       "title": "פיתוח ווב מקצה לקצה",
       "groups": {
