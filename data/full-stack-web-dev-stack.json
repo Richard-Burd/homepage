@@ -1,0 +1,144 @@
+{
+  "id": "fullStackWebDev",
+  "color": "#97e3d5",
+  "groups": [
+    {
+      "id": "uxUiDesign",
+      "color": "#61cdbb",
+      "items": [
+        {
+          "id": "figma",
+          "label": "Figma (Design layout)",
+          "value": 3,
+          "color": "#f47560"
+        },
+        {
+          "id": "calvary",
+          "label": "Calvary (2D Animation)",
+          "value": 5,
+          "color": "#f1e15b"
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "color": "#61cdbb",
+      "items": [
+        {
+          "id": "react",
+          "label": "React.js",
+          "value": 6,
+          "color": "#4fb0c6"
+        },
+        {
+          "id": "d3",
+          "label": "D3.js",
+          "value": 4,
+          "color": "#e8c1a0"
+        },
+        {
+          "id": "three",
+          "label": "Three.js",
+          "value": 4,
+          "color": "#a0e8a0"
+        },
+        {
+          "id": "tanstack",
+          "label": "Tanstack",
+          "value": 4,
+          "color": "#e8a838"
+        },
+        {
+          "id": "tailwind",
+          "label": "TailwindCSS",
+          "value": 4,
+          "color": "#a0c9e4"
+        },
+        {
+          "id": "typescriptJavascript",
+          "label": "TypeScript / JavaScript",
+          "value": 8,
+          "color": "#f1e15b"
+        },
+        {
+          "id": "motion",
+          "label": "Motion",
+          "value": 3,
+          "color": "#f47560"
+        },
+        {
+          "id": "graphql",
+          "label": "GraphQL",
+          "value": 3,
+          "color": "#a0c9e4"
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "color": "#61cdbb",
+      "items": [
+        {
+          "id": "elysia",
+          "label": "Elysia.js (REST API)",
+          "value": 12,
+          "color": "#f47560"
+        },
+        {
+          "id": "typescript",
+          "label": "TypeScript",
+          "value": 8,
+          "color": "#f1e15b"
+        },
+        {
+          "id": "postgres",
+          "label": "PostGress",
+          "value": 6,
+          "color": "#4fb0c6"
+        }
+      ]
+    },
+    {
+      "id": "cloudServices",
+      "color": "#61cdbb",
+      "items": [
+        {
+          "id": "clerk",
+          "label": "Clerk",
+          "value": 5,
+          "color": "#4fb0c6"
+        },
+        {
+          "id": "render",
+          "label": "Render.com",
+          "value": 4,
+          "color": "#e8c1a0"
+        },
+        {
+          "id": "cloudflare",
+          "label": "Cloudflare",
+          "value": 4,
+          "color": "#a0e8a0"
+        },
+        {
+          "id": "vercel",
+          "label": "Vercel",
+          "value": 5,
+          "color": "#e8a838"
+        },
+        {
+          "id": "awsS3Lambda",
+          "label": "AWS S3 & Lambda",
+          "value": 6,
+          "color": "#a0c9e4"
+        },
+        {
+          "id": "github",
+          "label": "GitHub",
+          "value": 6,
+          "color": "#f1e15b"
+        }
+      ]
+    }
+  ]
+}

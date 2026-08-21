@@ -99,5 +99,16 @@
         "Description": "חקירת שאלות מדיניות ותרגום הממצאים להמלצות מעשיות."
       }
     }
+  },
+  "TechStacks": {
+    "fullStackWebDev": {
+      "title": "פיתוח ווב מקצה לקצה",
+      "groups": {
+        "uxUiDesign": "עיצוב UX/UI",
+        "frontend": "פרונטאנד",
+        "backend": "באקאנד",
+        "cloudServices": "שירותי ענן"
+      }
+    }
   }
 }

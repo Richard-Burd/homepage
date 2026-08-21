@@ -99,5 +99,16 @@
         "Description": "Investigating policy questions and turning findings into practical recommendations."
       }
     }
+  },
+  "TechStacks": {
+    "fullStackWebDev": {
+      "title": "Full Stack Web Development",
+      "groups": {
+        "uxUiDesign": "UX/UI Design",
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "cloudServices": "Cloud Services"
+      }
+    }
   }
 }

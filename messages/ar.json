@@ -99,5 +99,16 @@
         "Description": "البحث في أسئلة السياسات وتحويل النتائج إلى توصيات عملية."
       }
     }
+  },
+  "TechStacks": {
+    "fullStackWebDev": {
+      "title": "تطوير الويب المتكامل",
+      "groups": {
+        "uxUiDesign": "تصميم UX/UI",
+        "frontend": "الواجهة الأمامية",
+        "backend": "الواجهة الخلفية",
+        "cloudServices": "الخدمات السحابية"
+      }
+    }
   }
 }

@@ -16,8 +16,10 @@ import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarChart
 import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
+import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
+import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -79,6 +81,7 @@ export default async function Home({ params }: Props) {
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')
   const tCapabilities = await getTranslations('CapabilitiesPie')
+  const tFullStackWebDev = await getTranslations('TechStacks.fullStackWebDev')
 
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
@@ -95,6 +98,17 @@ export default async function Home({ params }: Props) {
     value: slice.value,
     color: slice.color,
   }))
+
+  // Tier 1 & 2 labels are translated; tier-3 tool names stay in Latin script
+  // and come straight from the data file.
+  const fullStackWebDevGroups = fullStackWebDevStackData.groups.map(
+    (group) => ({
+      id: group.id,
+      label: tFullStackWebDev(`groups.${group.id}`),
+      color: group.color,
+      items: group.items,
+    })
+  )
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
@@ -153,6 +167,11 @@ export default async function Home({ params }: Props) {
             data={capabilitiesChart}
             pieOrder={capabilitiesChartData.pieOrder}
             title={tCapabilities('title')}
+          />
+          <TechStackBar
+            title={tFullStackWebDev('title')}
+            color={fullStackWebDevStackData.color}
+            groups={fullStackWebDevGroups}
           />
         </div>
 
