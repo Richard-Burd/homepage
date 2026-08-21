@@ -39,31 +39,31 @@
     "slices": {
       "Category1": {
         "title": "Product Engineering",
-        "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+        "Description": "I design and ship products end-to-end: requirements, architecture, the working system, and the handoff. For me that work is coordinating pieces that usually live in different rooms—software, hardware, and the people who will actually use the thing—so constraints show up early and nobody is surprised later. I field-test what we build and keep scope honest, so the product that lands is the one we meant to build."
       },
       "Category2": {
         "title": "Design Presentation",
-        "Description": "Turning complex ideas into clear visual narratives that stakeholders can follow."
+        "Description": "I make complex systems legible. When information is scattered across tools, disciplines, and people who do not share a vocabulary, I pull the relevant pieces onto a single picture so a general, a CEO, or a working engineer can follow it without drowning in noise. The point is not decoration; it is a shared view that lets everyone see what matters and ignore what does not."
       },
       "Category3": {
         "title": "Unmanned Aviation",
-        "Description": "Exploring drone systems, flight operations, and the technology behind uncrewed aircraft."
+        "Description": "I have spent years around uncrewed aircraft: airframes, flight characteristics, ground-control software, and what it takes to keep a small UAV flying in the real world. I design and test systems that have to launch, land, and survive abuse, and I care about the unglamorous parts—parameters, airfoils, field repairs—as much as the sortie itself. For me the interesting problem is making a cheap, maintainable aircraft do a useful job when conditions are ugly."
       },
       "Category4": {
         "title": "Military Affairs",
-        "Description": "Studying defense institutions, strategy, and how armed forces organize and operate."
+        "Description": "I came up as a U.S. Army officer, with time as a platoon leader, a contracting officer representative, and a liaison on brigade staff in Afghanistan. That work taught me how units actually run: equipment accountability, contractors, sustainment, and the gap between doctrine and what happens on the ground. I still follow how armed forces organize, fight, and make decisions, because institutions matter as much as hardware."
       },
       "Category5": {
         "title": "The Middle East",
-        "Description": "Following the region’s politics, culture, and history with attention to local context."
+        "Description": "I try to take the region on its own terms: language, local partners, and the difference between a map and a place. Arabic, Hebrew, and Aramaic are part of how I listen, and time in Afghanistan and Iraqi Kurdistan taught me to pay attention to the people who actually live there. I follow the politics, culture, and history because they are not abstractions; they shape daily life and the choices available on the ground."
       },
       "Category6": {
         "title": "Architecture & Urban Planning",
-        "Description": "Thinking about how cities and buildings shape the way people live and move."
+        "Description": "My career started in architecture: floor plans, construction documents, permits, and coordinating with electrical, mechanical, and plumbing engineers on multi-unit buildings. I still think in those terms—how a building gets approved, how codes hide in the details, and how a drawing set either helps a job site or leaves it guessing. I am also interested in how cities themselves change: how people live, move, and scatter as technology rearranges what a place is for."
       },
       "Category7": {
         "title": "Persuasion & Influence",
-        "Description": "Understanding how messages, framing, and rhetoric move people toward action."
+        "Description": "I pay attention to how people actually decide, not how the meeting agenda says they will. Rank, boredom, and the fear of looking wrong can bury the real disagreement, so I try to get concerns onto a table where they can be weighed without the social theater. Framing matters: the same facts can move a room or lose it, and I work at putting an argument in a form that someone with power can act on."
       }
     }
   },
@@ -97,6 +97,19 @@
       "Category7": {
         "title": "Policy Research",
         "Description": "Investigating policy questions and turning findings into practical recommendations."
+      }
+    }
+  },
+  "TechStacks": {
+    "sectionTitle": "My Technology Stack",
+    "sectionSubtitle": "Tools I use to build the stuff I make",
+    "fullStackWebDev": {
+      "title": "Full Stack Web Development",
+      "groups": {
+        "uxUiDesign": "UX/UI Design",
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "cloudServices": "Cloud Services"
       }
     }
   }

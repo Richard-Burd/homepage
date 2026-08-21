@@ -16,8 +16,10 @@ import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarChart
 import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
+import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
+import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -79,6 +81,8 @@ export default async function Home({ params }: Props) {
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')
   const tCapabilities = await getTranslations('CapabilitiesPie')
+  const tTechStacks = await getTranslations('TechStacks')
+  const tFullStackWebDev = await getTranslations('TechStacks.fullStackWebDev')
 
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
@@ -96,6 +100,17 @@ export default async function Home({ params }: Props) {
     color: slice.color,
   }))
 
+  // Tier 1 & 2 labels are translated; tier-3 tool names stay in Latin script
+  // and come straight from the data file.
+  const fullStackWebDevGroups = fullStackWebDevStackData.groups.map(
+    (group) => ({
+      id: group.id,
+      label: tFullStackWebDev(`groups.${group.id}`),
+      color: group.color,
+      items: group.items,
+    })
+  )
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
       <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black">
@@ -103,15 +118,23 @@ export default async function Home({ params }: Props) {
           <h1
             className={`leading-10 text-zinc-700 dark:text-zinc-50 ${
               locale === 'ar'
-                ? 'font-(family-name:--font-arabic) text-[1.7rem] font-bold tracking-wider'
+                ? 'font-(family-name:--font-arabic) text-[1.7rem] font-bold tracking-wider min-[800px]:text-[2.38rem] min-[800px]:leading-tight'
                 : locale === 'he'
-                  ? 'font-(family-name:--font-hebrew) text-[2rem] font-bold'
-                  : 'font-(family-name:--font-roboto) text-3xl font-bold tracking-wide'
+                  ? 'font-(family-name:--font-hebrew) text-[2rem] font-bold min-[800px]:text-[2.8rem] min-[800px]:leading-tight'
+                  : 'font-(family-name:--font-roboto) text-3xl font-bold tracking-wide min-[800px]:text-[2.625rem] min-[800px]:leading-tight'
             }`}
           >
             {t.rich('title', {
               phrase: (chunks) => (
-                <span className="inline-block whitespace-nowrap">{chunks}</span>
+                <span
+                  className={
+                    locale === 'ar'
+                      ? 'block whitespace-nowrap'
+                      : 'inline-block whitespace-nowrap'
+                  }
+                >
+                  {chunks}
+                </span>
               ),
             })}
           </h1>
@@ -154,6 +177,29 @@ export default async function Home({ params }: Props) {
             pieOrder={capabilitiesChartData.pieOrder}
             title={tCapabilities('title')}
           />
+          <div className="flex w-full flex-col gap-[41.6px]">
+            <div className="flex w-full flex-col items-center gap-[6.72px] text-center">
+              <h2
+                className={`font-bold tracking-wide text-zinc-700 dark:text-zinc-50 ${
+                  locale === 'ar'
+                    ? 'font-(family-name:--font-arabic) text-[28.8px] min-[800px]:text-[40px]'
+                    : locale === 'he'
+                      ? 'font-(family-name:--font-hebrew) text-[28.8px] min-[800px]:text-[40px]'
+                      : 'font-(family-name:--font-roboto) text-[28.8px] min-[800px]:text-[40px]'
+                }`}
+              >
+                {tTechStacks('sectionTitle')}
+              </h2>
+              <p className="text-[1.2rem] italic md:text-[1.4rem]">
+                {tTechStacks('sectionSubtitle')}
+              </p>
+            </div>
+            <TechStackBar
+              title={tFullStackWebDev('title')}
+              color={fullStackWebDevStackData.color}
+              groups={fullStackWebDevGroups}
+            />
+          </div>
         </div>
 
         <div className="mt-6">
