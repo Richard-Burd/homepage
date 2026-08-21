@@ -12,6 +12,7 @@ import {
   // so we need to flip the layout of the charts and labels
   isRtlLocale,
   layoutSegments,
+  useDelayedTouchSelect,
   useIsDarkMode,
   usePrefersReducedMotion,
 } from './shared'
@@ -29,6 +30,9 @@ const BAR_SEGMENT_CORNER = 3
 const GAP_BETWEEN_BAR_SEGMENTS = 3
 /** How far a hovered segment stretches toward the labels (mirrors pie activeOuterRadiusOffset). */
 const OFFSET_WHEN_SELECTED = 12
+/** Duration of hover grow / dim / label-shift on press or mouseover. */
+const HOVER_DURATION_S = 0.28
+const EASE = [0.22, 1, 0.36, 1] as const
 /** Bottom → top entrance: travel + stagger between segments. */
 const BAR_ENTER_OFFSET_Y = 40
 const BAR_ENTER_DURATION_S = 0.55
@@ -44,6 +48,8 @@ type Props = {
   data: DomainsChartDatum[]
   title: string
   onSelectSlice: (slice: DomainsChartDatum) => void
+  /** When the detail panel closes, clear any sticky touch highlight. */
+  panelOpen?: boolean
 }
 
 /** Biggest segment on top, smallest on bottom — mobile bar only. */
@@ -55,6 +61,7 @@ export default function BarChartMobile({
   data,
   title,
   onSelectSlice,
+  panelOpen = false,
 }: Props) {
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
@@ -65,6 +72,22 @@ export default function BarChartMobile({
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const isDark = useIsDarkMode()
   const reduceMotion = usePrefersReducedMotion()
+  const { isCoarsePointer, runSelect } = useDelayedTouchSelect(
+    HOVER_DURATION_S * 1000,
+    reduceMotion
+  )
+  const hoverTransition = {
+    duration: reduceMotion ? 0 : HOVER_DURATION_S,
+    ease: EASE,
+  }
+
+  // Touch devices keep the highlight after finger-up so the grow animation can
+  // finish; drop it when the detail panel closes (props → state sync).
+  const [prevPanelOpen, setPrevPanelOpen] = useState(panelOpen)
+  if (panelOpen !== prevPanelOpen) {
+    setPrevPanelOpen(panelOpen)
+    if (!panelOpen) setHoveredId(null)
+  }
 
   useEffect(() => {
     const node = containerRef.current
@@ -123,7 +146,11 @@ export default function BarChartMobile({
       <motion.h2
         className="text-center font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
         style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
-        initial={reduceMotion ? false : { opacity: 0, y: TITLE_ENTER_OFFSET_Y }}
+        initial={
+          reduceMotion
+            ? { opacity: 1, y: 0 }
+            : { opacity: 0, y: TITLE_ENTER_OFFSET_Y }
+        }
         animate={
           isInView
             ? { opacity: 1, y: 0 }
@@ -140,7 +167,11 @@ export default function BarChartMobile({
         dir="ltr"
         className="relative w-full overflow-visible"
         style={{ height: barHeight }}
-        onPointerLeave={() => setHoveredId(null)}
+        onPointerLeave={() => {
+          // Touch lifts fire pointerleave; keep the highlight until the
+          // delayed panel opens (or the next tap changes it).
+          if (!isCoarsePointer) setHoveredId(null)
+        }}
       >
         {showChart ? (
           <svg
@@ -156,7 +187,9 @@ export default function BarChartMobile({
               const hoverGrow = isHovered ? OFFSET_WHEN_SELECTED : 0
               const hoverShift = isRtl ? -hoverGrow : hoverGrow
               const activeWidth = columnWidth + hoverGrow
-              const barX = isRtl ? columnX - hoverGrow : columnX
+              const barX = isRtl
+                ? columnX - (isHovered ? OFFSET_WHEN_SELECTED : 0)
+                : columnX
               const linkStartX = isRtl ? columnX : columnX + columnWidth
               const linkElbowX = isRtl
                 ? linkStartX - linkGap
@@ -173,7 +206,9 @@ export default function BarChartMobile({
                 <motion.g
                   key={segment.id}
                   initial={
-                    reduceMotion ? false : { opacity: 0, y: BAR_ENTER_OFFSET_Y }
+                    reduceMotion
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: BAR_ENTER_OFFSET_Y }
                   }
                   animate={
                     isInView
@@ -183,25 +218,42 @@ export default function BarChartMobile({
                   transition={{
                     delay: enterDelay,
                     duration: reduceMotion ? 0 : BAR_ENTER_DURATION_S,
-                    ease: [0.22, 1, 0.36, 1],
+                    ease: EASE,
                   }}
-                  onPointerEnter={() => setHoveredId(segment.id)}
-                  onClick={() => onSelectSlice(segment)}
+                  onPointerEnter={() => {
+                    if (!isCoarsePointer) setHoveredId(segment.id)
+                  }}
+                  onClick={() =>
+                    runSelect(
+                      () => setHoveredId(segment.id),
+                      () => onSelectSlice(segment)
+                    )
+                  }
                   style={{ cursor: 'pointer' }}
                 >
-                  <g opacity={dimmed ? 0.55 : 1}>
-                    <rect
-                      x={barX}
+                  <motion.g
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: dimmed ? 0.55 : 1 }}
+                    transition={hoverTransition}
+                  >
+                    <motion.rect
                       y={segment.y}
-                      width={activeWidth}
                       height={Math.max(0, segment.height)}
                       rx={corner}
                       ry={corner}
                       fill={segment.color}
+                      initial={{
+                        x: isRtl ? columnX : columnX,
+                        width: columnWidth,
+                      }}
+                      animate={{
+                        x: barX,
+                        width: activeWidth,
+                      }}
+                      transition={hoverTransition}
                     />
                     {segment.height > fontSize * 1.4 ? (
-                      <text
-                        x={barX + activeWidth / 2}
+                      <motion.text
                         y={segment.midY}
                         textAnchor="middle"
                         dominantBaseline="central"
@@ -209,11 +261,18 @@ export default function BarChartMobile({
                         fontFamily={fontFamily}
                         fontSize={fontSize * 0.85}
                         style={{ pointerEvents: 'none' }}
+                        initial={{ x: columnX + columnWidth / 2 }}
+                        animate={{ x: barX + activeWidth / 2 }}
+                        transition={hoverTransition}
                       >
                         {`${segment.value}%`}
-                      </text>
+                      </motion.text>
                     ) : null}
-                    <g transform={`translate(${hoverShift} 0)`}>
+                    <motion.g
+                      initial={{ x: 0 }}
+                      animate={{ x: hoverShift }}
+                      transition={hoverTransition}
+                    >
                       <path
                         d={`M ${linkStartX} ${segment.midY} L ${linkElbowX} ${segment.midY} L ${linkEndX} ${segment.midY}`}
                         fill="none"
@@ -233,8 +292,8 @@ export default function BarChartMobile({
                       >
                         {segment.label}
                       </text>
-                    </g>
-                  </g>
+                    </motion.g>
+                  </motion.g>
                 </motion.g>
               )
             })}

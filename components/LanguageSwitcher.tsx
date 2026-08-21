@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import {
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   useTransition,
@@ -11,6 +12,9 @@ import {
 
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { routing, type Locale } from '@/i18n/routing'
+
+// Survives the locale-layout remount (html/body are in `[locale]/layout`).
+let pendingScrollY: number | null = null
 
 function fontForLocale(code: string) {
   if (code === 'ar') return 'var(--font-arabic)'
@@ -27,6 +31,18 @@ export default function LanguageSwitcher() {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const listId = useId()
+
+  useLayoutEffect(() => {
+    if (pendingScrollY == null) return
+
+    const y = pendingScrollY
+    window.scrollTo({ top: y, left: 0, behavior: 'instant' })
+
+    const frame = requestAnimationFrame(() => {
+      pendingScrollY = null
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [locale])
 
   useEffect(() => {
     if (!open) return
@@ -53,8 +69,9 @@ export default function LanguageSwitcher() {
     setOpen(false)
     if (nextLocale === locale) return
 
+    pendingScrollY = window.scrollY
     startTransition(() => {
-      router.replace(pathname, { locale: nextLocale })
+      router.replace(pathname, { locale: nextLocale, scroll: false })
     })
   }
 

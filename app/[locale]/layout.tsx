@@ -10,6 +10,7 @@ import {
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 
+import Footer from '@/components/Footer'
 import { InlineScript } from '@/components/InlineScript'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
@@ -117,6 +118,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           <ThemeProvider>
             <Navbar />
             {children}
+            <Footer />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

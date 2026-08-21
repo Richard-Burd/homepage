@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react'
 
 import type { DomainsChartDatum, SegmentLayout } from './types'
 
@@ -91,4 +91,62 @@ export function useIsDarkMode() {
     () => document.documentElement.classList.contains('dark'),
     () => false
   )
+}
+
+/**
+ * True when the primary input can't hover (phones/tablets). Used to delay
+ * opening a detail panel so the bar grow/fade preview can play first.
+ */
+function isCoarsePointer() {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(hover: none), (pointer: coarse)').matches
+}
+
+function subscribeCoarsePointer(onChange: () => void) {
+  const media = window.matchMedia('(hover: none), (pointer: coarse)')
+  media.addEventListener('change', onChange)
+  return () => media.removeEventListener('change', onChange)
+}
+
+export function useIsCoarsePointer() {
+  return useSyncExternalStore(
+    subscribeCoarsePointer,
+    isCoarsePointer,
+    () => false
+  )
+}
+
+/**
+ * On touch / no-hover devices, apply the hover highlight first, wait for the
+ * grow animation, then open the detail panel. On mouse, open immediately
+ * (hover already played via pointerenter).
+ */
+export function useDelayedTouchSelect(
+  hoverDurationMs: number,
+  reduceMotion: boolean
+) {
+  const isCoarse = useIsCoarsePointer()
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
+
+  const runSelect = useCallback(
+    (applyHover: () => void, open: () => void) => {
+      applyHover()
+      if (timerRef.current) clearTimeout(timerRef.current)
+      const delay = isCoarse && !reduceMotion ? hoverDurationMs : 0
+      if (delay === 0) {
+        open()
+        return
+      }
+      timerRef.current = setTimeout(open, delay)
+    },
+    [isCoarse, reduceMotion, hoverDurationMs]
+  )
+
+  return { isCoarsePointer: isCoarse, runSelect }
 }

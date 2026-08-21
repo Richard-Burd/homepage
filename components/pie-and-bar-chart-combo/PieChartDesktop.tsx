@@ -119,9 +119,7 @@ export default memo(function PieChartDesktop({
       <motion.h2
         className="text-center font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
         style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
-        initial={
-          reduceMotion ? false : { opacity: 0, x: TITLE_ENTER_OFFSET_X }
-        }
+        initial={reduceMotion ? false : { opacity: 0, x: TITLE_ENTER_OFFSET_X }}
         animate={
           isInView
             ? { opacity: 1, x: 0 }
@@ -134,9 +132,20 @@ export default memo(function PieChartDesktop({
       >
         {title}
       </motion.h2>
+      {/*
+        Nivo fades entering arcs/labels with the same spring that grows them
+        from zero width, so the fade is imperceptible (and the first slice
+        skips the enter phase entirely). A one-run CSS animation on each SVG
+        element overrides the spring-driven opacity attribute while it plays,
+        making every slice and label visibly fade in as it moves into place.
+      */}
       <div
         dir="ltr"
-        className="relative w-full overflow-visible [&>div]:overflow-visible [&_svg]:overflow-visible [&_text]:cursor-pointer"
+        className={`relative w-full overflow-visible [&_svg]:overflow-visible [&_text]:cursor-pointer [&>div]:overflow-visible ${
+          reduceMotion
+            ? ''
+            : '[&_path]:animate-pie-fade-in [&_text]:animate-pie-fade-in'
+        }`}
         style={{ height: pieHeight }}
         onClick={(event) => {
           const target = event.target
@@ -184,7 +193,10 @@ export default memo(function PieChartDesktop({
             arcLinkLabelsSkipAngle={10}
             arcLinkLabel={(datum) => String(datum.label)}
             arcLinkLabelsTextColor={labelTextColor}
-            arcLinkLabelsThickness={Math.max(1, LEADER_ARM_THICKNESS * pieScale)}
+            arcLinkLabelsThickness={Math.max(
+              1,
+              LEADER_ARM_THICKNESS * pieScale
+            )}
             arcLinkLabelsColor={{ from: 'color' }}
             arcLinkLabelsDiagonalLength={LEADER_ARM_DIAGONAL_SEGMENT * pieScale}
             arcLinkLabelsStraightLength={LEADER_ARM_STRAIGHT_SEGMENT * pieScale}
