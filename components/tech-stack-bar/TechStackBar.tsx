@@ -77,6 +77,8 @@ const HOVER_GROW_PX = 12
 const HOVER_DURATION_S = 0.28
 /** Opacity of non-hovered bars while one bar is hovered. */
 const DIMMED_OPACITY = 0.55
+const ELBOW_TEXT_OFFSET = 14
+const TICK_TEXT_GAP = 6
 
 const TIER1_ENTER_OFFSET_X = 80
 const TIER1_ENTER_DURATION_S = 0.7
@@ -94,6 +96,8 @@ const EASE = [0.22, 1, 0.36, 1] as const
 
 const ROOT_HOVER_KEY = 'root'
 
+type HoverTransition = { duration: number; ease: typeof EASE }
+
 type ItemLayout = TechStackItem & {
   y: number
   height: number
@@ -102,6 +106,7 @@ type ItemLayout = TechStackItem & {
 
 type GroupLayout = {
   group: TechStackGroup
+  groupValue: number
   headerTop: number
   headerMidY: number
   barTop: number
@@ -132,18 +137,197 @@ function layoutGroups(groups: TechStackGroup[]): {
     })
 
     const barHeight = y - barTop
+    const groupValue = items.reduce((sum, item) => sum + item.value, 0)
     cursor = y + GROUP_GAP
-    return { group, headerTop, headerMidY, barTop, barHeight, items }
+    return {
+      group,
+      groupValue,
+      headerTop,
+      headerMidY,
+      barTop,
+      barHeight,
+      items,
+    }
   })
 
   const contentBottom = cursor - GROUP_GAP
-  const tier1Height = contentBottom - tier1Top
+  /**
+   * Align the root bar with the first group's bars (and tier-3 items) instead
+   * of extending through the first header band. The title still lives in
+   * TITLE_SPACE above; its elbow just stems from this lower top.
+   */
+  const alignedTier1Top = groupLayouts[0]?.barTop ?? TITLE_SPACE
+  const tier1Height = Math.max(0, contentBottom - alignedTier1Top)
   return {
     groupLayouts,
-    tier1Top,
+    tier1Top: alignedTier1Top,
     tier1Height,
-    totalHeight: tier1Top + tier1Height + 4,
+    totalHeight: contentBottom + 4,
   }
+}
+
+function sliceOf(
+  id: string,
+  label: string,
+  description: string,
+  value: number,
+  color: string
+): DomainsChartDatum {
+  return { id, label, description, value, color }
+}
+
+function elbowGeometry(columnX: number, columnWidth: number, isRtl: boolean) {
+  const elbowX = columnX + columnWidth / 2
+  const textX = isRtl ? elbowX - ELBOW_TEXT_OFFSET : elbowX + ELBOW_TEXT_OFFSET
+  const leaderEndX = isRtl ? textX + 4 : textX - 4
+  return { elbowX, textX, leaderEndX }
+}
+
+function GrownBar({
+  y,
+  height,
+  fill,
+  baseX,
+  grown,
+  columnWidth,
+  isRtl,
+  hoverTransition,
+  opacity,
+}: {
+  y: number
+  height: number
+  fill: string
+  baseX: number
+  grown: boolean
+  columnWidth: number
+  isRtl: boolean
+  hoverTransition: HoverTransition
+  opacity?: number
+}) {
+  const x = grown && isRtl ? baseX - HOVER_GROW_PX : baseX
+  const width = columnWidth + (grown ? HOVER_GROW_PX : 0)
+  const initial = {
+    x: baseX,
+    width: columnWidth,
+    ...(opacity != null ? { opacity: 1 } : {}),
+  }
+  const animate = {
+    x,
+    width,
+    ...(opacity != null ? { opacity } : {}),
+  }
+  return (
+    <motion.rect
+      y={y}
+      height={Math.max(0, height)}
+      rx={BAR_CORNER}
+      ry={BAR_CORNER}
+      fill={fill}
+      initial={initial}
+      animate={animate}
+      transition={hoverTransition}
+    />
+  )
+}
+
+function TickLeaderLabel({
+  tickStartX,
+  tickEndX,
+  midY,
+  textX,
+  textAnchor,
+  color,
+  fill,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  label,
+}: {
+  tickStartX: number
+  tickEndX: number
+  midY: number
+  textX: number
+  textAnchor: 'start' | 'end'
+  color: string
+  fill: string
+  fontFamily: string
+  fontSize: number
+  fontWeight: number
+  label: string
+}) {
+  return (
+    <>
+      <path
+        d={`M ${tickStartX} ${midY} L ${tickEndX} ${midY}`}
+        fill="none"
+        stroke={color}
+        strokeWidth={LEADER_ARM_THICKNESS}
+      />
+      <text
+        x={textX}
+        y={midY}
+        textAnchor={textAnchor}
+        dominantBaseline="central"
+        fill={fill}
+        fontFamily={fontFamily}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+      >
+        {label}
+      </text>
+    </>
+  )
+}
+
+function ElbowLeaderLabel({
+  elbowX,
+  fromY,
+  midY,
+  leaderEndX,
+  textX,
+  textAnchor,
+  color,
+  fill,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  label,
+}: {
+  elbowX: number
+  fromY: number
+  midY: number
+  leaderEndX: number
+  textX: number
+  textAnchor: 'start' | 'end'
+  color: string
+  fill: string
+  fontFamily: string
+  fontSize: number
+  fontWeight: number
+  label: string
+}) {
+  return (
+    <>
+      <path
+        d={`M ${elbowX} ${fromY} L ${elbowX} ${midY} L ${leaderEndX} ${midY}`}
+        fill="none"
+        stroke={color}
+        strokeWidth={LEADER_ARM_THICKNESS}
+      />
+      <text
+        x={textX}
+        y={midY}
+        textAnchor={textAnchor}
+        dominantBaseline="central"
+        fill={fill}
+        fontFamily={fontFamily}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+      >
+        {label}
+      </text>
+    </>
+  )
 }
 
 export default function TechStackBar({
@@ -251,14 +435,13 @@ export default function TechStackBar({
   )
 
   const totalValue = useMemo(
-    () =>
-      groups.reduce(
-        (sum, group) =>
-          sum +
-          group.items.reduce((groupSum, item) => groupSum + item.value, 0),
-        0
-      ),
-    [groups]
+    () => groupLayouts.reduce((sum, layout) => sum + layout.groupValue, 0),
+    [groupLayouts]
+  )
+
+  const rootSlice = useMemo(
+    () => sliceOf(ROOT_HOVER_KEY, title, description, totalValue, color),
+    [title, description, totalValue, color]
   )
 
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'
@@ -277,15 +460,27 @@ export default function TechStackBar({
   const groupShift = (groupId: string) =>
     hoveredKey === groupHoverKey(groupId) ? HOVER_GROW_PX * growDir : 0
 
-  /** Hovered bars grow toward the labels; in RTL that means growing left. */
-  const grownBarX = (baseX: number, grown: boolean) =>
-    grown && isRtl ? baseX - HOVER_GROW_PX : baseX
-  const grownBarWidth = (grown: boolean) =>
-    columnWidth + (grown ? HOVER_GROW_PX : 0)
   const dimmed = (key: string) => Boolean(hoveredKey && hoveredKey !== key)
-  const hoverTransition = {
+  const hoverTransition: HoverTransition = {
     duration: reduceMotion ? 0 : HOVER_DURATION_S,
     ease: EASE,
+  }
+
+  function segmentPointer(hoverKey: string, slice: DomainsChartDatum) {
+    return {
+      onPointerEnter: () => {
+        if (!isCoarsePointer) setHoveredKey(hoverKey)
+      },
+      onPointerLeave: () => {
+        if (!isCoarsePointer) setHoveredKey(null)
+      },
+      onClick: () =>
+        runSelect(
+          () => setHoveredKey(hoverKey),
+          () => setSelectedSlice(slice)
+        ),
+      style: { cursor: 'pointer' as const },
+    }
   }
 
   // Keep SVG x=0 on the left; mirror the columns to the inline-start edge for RTL.
@@ -298,13 +493,23 @@ export default function TechStackBar({
     : tier2X + columnWidth + SEGMENT_GAP
   const tickStartX = isRtl ? tier3X : tier3X + columnWidth
   const tickEndX = isRtl ? tickStartX - LINK_LENGTH : tickStartX + LINK_LENGTH
-  const itemLabelX = isRtl ? tickEndX - 6 : tickEndX + 6
+  const itemLabelX = isRtl ? tickEndX - TICK_TEXT_GAP : tickEndX + TICK_TEXT_GAP
   const labelAnchor = isRtl ? 'end' : 'start'
 
   const titleMidY = TITLE_SPACE / 2
-  const titleElbowX = tier1X + columnWidth / 2
-  const titleTextX = isRtl ? titleElbowX - 14 : titleElbowX + 14
-  const titleLeaderEndX = isRtl ? titleTextX + 4 : titleTextX - 4
+  const titleElbow = elbowGeometry(tier1X, columnWidth, isRtl)
+
+  const popEnter = (revealed: boolean) =>
+    revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: popOffsetX }
+  const popInitial = reduceMotion
+    ? { opacity: 1, x: 0 }
+    : { opacity: 0, x: popOffsetX }
+
+  const barRect = {
+    columnWidth,
+    isRtl,
+    hoverTransition,
+  }
 
   return (
     <div className="w-full">
@@ -351,16 +556,17 @@ export default function TechStackBar({
                 style={{ overflow: 'hidden' }}
               >
                 {/*
-                 * Paint order matters for the pop-out illusion: tier-3 bars are
-                 * painted first (bottom), then tier-2 bars, then the tier-1 bar
-                 * on top. A child bar starts exactly behind its parent column
-                 * and emerges as it slides toward the open side.
+                 * Paint order: all bars back-to-front (tier 3, 2, 1), then all
+                 * labels. Data hierarchy is root → group → item; SVG order is
+                 * a layering concern so children can pop out from behind parents.
+                 * Each selectable segment applies the same pointer handlers to
+                 * both its bar and its label.
                  */}
                 {groupLayouts.map((layout) => {
                   const revealed = revealedGroups.has(layout.group.id)
                   return (
                     <motion.g
-                      key={`items-${layout.group.id}`}
+                      key={`item-bars-${layout.group.id}`}
                       initial={{ x: 0 }}
                       animate={{
                         x: tier1Shift + groupShift(layout.group.id),
@@ -368,54 +574,29 @@ export default function TechStackBar({
                       transition={hoverTransition}
                     >
                       {layout.items.map((item, index) => {
-                        const barDelay = reduceMotion
-                          ? 0
-                          : TIER3_DELAY_S + index * TIER3_STAGGER_S
                         const hoverKey = itemHoverKey(item.id)
-                        const isHovered = hoveredKey === hoverKey
-                        const labelShift = isHovered
-                          ? HOVER_GROW_PX * growDir
-                          : 0
+                        const slice = sliceOf(
+                          item.id,
+                          item.label,
+                          item.description,
+                          item.value,
+                          item.color
+                        )
                         return (
                           <motion.g
                             key={item.id}
-                            initial={
-                              reduceMotion
-                                ? { opacity: 1, x: 0 }
-                                : { opacity: 0, x: popOffsetX }
-                            }
-                            animate={
-                              revealed
-                                ? { opacity: 1, x: 0 }
-                                : { opacity: 0, x: popOffsetX }
-                            }
+                            initial={popInitial}
+                            animate={popEnter(revealed)}
                             transition={{
-                              delay: barDelay,
+                              delay: reduceMotion
+                                ? 0
+                                : TIER3_DELAY_S + index * TIER3_STAGGER_S,
                               duration: reduceMotion
                                 ? 0
                                 : TIER3_ENTER_DURATION_S,
                               ease: EASE,
                             }}
-                            onPointerEnter={() => {
-                              if (!isCoarsePointer) setHoveredKey(hoverKey)
-                            }}
-                            onPointerLeave={() => {
-                              if (!isCoarsePointer) setHoveredKey(null)
-                            }}
-                            onClick={() =>
-                              runSelect(
-                                () => setHoveredKey(hoverKey),
-                                () =>
-                                  setSelectedSlice({
-                                    id: item.id,
-                                    label: item.label,
-                                    description: item.description,
-                                    value: item.value,
-                                    color: item.color,
-                                  })
-                              )
-                            }
-                            style={{ cursor: 'pointer' }}
+                            {...segmentPointer(hoverKey, slice)}
                           >
                             <motion.g
                               initial={{ opacity: 1 }}
@@ -424,63 +605,14 @@ export default function TechStackBar({
                               }}
                               transition={hoverTransition}
                             >
-                              <motion.rect
+                              <GrownBar
                                 y={item.y}
-                                height={Math.max(0, item.height)}
-                                rx={BAR_CORNER}
-                                ry={BAR_CORNER}
+                                height={item.height}
                                 fill={item.color}
-                                initial={{
-                                  x: tier3X,
-                                  width: columnWidth,
-                                }}
-                                animate={{
-                                  x: grownBarX(tier3X, isHovered),
-                                  width: grownBarWidth(isHovered),
-                                }}
-                                transition={hoverTransition}
+                                baseX={tier3X}
+                                grown={hoveredKey === hoverKey}
+                                {...barRect}
                               />
-                              <motion.g
-                                initial={
-                                  reduceMotion ? { opacity: 1 } : { opacity: 0 }
-                                }
-                                animate={
-                                  revealed ? { opacity: 1 } : { opacity: 0 }
-                                }
-                                transition={{
-                                  delay: reduceMotion
-                                    ? 0
-                                    : barDelay + TIER3_ENTER_DURATION_S * 0.5,
-                                  duration: reduceMotion
-                                    ? 0
-                                    : LABEL_FADE_DURATION_S,
-                                }}
-                              >
-                                <motion.g
-                                  initial={{ x: 0 }}
-                                  animate={{ x: labelShift }}
-                                  transition={hoverTransition}
-                                >
-                                  <path
-                                    d={`M ${tickStartX} ${item.midY} L ${tickEndX} ${item.midY}`}
-                                    fill="none"
-                                    stroke={item.color}
-                                    strokeWidth={LEADER_ARM_THICKNESS}
-                                  />
-                                  <text
-                                    x={itemLabelX}
-                                    y={item.midY}
-                                    textAnchor={labelAnchor}
-                                    dominantBaseline="central"
-                                    fill={labelTextColor}
-                                    fontFamily={latinFontFamily}
-                                    fontSize={itemLabelFontSize}
-                                    fontWeight={isHovered ? 700 : 400}
-                                  >
-                                    {item.label}
-                                  </text>
-                                </motion.g>
-                              </motion.g>
                             </motion.g>
                           </motion.g>
                         )
@@ -492,10 +624,12 @@ export default function TechStackBar({
                 {groupLayouts.map((layout) => {
                   const revealed = revealedGroups.has(layout.group.id)
                   const hoverKey = groupHoverKey(layout.group.id)
-                  const isHovered = hoveredKey === hoverKey
-                  const groupValue = layout.items.reduce(
-                    (sum, item) => sum + item.value,
-                    0
+                  const slice = sliceOf(
+                    layout.group.id,
+                    layout.group.label,
+                    layout.group.description,
+                    layout.groupValue,
+                    layout.group.color
                   )
                   return (
                     <motion.g
@@ -505,59 +639,23 @@ export default function TechStackBar({
                       transition={hoverTransition}
                     >
                       <motion.g
-                        initial={
-                          reduceMotion
-                            ? { opacity: 1, x: 0 }
-                            : { opacity: 0, x: popOffsetX }
-                        }
-                        animate={
-                          revealed
-                            ? { opacity: 1, x: 0 }
-                            : { opacity: 0, x: popOffsetX }
-                        }
+                        initial={popInitial}
+                        animate={popEnter(revealed)}
                         transition={{
                           delay: reduceMotion ? 0 : TIER2_DELAY_S,
                           duration: reduceMotion ? 0 : TIER2_ENTER_DURATION_S,
                           ease: EASE,
                         }}
-                        onPointerEnter={() => {
-                          if (!isCoarsePointer) setHoveredKey(hoverKey)
-                        }}
-                        onPointerLeave={() => {
-                          if (!isCoarsePointer) setHoveredKey(null)
-                        }}
-                        onClick={() =>
-                          runSelect(
-                            () => setHoveredKey(hoverKey),
-                            () =>
-                              setSelectedSlice({
-                                id: layout.group.id,
-                                label: layout.group.label,
-                                description: layout.group.description,
-                                value: groupValue,
-                                color: layout.group.color,
-                              })
-                          )
-                        }
-                        style={{ cursor: 'pointer' }}
+                        {...segmentPointer(hoverKey, slice)}
                       >
-                        <motion.rect
+                        <GrownBar
                           y={layout.barTop}
-                          height={Math.max(0, layout.barHeight)}
-                          rx={BAR_CORNER}
-                          ry={BAR_CORNER}
+                          height={layout.barHeight}
                           fill={layout.group.color}
-                          initial={{
-                            x: tier2X,
-                            width: columnWidth,
-                            opacity: 1,
-                          }}
-                          animate={{
-                            x: grownBarX(tier2X, isHovered),
-                            width: grownBarWidth(isHovered),
-                            opacity: dimmed(hoverKey) ? DIMMED_OPACITY : 1,
-                          }}
-                          transition={hoverTransition}
+                          baseX={tier2X}
+                          grown={hoveredKey === hoverKey}
+                          opacity={dimmed(hoverKey) ? DIMMED_OPACITY : 1}
+                          {...barRect}
                         />
                       </motion.g>
                     </motion.g>
@@ -579,26 +677,7 @@ export default function TechStackBar({
                     duration: reduceMotion ? 0 : TIER1_ENTER_DURATION_S,
                     ease: EASE,
                   }}
-                  onPointerEnter={() => {
-                    if (!isCoarsePointer) setHoveredKey(ROOT_HOVER_KEY)
-                  }}
-                  onPointerLeave={() => {
-                    if (!isCoarsePointer) setHoveredKey(null)
-                  }}
-                  onClick={() =>
-                    runSelect(
-                      () => setHoveredKey(ROOT_HOVER_KEY),
-                      () =>
-                        setSelectedSlice({
-                          id: ROOT_HOVER_KEY,
-                          label: title,
-                          description,
-                          value: totalValue,
-                          color,
-                        })
-                    )
-                  }
-                  style={{ cursor: 'pointer' }}
+                  {...segmentPointer(ROOT_HOVER_KEY, rootSlice)}
                 >
                   <motion.g
                     initial={{ opacity: 1 }}
@@ -607,60 +686,124 @@ export default function TechStackBar({
                     }}
                     transition={hoverTransition}
                   >
-                    <motion.rect
+                    <GrownBar
                       y={tier1Top}
                       height={tier1Height}
-                      rx={BAR_CORNER}
-                      ry={BAR_CORNER}
                       fill={color}
-                      initial={{
-                        x: tier1X,
-                        width: columnWidth,
-                      }}
-                      animate={{
-                        x: grownBarX(tier1X, isRootHovered),
-                        width: grownBarWidth(isRootHovered),
-                      }}
-                      transition={hoverTransition}
+                      baseX={tier1X}
+                      grown={isRootHovered}
+                      {...barRect}
                     />
-                    <path
-                      d={`M ${titleElbowX} ${tier1Top} L ${titleElbowX} ${titleMidY} L ${titleLeaderEndX} ${titleMidY}`}
-                      fill="none"
-                      stroke={color}
-                      strokeWidth={LEADER_ARM_THICKNESS}
-                    />
-                    <text
-                      x={titleTextX}
-                      y={titleMidY}
-                      textAnchor={labelAnchor}
-                      dominantBaseline="central"
-                      fill={labelTextColor}
-                      fontFamily={localeFontFamily}
-                      fontSize={titleFontSize}
-                      fontWeight={700}
-                    >
-                      {title}
-                    </text>
                   </motion.g>
                 </motion.g>
 
                 {groupLayouts.map((layout) => {
                   const revealed = revealedGroups.has(layout.group.id)
-                  const hoverKey = groupHoverKey(layout.group.id)
-                  const groupValue = layout.items.reduce(
-                    (sum, item) => sum + item.value,
-                    0
-                  )
-                  const headerElbowX = tier2X + columnWidth / 2
-                  const headerTextX = isRtl
-                    ? headerElbowX - 14
-                    : headerElbowX + 14
-                  const headerLeaderEndX = isRtl
-                    ? headerTextX + 4
-                    : headerTextX - 4
                   return (
                     <motion.g
-                      key={`group-header-${layout.group.id}`}
+                      key={`item-labels-${layout.group.id}`}
+                      initial={{ x: 0 }}
+                      animate={{
+                        x: tier1Shift + groupShift(layout.group.id),
+                      }}
+                      transition={hoverTransition}
+                    >
+                      {layout.items.map((item, index) => {
+                        const barDelay = reduceMotion
+                          ? 0
+                          : TIER3_DELAY_S + index * TIER3_STAGGER_S
+                        const hoverKey = itemHoverKey(item.id)
+                        const isHovered = hoveredKey === hoverKey
+                        const slice = sliceOf(
+                          item.id,
+                          item.label,
+                          item.description,
+                          item.value,
+                          item.color
+                        )
+                        return (
+                          <motion.g
+                            key={item.id}
+                            initial={popInitial}
+                            animate={popEnter(revealed)}
+                            transition={{
+                              delay: barDelay,
+                              duration: reduceMotion
+                                ? 0
+                                : TIER3_ENTER_DURATION_S,
+                              ease: EASE,
+                            }}
+                            {...segmentPointer(hoverKey, slice)}
+                          >
+                            <motion.g
+                              initial={{ opacity: 1 }}
+                              animate={{
+                                opacity: dimmed(hoverKey) ? DIMMED_OPACITY : 1,
+                              }}
+                              transition={hoverTransition}
+                            >
+                              <motion.g
+                                initial={
+                                  reduceMotion
+                                    ? { opacity: 1 }
+                                    : { opacity: 0 }
+                                }
+                                animate={
+                                  revealed ? { opacity: 1 } : { opacity: 0 }
+                                }
+                                transition={{
+                                  delay: reduceMotion
+                                    ? 0
+                                    : barDelay + TIER3_ENTER_DURATION_S * 0.5,
+                                  duration: reduceMotion
+                                    ? 0
+                                    : LABEL_FADE_DURATION_S,
+                                }}
+                              >
+                                <motion.g
+                                  initial={{ x: 0 }}
+                                  animate={{
+                                    x: isHovered ? HOVER_GROW_PX * growDir : 0,
+                                  }}
+                                  transition={hoverTransition}
+                                >
+                                  <TickLeaderLabel
+                                    tickStartX={tickStartX}
+                                    tickEndX={tickEndX}
+                                    midY={item.midY}
+                                    textX={itemLabelX}
+                                    textAnchor={labelAnchor}
+                                    color={item.color}
+                                    fill={labelTextColor}
+                                    fontFamily={latinFontFamily}
+                                    fontSize={itemLabelFontSize}
+                                    fontWeight={isHovered ? 700 : 400}
+                                    label={item.label}
+                                  />
+                                </motion.g>
+                              </motion.g>
+                            </motion.g>
+                          </motion.g>
+                        )
+                      })}
+                    </motion.g>
+                  )
+                })}
+
+                {groupLayouts.map((layout) => {
+                  const revealed = revealedGroups.has(layout.group.id)
+                  const hoverKey = groupHoverKey(layout.group.id)
+                  const slice = sliceOf(
+                    layout.group.id,
+                    layout.group.label,
+                    layout.group.description,
+                    layout.groupValue,
+                    layout.group.color
+                  )
+                  const header = elbowGeometry(tier2X, columnWidth, isRtl)
+                  return (
+                    <motion.g
+                      key={`group-label-${layout.group.id}`}
                       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={revealed ? { opacity: 1 } : { opacity: 0 }}
                       transition={{
@@ -669,26 +812,7 @@ export default function TechStackBar({
                           : TIER2_DELAY_S + TIER2_ENTER_DURATION_S * 0.5,
                         duration: reduceMotion ? 0 : LABEL_FADE_DURATION_S,
                       }}
-                      onPointerEnter={() => {
-                        if (!isCoarsePointer) setHoveredKey(hoverKey)
-                      }}
-                      onPointerLeave={() => {
-                        if (!isCoarsePointer) setHoveredKey(null)
-                      }}
-                      onClick={() =>
-                        runSelect(
-                          () => setHoveredKey(hoverKey),
-                          () =>
-                            setSelectedSlice({
-                              id: layout.group.id,
-                              label: layout.group.label,
-                              description: layout.group.description,
-                              value: groupValue,
-                              color: layout.group.color,
-                            })
-                        )
-                      }
-                      style={{ cursor: 'pointer' }}
+                      {...segmentPointer(hoverKey, slice)}
                     >
                       <motion.g
                         initial={{ x: 0, opacity: 1 }}
@@ -698,28 +822,65 @@ export default function TechStackBar({
                         }}
                         transition={hoverTransition}
                       >
-                        <path
-                          d={`M ${headerElbowX} ${layout.barTop} L ${headerElbowX} ${layout.headerMidY} L ${headerLeaderEndX} ${layout.headerMidY}`}
-                          fill="none"
-                          stroke={layout.group.color}
-                          strokeWidth={LEADER_ARM_THICKNESS}
-                        />
-                        <text
-                          x={headerTextX}
-                          y={layout.headerMidY}
+                        <ElbowLeaderLabel
+                          elbowX={header.elbowX}
+                          fromY={layout.barTop}
+                          midY={layout.headerMidY}
+                          leaderEndX={header.leaderEndX}
+                          textX={header.textX}
                           textAnchor={labelAnchor}
-                          dominantBaseline="central"
+                          color={layout.group.color}
                           fill={labelTextColor}
                           fontFamily={localeFontFamily}
                           fontSize={groupLabelFontSize}
                           fontWeight={700}
-                        >
-                          {layout.group.label}
-                        </text>
+                          label={layout.group.label}
+                        />
                       </motion.g>
                     </motion.g>
                   )
                 })}
+
+                <motion.g
+                  initial={
+                    reduceMotion
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: tier1EnterOffsetX }
+                  }
+                  animate={
+                    isInView
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: tier1EnterOffsetX }
+                  }
+                  transition={{
+                    duration: reduceMotion ? 0 : TIER1_ENTER_DURATION_S,
+                    ease: EASE,
+                  }}
+                  {...segmentPointer(ROOT_HOVER_KEY, rootSlice)}
+                >
+                  <motion.g
+                    initial={{ opacity: 1 }}
+                    animate={{
+                      opacity: dimmed(ROOT_HOVER_KEY) ? DIMMED_OPACITY : 1,
+                    }}
+                    transition={hoverTransition}
+                  >
+                    <ElbowLeaderLabel
+                      elbowX={titleElbow.elbowX}
+                      fromY={tier1Top}
+                      midY={titleMidY}
+                      leaderEndX={titleElbow.leaderEndX}
+                      textX={titleElbow.textX}
+                      textAnchor={labelAnchor}
+                      color={color}
+                      fill={labelTextColor}
+                      fontFamily={localeFontFamily}
+                      fontSize={titleFontSize}
+                      fontWeight={700}
+                      label={title}
+                    />
+                  </motion.g>
+                </motion.g>
               </svg>
             </>
           ) : null}
