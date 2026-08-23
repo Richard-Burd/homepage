@@ -36,6 +36,7 @@
   },
   "DomainsPie": {
     "title": "Knowledge Domains",
+    "subtitle": "Click on a section below to learn more.",
     "slices": {
       "Category1": {
         "title": "Product Engineering",
@@ -69,6 +70,7 @@
   },
   "CapabilitiesPie": {
     "title": "Core Capabilities",
+    "subtitle": "Click on a section below to learn more.",
     "slices": {
       "Category1": {
         "title": "Full Stack Web Development",
@@ -102,7 +104,7 @@
   },
   "TechStacks": {
     "sectionTitle": "My Technology Stack",
-    "sectionSubtitle": "Tools I use to build the stuff I make",
+    "sectionSubtitle": "Click on a section below to learn more.",
     "fullStackWebDev": {
       "title": "Full Stack Web Development",
       "description": "Full stack web development means building every layer of a website or web application: the part users see and click, the server logic behind it, and the database where information lives. The tools below are the ones I use to take a product from idea to a live, working site.",

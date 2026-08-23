@@ -31,12 +31,14 @@ const SLICE_STAGGER_MS = 180
 type Props = {
   data: DomainsChartDatum[]
   title: string
+  subtitle: string
   onSelectSlice: (slice: DomainsChartDatum) => void
 }
 
 export default memo(function PieChartDesktop({
   data,
   title,
+  subtitle,
   onSelectSlice,
 }: Props) {
   const locale = useLocale()
@@ -115,10 +117,9 @@ export default memo(function PieChartDesktop({
   const showChart = width != null && width > 0 && visibleData.length > 0
 
   return (
-    <div ref={containerRef} className="flex w-full flex-col gap-4">
-      <motion.h2
-        className="text-center font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
-        style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
+    <div ref={containerRef} className="flex w-full flex-col gap-[22.4px]">
+      <motion.div
+        className="flex w-full flex-col items-center gap-[5.376px] text-center"
         initial={reduceMotion ? false : { opacity: 0, x: TITLE_ENTER_OFFSET_X }}
         animate={
           isInView
@@ -130,8 +131,14 @@ export default memo(function PieChartDesktop({
           ease: [0.22, 1, 0.36, 1],
         }}
       >
-        {title}
-      </motion.h2>
+        <h2
+          className="font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
+          style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
+        >
+          {title}
+        </h2>
+        <p className="text-[1.4rem] italic">{subtitle}</p>
+      </motion.div>
       {/*
         Nivo fades entering arcs/labels with the same spring that grows them
         from zero width, so the fade is imperceptible (and the first slice

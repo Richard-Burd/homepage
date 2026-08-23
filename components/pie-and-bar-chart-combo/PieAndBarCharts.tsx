@@ -16,9 +16,15 @@ type Props = {
   data: DomainsChartDatum[]
   pieOrder: string[]
   title: string
+  subtitle: string
 }
 
-export default function PieAndBarCharts({ data, pieOrder, title }: Props) {
+export default function PieAndBarCharts({
+  data,
+  pieOrder,
+  title,
+  subtitle,
+}: Props) {
   const [isNarrowViewport, setIsNarrowViewport] = useState(false)
   const [selectedSlice, setSelectedSlice] = useState<DomainsChartDatum | null>(
     null
@@ -57,6 +63,7 @@ export default function PieAndBarCharts({ data, pieOrder, title }: Props) {
         <BarChartMobile
           data={data}
           title={title}
+          subtitle={subtitle}
           onSelectSlice={handleSelect}
           panelOpen={selectedSlice != null}
         />
@@ -64,6 +71,7 @@ export default function PieAndBarCharts({ data, pieOrder, title }: Props) {
         <PieChartDesktop
           data={pieData}
           title={title}
+          subtitle={subtitle}
           onSelectSlice={handleSelect}
         />
       )}

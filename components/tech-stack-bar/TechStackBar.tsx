@@ -254,7 +254,8 @@ export default function TechStackBar({
     () =>
       groups.reduce(
         (sum, group) =>
-          sum + group.items.reduce((groupSum, item) => groupSum + item.value, 0),
+          sum +
+          group.items.reduce((groupSum, item) => groupSum + item.value, 0),
         0
       ),
     [groups]
@@ -419,9 +420,7 @@ export default function TechStackBar({
                             <motion.g
                               initial={{ opacity: 1 }}
                               animate={{
-                                opacity: dimmed(hoverKey)
-                                  ? DIMMED_OPACITY
-                                  : 1,
+                                opacity: dimmed(hoverKey) ? DIMMED_OPACITY : 1,
                               }}
                               transition={hoverTransition}
                             >
@@ -443,9 +442,7 @@ export default function TechStackBar({
                               />
                               <motion.g
                                 initial={
-                                  reduceMotion
-                                    ? { opacity: 1 }
-                                    : { opacity: 0 }
+                                  reduceMotion ? { opacity: 1 } : { opacity: 0 }
                                 }
                                 animate={
                                   revealed ? { opacity: 1 } : { opacity: 0 }
@@ -660,9 +657,7 @@ export default function TechStackBar({
                   return (
                     <motion.g
                       key={`group-header-${layout.group.id}`}
-                      initial={
-                        reduceMotion ? { opacity: 1 } : { opacity: 0 }
-                      }
+                      initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={revealed ? { opacity: 1 } : { opacity: 0 }}
                       transition={{
                         delay: reduceMotion

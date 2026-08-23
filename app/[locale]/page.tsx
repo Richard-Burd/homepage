@@ -176,14 +176,16 @@ export default async function Home({ params }: Props) {
             data={domainsChart}
             pieOrder={domainsChartData.pieOrder}
             title={tDomains('title')}
+            subtitle={tDomains('subtitle')}
           />
           <PieAndBarCharts
             data={capabilitiesChart}
             pieOrder={capabilitiesChartData.pieOrder}
             title={tCapabilities('title')}
+            subtitle={tCapabilities('subtitle')}
           />
-          <div className="flex w-full flex-col gap-[41.6px]">
-            <div className="flex w-full flex-col items-center gap-[6.72px] text-center">
+          <div className="flex w-full flex-col gap-[58.24px]">
+            <div className="flex w-full flex-col items-center gap-[5.376px] text-center">
               <h2
                 className={`font-bold tracking-wide text-zinc-700 dark:text-zinc-50 ${
                   locale === 'ar'
@@ -195,7 +197,7 @@ export default async function Home({ params }: Props) {
               >
                 {tTechStacks('sectionTitle')}
               </h2>
-              <p className="text-[1.2rem] italic md:text-[1.4rem]">
+              <p className="text-[0.9rem] italic md:text-[1.4rem]">
                 {tTechStacks('sectionSubtitle')}
               </p>
             </div>
