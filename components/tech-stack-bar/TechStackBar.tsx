@@ -647,6 +647,10 @@ export default function TechStackBar({
                 {groupLayouts.map((layout) => {
                   const revealed = revealedGroups.has(layout.group.id)
                   const hoverKey = groupHoverKey(layout.group.id)
+                  const groupValue = layout.items.reduce(
+                    (sum, item) => sum + item.value,
+                    0
+                  )
                   const headerElbowX = tier2X + columnWidth / 2
                   const headerTextX = isRtl
                     ? headerElbowX - 14
@@ -665,6 +669,26 @@ export default function TechStackBar({
                           : TIER2_DELAY_S + TIER2_ENTER_DURATION_S * 0.5,
                         duration: reduceMotion ? 0 : LABEL_FADE_DURATION_S,
                       }}
+                      onPointerEnter={() => {
+                        if (!isCoarsePointer) setHoveredKey(hoverKey)
+                      }}
+                      onPointerLeave={() => {
+                        if (!isCoarsePointer) setHoveredKey(null)
+                      }}
+                      onClick={() =>
+                        runSelect(
+                          () => setHoveredKey(hoverKey),
+                          () =>
+                            setSelectedSlice({
+                              id: layout.group.id,
+                              label: layout.group.label,
+                              description: layout.group.description,
+                              value: groupValue,
+                              color: layout.group.color,
+                            })
+                        )
+                      }
+                      style={{ cursor: 'pointer' }}
                     >
                       <motion.g
                         initial={{ x: 0, opacity: 1 }}
