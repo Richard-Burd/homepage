@@ -6,6 +6,22 @@ import { useLocale } from 'next-intl'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
+  computePieInkShift,
+  createLabelWidthMeasurer,
+  measureRenderedInkShift,
+  PIE_DESKTOP_BASE_HEIGHT,
+  PIE_DESKTOP_BASE_WIDTH,
+  PIE_DESKTOP_END_ANGLE_DEG,
+  PIE_DESKTOP_LABELS_FONT_SIZE,
+  PIE_DESKTOP_LINK_DIAGONAL,
+  PIE_DESKTOP_LINK_OFFSET,
+  PIE_DESKTOP_LINK_STRAIGHT,
+  PIE_DESKTOP_LINK_TEXT_OFFSET,
+  PIE_DESKTOP_MARGIN,
+  PIE_DESKTOP_SKIP_ANGLE_DEG,
+  PIE_DESKTOP_START_ANGLE_DEG,
+} from './pieInkLayout'
+import {
   getLocaleFontFamily,
   useIsDarkMode,
   usePrefersReducedMotion,
@@ -16,17 +32,13 @@ const TITLE_FONT_SIZE = 40
 /** How far left of its final spot the title starts before sliding in. */
 const TITLE_ENTER_OFFSET_X = -80
 const TITLE_ENTER_DURATION_S = 1.3
-/** Baseline chart size used for proportional scaling. */
-const BASE_WIDTH = 688 // 43rem
-const BASE_HEIGHT = 380 // ~23.75rem
-const DESIGN_MARGIN = { top: 40, right: 200, bottom: 40, left: 140 }
-const LABELS_FONT_SIZE = 19
-const LEADER_ARM_DIAGONAL_SEGMENT = 16
-const LEADER_ARM_STRAIGHT_SEGMENT = 20
 const LEADER_ARM_THICKNESS = 2
 const OFFSET_WHEN_SELECTED = 8
 const DEFAULT_INNER_RADIUS = 0.5
 const SLICE_STAGGER_MS = 180
+const INK_MEASURE_SETTLE_MS = 900
+const INK_MEASURE_SAMPLE_MS = 200
+const INK_MEASURE_MAX_SAMPLES = 5
 
 type Props = {
   data: DomainsChartDatum[]
@@ -44,9 +56,12 @@ export default memo(function PieChartDesktop({
   const locale = useLocale()
   const fontFamily = getLocaleFontFamily(locale)
   const containerRef = useRef<HTMLDivElement>(null)
+  const chartSurfaceRef = useRef<HTMLDivElement>(null)
+  const inkShiftRef = useRef(0)
   const isInView = useInView(containerRef, { once: true, amount: 0.4 })
   const [width, setWidth] = useState<number | null>(null)
   const [visibleCount, setVisibleCount] = useState(0)
+  const [measuredShift, setMeasuredShift] = useState<number | null>(null)
   const isDark = useIsDarkMode()
   const reduceMotion = usePrefersReducedMotion()
 
@@ -112,9 +127,119 @@ export default memo(function PieChartDesktop({
     [data, visibleCount]
   )
 
-  const pieScale = width == null ? 1 : Math.min(1, width / BASE_WIDTH)
-  const pieHeight = BASE_HEIGHT * pieScale
+  const pieScale =
+    width == null ? 1 : Math.min(1, width / PIE_DESKTOP_BASE_WIDTH)
+  const pieHeight = PIE_DESKTOP_BASE_HEIGHT * pieScale
+  const scaledMargin = useMemo(
+    () => ({
+      top: PIE_DESKTOP_MARGIN.top * pieScale,
+      right: PIE_DESKTOP_MARGIN.right * pieScale,
+      bottom: PIE_DESKTOP_MARGIN.bottom * pieScale,
+      left: PIE_DESKTOP_MARGIN.left * pieScale,
+    }),
+    [pieScale]
+  )
   const showChart = width != null && width > 0 && visibleData.length > 0
+
+  const plannedShift = useMemo(() => {
+    if (width == null || width <= 0) return 0
+    const measureText = createLabelWidthMeasurer(
+      Math.max(1, PIE_DESKTOP_LABELS_FONT_SIZE * pieScale),
+      fontFamily,
+      containerRef.current
+    )
+    return computePieInkShift(
+      data,
+      {
+        width,
+        height: pieHeight,
+        margin: scaledMargin,
+        startAngleDeg: PIE_DESKTOP_START_ANGLE_DEG,
+        endAngleDeg: PIE_DESKTOP_END_ANGLE_DEG,
+        skipAngleDeg: PIE_DESKTOP_SKIP_ANGLE_DEG,
+        linkOffset: PIE_DESKTOP_LINK_OFFSET * pieScale,
+        diagonalLength: PIE_DESKTOP_LINK_DIAGONAL * pieScale,
+        straightLength: PIE_DESKTOP_LINK_STRAIGHT * pieScale,
+        textOffset: PIE_DESKTOP_LINK_TEXT_OFFSET * pieScale,
+      },
+      measureText
+    )
+  }, [data, fontFamily, pieHeight, pieScale, scaledMargin, width])
+
+  useEffect(() => {
+    setMeasuredShift(null)
+  }, [width, data, fontFamily])
+
+  useEffect(() => {
+    if (!showChart || visibleCount !== data.length) return
+    const surface = chartSurfaceRef.current
+    if (!surface) return
+
+    const frame = surface
+    const outerLabels = data.map((slice) => slice.label)
+
+    let cancelled = false
+    let timeoutId = 0
+    let frameId = 0
+
+    function readInk() {
+      return measureRenderedInkShift(frame, inkShiftRef.current, outerLabels)
+    }
+
+    function commitShift(next: number) {
+      if (
+        cancelled ||
+        !Number.isFinite(next) ||
+        Math.abs(next - inkShiftRef.current) < 0.5
+      ) {
+        return
+      }
+      setMeasuredShift(next)
+    }
+
+    async function scheduleRead() {
+      if (document.fonts?.ready) {
+        await document.fonts.ready
+      }
+      if (cancelled) return
+      const settle = reduceMotion ? 0 : INK_MEASURE_SETTLE_MS
+      const sampleGap = reduceMotion ? 0 : INK_MEASURE_SAMPLE_MS
+
+      await new Promise<void>((resolve) => {
+        timeoutId = window.setTimeout(resolve, settle)
+      })
+      if (cancelled) return
+
+      let last = readInk()
+      commitShift(last)
+
+      for (let sample = 1; sample < INK_MEASURE_MAX_SAMPLES; sample += 1) {
+        await new Promise<void>((resolve) => {
+          timeoutId = window.setTimeout(resolve, sampleGap)
+        })
+        if (cancelled) return
+        const next = await new Promise<number>((resolve) => {
+          frameId = window.requestAnimationFrame(() => resolve(readInk()))
+        })
+        if (Math.abs(next - last) < 0.5) {
+          commitShift(next)
+          return
+        }
+        last = next
+        commitShift(last)
+      }
+    }
+
+    void scheduleRead()
+    return () => {
+      cancelled = true
+      window.clearTimeout(timeoutId)
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [data, fontFamily, reduceMotion, showChart, visibleCount, width])
+
+  const inkShift = measuredShift ?? plannedShift
+  inkShiftRef.current = inkShift
 
   return (
     <div ref={containerRef} className="flex w-full flex-col gap-[22.4px]">
@@ -137,7 +262,7 @@ export default memo(function PieChartDesktop({
         >
           {title}
         </h2>
-        <p className="text-[1.4rem] italic">{subtitle}</p>
+        <p className="text-[1.4rem] text-zinc-400 italic">{subtitle}</p>
       </motion.div>
       {/*
         Nivo fades entering arcs/labels with the same spring that grows them
@@ -147,6 +272,7 @@ export default memo(function PieChartDesktop({
         making every slice and label visibly fade in as it moves into place.
       */}
       <div
+        ref={chartSurfaceRef}
         dir="ltr"
         className={`relative w-full overflow-visible [&_svg]:overflow-visible [&_text]:cursor-pointer [&>div]:overflow-visible ${
           reduceMotion
@@ -164,58 +290,63 @@ export default memo(function PieChartDesktop({
           if (slice) onSelectSlice(slice)
         }}
       >
-        {showChart ? (
-          <ResponsivePie
-            data={visibleData}
-            margin={{
-              top: DESIGN_MARGIN.top * pieScale,
-              right: DESIGN_MARGIN.right * pieScale,
-              bottom: DESIGN_MARGIN.bottom * pieScale,
-              left: DESIGN_MARGIN.left * pieScale,
-            }}
-            innerRadius={DEFAULT_INNER_RADIUS}
-            startAngle={8}
-            endAngle={368}
-            padAngle={0.6}
-            cornerRadius={2}
-            activeOuterRadiusOffset={OFFSET_WHEN_SELECTED * pieScale}
-            colors={{ datum: 'data.color' }}
-            valueFormat={(value) => `${value}%`}
-            animate
-            motionConfig="gentle"
-            transitionMode="startAngle"
-            tooltip={() => null}
-            onClick={(datum) => {
-              onSelectSlice(datum.data)
-            }}
-            theme={{
-              labels: {
-                text: {
-                  fontSize: Math.max(1, LABELS_FONT_SIZE * pieScale),
-                  fontFamily,
-                  fill: labelTextColor,
+        <div
+          className="h-full w-full"
+          style={{ transform: `translateX(${inkShift}px)` }}
+        >
+          {showChart ? (
+            <ResponsivePie
+              data={visibleData}
+              margin={scaledMargin}
+              innerRadius={DEFAULT_INNER_RADIUS}
+              startAngle={PIE_DESKTOP_START_ANGLE_DEG}
+              endAngle={PIE_DESKTOP_END_ANGLE_DEG}
+              padAngle={0.6}
+              cornerRadius={2}
+              activeOuterRadiusOffset={OFFSET_WHEN_SELECTED * pieScale}
+              colors={{ datum: 'data.color' }}
+              valueFormat={(value) => `${value}%`}
+              animate
+              motionConfig="gentle"
+              transitionMode="startAngle"
+              tooltip={() => null}
+              onClick={(datum) => {
+                onSelectSlice(datum.data)
+              }}
+              theme={{
+                labels: {
+                  text: {
+                    fontSize: Math.max(
+                      1,
+                      PIE_DESKTOP_LABELS_FONT_SIZE * pieScale
+                    ),
+                    fontFamily,
+                    fill: labelTextColor,
+                  },
                 },
-              },
-            }}
-            arcLinkLabelsSkipAngle={10}
-            arcLinkLabel={(datum) => String(datum.label)}
-            arcLinkLabelsTextColor={labelTextColor}
-            arcLinkLabelsThickness={Math.max(
-              1,
-              LEADER_ARM_THICKNESS * pieScale
-            )}
-            arcLinkLabelsColor={{ from: 'color' }}
-            arcLinkLabelsDiagonalLength={LEADER_ARM_DIAGONAL_SEGMENT * pieScale}
-            arcLinkLabelsStraightLength={LEADER_ARM_STRAIGHT_SEGMENT * pieScale}
-            enableArcLabels
-            arcLabelsSkipAngle={10}
-            arcLabel={(datum) => `${datum.value}%`}
-            arcLabelsTextColor={{
-              from: 'color',
-              modifiers: [['darker', 2]],
-            }}
-          />
-        ) : null}
+              }}
+              arcLinkLabelsSkipAngle={PIE_DESKTOP_SKIP_ANGLE_DEG}
+              arcLinkLabel={(datum) => String(datum.label)}
+              arcLinkLabelsTextColor={labelTextColor}
+              arcLinkLabelsThickness={Math.max(
+                1,
+                LEADER_ARM_THICKNESS * pieScale
+              )}
+              arcLinkLabelsColor={{ from: 'color' }}
+              arcLinkLabelsOffset={PIE_DESKTOP_LINK_OFFSET * pieScale}
+              arcLinkLabelsTextOffset={PIE_DESKTOP_LINK_TEXT_OFFSET * pieScale}
+              arcLinkLabelsDiagonalLength={PIE_DESKTOP_LINK_DIAGONAL * pieScale}
+              arcLinkLabelsStraightLength={PIE_DESKTOP_LINK_STRAIGHT * pieScale}
+              enableArcLabels
+              arcLabelsSkipAngle={PIE_DESKTOP_SKIP_ANGLE_DEG}
+              arcLabel={(datum) => `${datum.value}%`}
+              arcLabelsTextColor={{
+                from: 'color',
+                modifiers: [['darker', 2]],
+              }}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   )

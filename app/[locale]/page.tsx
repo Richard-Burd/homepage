@@ -149,7 +149,10 @@ export default async function Home({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black">
+      <main
+        id="home"
+        className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black"
+      >
         <div className="flex w-full flex-col items-center gap-6 text-center">
           <h1
             className={`leading-10 text-zinc-700 dark:text-zinc-50 ${
@@ -182,7 +185,7 @@ export default async function Home({ params }: Props) {
 
         <div className="flex w-full flex-col items-center">
           <GazeboWithTwoOppositePortals />
-          <p className="mt-6 mb-40 text-[1.2rem] md:text-[1.4rem]">
+          <p className="mx-20 mt-6 mb-40 text-justify text-[1.2rem] md:text-[1.4rem]">
             {t.rich('intro', {
               existingHomepage: (chunks) => (
                 <a
@@ -203,19 +206,26 @@ export default async function Home({ params }: Props) {
         </div> */}
 
         <div className="flex w-full flex-col items-center gap-40 text-center sm:items-start sm:text-start">
-          <PieAndBarCharts
-            data={domainsChart}
-            pieOrder={domainsChartData.pieOrder}
-            title={tDomains('title')}
-            subtitle={tDomains('subtitle')}
-          />
-          <PieAndBarCharts
-            data={capabilitiesChart}
-            pieOrder={capabilitiesChartData.pieOrder}
-            title={tCapabilities('title')}
-            subtitle={tCapabilities('subtitle')}
-          />
-          <div className="flex w-full flex-col gap-[58.24px]">
+          <div id="knowledge-domains" className="w-full scroll-mt-24">
+            <PieAndBarCharts
+              data={domainsChart}
+              pieOrder={domainsChartData.pieOrder}
+              title={tDomains('title')}
+              subtitle={tDomains('subtitle')}
+            />
+          </div>
+          <div id="core-capabilities" className="w-full scroll-mt-24">
+            <PieAndBarCharts
+              data={capabilitiesChart}
+              pieOrder={capabilitiesChartData.pieOrder}
+              title={tCapabilities('title')}
+              subtitle={tCapabilities('subtitle')}
+            />
+          </div>
+          <div
+            id="technology-stack"
+            className="flex w-full scroll-mt-24 flex-col gap-[58.24px]"
+          >
             <div className="flex w-full flex-col items-center gap-[5.376px] text-center">
               <h2
                 className={`font-bold tracking-wide text-zinc-700 dark:text-zinc-50 ${
@@ -228,25 +238,25 @@ export default async function Home({ params }: Props) {
               >
                 {tTechStacks('sectionTitle')}
               </h2>
-              <p className="text-[0.9rem] italic md:text-[1.4rem]">
+              <p className="text-[0.9rem] text-zinc-400 italic md:text-[1.4rem]">
                 {tTechStacks('sectionSubtitle')}
               </p>
             </div>
             <TechStackBar
               title={tFullStackWebDev('title')}
-              description={tFullStackWebDev('description')}
+              subtitle={tFullStackWebDev('subtitle')}
               color={fullStackWebDevStackData.color}
               groups={fullStackWebDevGroups}
             />
             <TechStackBar
               title={tDigitalDesignCreativeTools('title')}
-              description={tDigitalDesignCreativeTools('description')}
+              subtitle={tDigitalDesignCreativeTools('subtitle')}
               color={digitalDesignCreativeToolsStackData.color}
               groups={digitalDesignCreativeToolsGroups}
             />
             <TechStackBar
               title={tAviationStuff('title')}
-              description={tAviationStuff('description')}
+              subtitle={tAviationStuff('subtitle')}
               color={aviationStuffStackData.color}
               groups={aviationStuffGroups}
             />
