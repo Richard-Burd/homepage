@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type MouseEvent } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
 function fontForLocale(code: string) {
@@ -11,6 +11,10 @@ function fontForLocale(code: string) {
 }
 
 const LINKEDIN_HREF = 'https://www.linkedin.com/in/richardburd/'
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
 
 export default function NavMenu() {
   const t = useTranslations('NavMenu')
@@ -45,6 +49,22 @@ export default function NavMenu() {
     }
   }, [open])
 
+  function goToHash(event: MouseEvent<HTMLAnchorElement>, hash: string) {
+    event.preventDefault()
+    setOpen(false)
+
+    const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
+
+    if (hash === '#home') {
+      window.scrollTo({ top: 0, behavior })
+    } else {
+      const id = hash.slice(1)
+      document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' })
+    }
+
+    history.pushState(null, '', hash)
+  }
+
   const itemClassName =
     'block w-full px-3 py-1.5 text-start text-sm whitespace-nowrap text-black outline-none hover:bg-zinc-100 dark:text-zinc-50 dark:hover:bg-zinc-800'
 
@@ -72,10 +92,21 @@ export default function NavMenu() {
           <li role="none">
             <a
               role="menuitem"
+              href="#home"
+              style={itemFont}
+              className={itemClassName}
+              onClick={(event) => goToHash(event, '#home')}
+            >
+              {t('home')}
+            </a>
+          </li>
+          <li role="none">
+            <a
+              role="menuitem"
               href="#knowledge-domains"
               style={itemFont}
               className={itemClassName}
-              onClick={() => setOpen(false)}
+              onClick={(event) => goToHash(event, '#knowledge-domains')}
             >
               {tDomains('title')}
             </a>
@@ -86,7 +117,7 @@ export default function NavMenu() {
               href="#core-capabilities"
               style={itemFont}
               className={itemClassName}
-              onClick={() => setOpen(false)}
+              onClick={(event) => goToHash(event, '#core-capabilities')}
             >
               {tCapabilities('title')}
             </a>
@@ -97,7 +128,7 @@ export default function NavMenu() {
               href="#technology-stack"
               style={itemFont}
               className={itemClassName}
-              onClick={() => setOpen(false)}
+              onClick={(event) => goToHash(event, '#technology-stack')}
             >
               {tTechStacks('sectionTitle')}
             </a>

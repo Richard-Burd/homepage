@@ -149,7 +149,10 @@ export default async function Home({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black">
+      <main
+        id="home"
+        className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black"
+      >
         <div className="flex w-full flex-col items-center gap-6 text-center">
           <h1
             className={`leading-10 text-zinc-700 dark:text-zinc-50 ${

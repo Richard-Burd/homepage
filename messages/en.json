@@ -21,7 +21,8 @@
     "reddit": "Reddit"
   },
   "NavMenu": {
-    "label": "Menu"
+    "label": "Menu",
+    "home": "Home"
   },
   "LocaleSwitcher": {
     "label": "Language",

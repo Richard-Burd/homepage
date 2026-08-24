@@ -21,7 +21,8 @@
     "reddit": "Reddit"
   },
   "NavMenu": {
-    "label": "תפריט"
+    "label": "תפריט",
+    "home": "דף הבית"
   },
   "LocaleSwitcher": {
     "label": "שפה",
