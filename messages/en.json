@@ -20,6 +20,9 @@
     "x": "X",
     "reddit": "Reddit"
   },
+  "NavMenu": {
+    "label": "Menu"
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "en": "English",
@@ -107,7 +110,7 @@
     "sectionSubtitle": "Click on a section below to learn more.",
     "fullStackWebDev": {
       "title": "Full Stack Web Development",
-      "description": "Full stack web development means building every layer of a website or web application: the part users see and click, the server logic behind it, and the database where information lives. The tools below are the ones I use to take a product from idea to a live, working site.",
+      "subtitle": "Full stack web development means building every layer of a website or web application: the part users see and click, the server logic behind it, and the database where information lives. The tools below are the ones I use to take a product from idea to a live, working site.",
       "groups": {
         "uxUiDesign": {
           "label": "UX/UI Design",
@@ -150,7 +153,7 @@
     },
     "digitalDesignCreativeTools": {
       "title": "Digital Design/Creative Tools",
-      "description": "Digital design and creative tools are the applications I use to make images, 3D models, animation, video, and music. The stack below covers modeling and animation, video and audio production, and two-dimensional layout work.",
+      "subtitle": "Digital design and creative tools are the applications I use to make images, 3D models, animation, video, and music. The stack below covers modeling and animation, video and audio production, and two-dimensional layout work.",
       "groups": {
         "threeDDesignAnimation": {
           "label": "3D Design & Animation",
@@ -180,7 +183,7 @@
     },
     "aviationStuff": {
       "title": "Aviation Stuff",
-      "description": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, and war-gaming and flight-sim testing.",
+      "subtitle": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, and war-gaming and flight-sim testing.",
       "groups": {
         "uavDesignTools": {
           "label": "UAV Design Tools",

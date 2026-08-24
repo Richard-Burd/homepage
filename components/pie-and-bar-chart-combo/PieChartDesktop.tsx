@@ -262,7 +262,7 @@ export default memo(function PieChartDesktop({
         >
           {title}
         </h2>
-        <p className="text-[1.4rem] italic">{subtitle}</p>
+        <p className="text-[1.4rem] text-zinc-400 italic">{subtitle}</p>
       </motion.div>
       {/*
         Nivo fades entering arcs/labels with the same spring that grows them

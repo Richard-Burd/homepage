@@ -38,7 +38,7 @@ export type TechStackGroup = {
 
 type Props = {
   title: string
-  description: string
+  subtitle: string
   color: string
   groups: TechStackGroup[]
 }
@@ -332,7 +332,7 @@ function ElbowLeaderLabel({
 
 export default function TechStackBar({
   title,
-  description,
+  subtitle,
   color,
   groups,
 }: Props) {
@@ -440,8 +440,8 @@ export default function TechStackBar({
   )
 
   const rootSlice = useMemo(
-    () => sliceOf(ROOT_HOVER_KEY, title, description, totalValue, color),
-    [title, description, totalValue, color]
+    () => sliceOf(ROOT_HOVER_KEY, title, subtitle, totalValue, color),
+    [title, subtitle, totalValue, color]
   )
 
   const labelTextColor = isDark ? '#e4e4e7' : '#333333'

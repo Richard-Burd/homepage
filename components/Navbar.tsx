@@ -4,6 +4,7 @@ import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useState } from 'react'
 
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import NavMenu from '@/components/NavMenu'
 import ThemeToggle from '@/components/ThemeToggle'
 
 export default function Navbar() {
@@ -29,10 +30,13 @@ export default function Navbar() {
     >
       <nav
         aria-label="Site"
-        className="mx-auto flex w-full max-w-3xl items-center justify-end gap-3 px-4 py-3"
+        className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-4 py-3"
       >
-        <LanguageSwitcher />
-        <ThemeToggle />
+        <NavMenu />
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <ThemeToggle />
+        </div>
       </nav>
     </motion.header>
   )
