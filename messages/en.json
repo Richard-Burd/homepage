@@ -177,6 +177,37 @@
         "inkscape": "Inkscape is a free vector-graphics editor for logos, icons, and illustrations that stay sharp at any size. Files can be exported for print, the web, and other design tools.",
         "gimp": "GIMP is a free image editor for photos and raster artwork — cropping, retouching, compositing, and preparing images for the web and print."
       }
+    },
+    "aviationStuff": {
+      "title": "Aviation Stuff",
+      "description": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, and war-gaming and flight-sim testing.",
+      "groups": {
+        "uavDesignTools": {
+          "label": "UAV Design Tools",
+          "description": "UAV design tools are used to shape airframes, airfoils, and 3D parts before anything is built or flown — from performance estimates to CAD models that can be manufactured."
+        },
+        "uavFlightOperations": {
+          "label": "UAV Flight Operations",
+          "description": "UAV flight operations is the software that runs on the aircraft and on the ground station: autopilots, mission planning, and the links that let a vehicle take off, follow a path, and come home."
+        },
+        "testingWarGaming": {
+          "label": "Testing & War Gaming",
+          "description": "Testing and war gaming are simulators used to fly aircraft and scenarios in software first — practicing procedures, evaluating designs, and rehearsing missions without risking a real airframe."
+        }
+      },
+      "items": {
+        "planeMaker": "PlaneMaker is the aircraft-design tool bundled with X-Plane. It is used to define an airframe's shape, mass, and flight surfaces so the plane can be flown in the simulator.",
+        "airfoilMaker": "Airfoil Maker is the companion tool for drawing wing and tail sections. Those airfoil shapes feed PlaneMaker and the simulator so lift and drag behave more like the real design.",
+        "xflr5": "XFLR-5 is analysis software for airfoils and small aircraft. It estimates lift, drag, and stability so a UAV layout can be checked before cutting foam or carbon.",
+        "foiltrans": "FoilTrans is a utility for converting and moving airfoil coordinate files between design tools, so a section drawn in one program can be used in another without redrawing it.",
+        "onshape": "Onshape is a browser-based CAD system for 3D mechanical parts — mounts, fuselage pieces, and fittings — that can be shared and sent to a 3D printer or machine shop.",
+        "ardupilot": "ArduPilot is open-source autopilot firmware that flies planes, copters, and other vehicles. It handles stabilization, navigation, and fail-safes on the aircraft itself.",
+        "missionPlanner": "Mission Planner is a ground-control application for ArduPilot. It is used to configure the vehicle, draw waypoints on a map, and monitor a flight from a laptop.",
+        "qGroundControl": "QGroundControl is a ground station that works with PX4 and ArduPilot. It provides maps, vehicle setup, and live telemetry so an operator can plan and watch a mission.",
+        "px4": "PX4 is another open-source autopilot stack used on many research and commercial drones. It runs the flight code on the vehicle and talks to ground stations over standard protocols.",
+        "digitalCombatSimulator": "Digital Combat Simulator is a highly detailed combat-flight simulator. It is useful for practicing procedures, sensors, and tactical scenarios in a realistic cockpit environment.",
+        "xPlane12": "X-Plane 12 is a flight simulator known for its aerodynamic model. Custom aircraft from PlaneMaker can be flown here to see how a design handles before it exists in the real world."
+      }
     }
   },
   "Footer": {

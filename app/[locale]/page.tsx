@@ -21,6 +21,7 @@ import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
+import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -87,6 +88,7 @@ export default async function Home({ params }: Props) {
   const tDigitalDesignCreativeTools = await getTranslations(
     'TechStacks.digitalDesignCreativeTools'
   )
+  const tAviationStuff = await getTranslations('TechStacks.aviationStuff')
 
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
@@ -133,6 +135,17 @@ export default async function Home({ params }: Props) {
         description: tDigitalDesignCreativeTools(`items.${item.id}`),
       })),
     }))
+
+  const aviationStuffGroups = aviationStuffStackData.groups.map((group) => ({
+    id: group.id,
+    label: tAviationStuff(`groups.${group.id}.label`),
+    description: tAviationStuff(`groups.${group.id}.description`),
+    color: group.color,
+    items: group.items.map((item) => ({
+      ...item,
+      description: tAviationStuff(`items.${item.id}`),
+    })),
+  }))
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
@@ -230,6 +243,12 @@ export default async function Home({ params }: Props) {
               description={tDigitalDesignCreativeTools('description')}
               color={digitalDesignCreativeToolsStackData.color}
               groups={digitalDesignCreativeToolsGroups}
+            />
+            <TechStackBar
+              title={tAviationStuff('title')}
+              description={tAviationStuff('description')}
+              color={aviationStuffStackData.color}
+              groups={aviationStuffGroups}
             />
           </div>
         </div>
