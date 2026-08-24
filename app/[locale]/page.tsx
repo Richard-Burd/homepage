@@ -20,6 +20,8 @@ import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
+import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
+import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -83,6 +85,10 @@ export default async function Home({ params }: Props) {
   const tCapabilities = await getTranslations('CapabilitiesPie')
   const tTechStacks = await getTranslations('TechStacks')
   const tFullStackWebDev = await getTranslations('TechStacks.fullStackWebDev')
+  const tDigitalDesignCreativeTools = await getTranslations(
+    'TechStacks.digitalDesignCreativeTools'
+  )
+  const tAviationStuff = await getTranslations('TechStacks.aviationStuff')
 
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
@@ -115,6 +121,31 @@ export default async function Home({ params }: Props) {
       })),
     })
   )
+
+  const digitalDesignCreativeToolsGroups =
+    digitalDesignCreativeToolsStackData.groups.map((group) => ({
+      id: group.id,
+      label: tDigitalDesignCreativeTools(`groups.${group.id}.label`),
+      description: tDigitalDesignCreativeTools(
+        `groups.${group.id}.description`
+      ),
+      color: group.color,
+      items: group.items.map((item) => ({
+        ...item,
+        description: tDigitalDesignCreativeTools(`items.${item.id}`),
+      })),
+    }))
+
+  const aviationStuffGroups = aviationStuffStackData.groups.map((group) => ({
+    id: group.id,
+    label: tAviationStuff(`groups.${group.id}.label`),
+    description: tAviationStuff(`groups.${group.id}.description`),
+    color: group.color,
+    items: group.items.map((item) => ({
+      ...item,
+      description: tAviationStuff(`items.${item.id}`),
+    })),
+  }))
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
@@ -176,14 +207,16 @@ export default async function Home({ params }: Props) {
             data={domainsChart}
             pieOrder={domainsChartData.pieOrder}
             title={tDomains('title')}
+            subtitle={tDomains('subtitle')}
           />
           <PieAndBarCharts
             data={capabilitiesChart}
             pieOrder={capabilitiesChartData.pieOrder}
             title={tCapabilities('title')}
+            subtitle={tCapabilities('subtitle')}
           />
-          <div className="flex w-full flex-col gap-[41.6px]">
-            <div className="flex w-full flex-col items-center gap-[6.72px] text-center">
+          <div className="flex w-full flex-col gap-[58.24px]">
+            <div className="flex w-full flex-col items-center gap-[5.376px] text-center">
               <h2
                 className={`font-bold tracking-wide text-zinc-700 dark:text-zinc-50 ${
                   locale === 'ar'
@@ -195,7 +228,7 @@ export default async function Home({ params }: Props) {
               >
                 {tTechStacks('sectionTitle')}
               </h2>
-              <p className="text-[1.2rem] italic md:text-[1.4rem]">
+              <p className="text-[0.9rem] italic md:text-[1.4rem]">
                 {tTechStacks('sectionSubtitle')}
               </p>
             </div>
@@ -204,6 +237,18 @@ export default async function Home({ params }: Props) {
               description={tFullStackWebDev('description')}
               color={fullStackWebDevStackData.color}
               groups={fullStackWebDevGroups}
+            />
+            <TechStackBar
+              title={tDigitalDesignCreativeTools('title')}
+              description={tDigitalDesignCreativeTools('description')}
+              color={digitalDesignCreativeToolsStackData.color}
+              groups={digitalDesignCreativeToolsGroups}
+            />
+            <TechStackBar
+              title={tAviationStuff('title')}
+              description={tAviationStuff('description')}
+              color={aviationStuffStackData.color}
+              groups={aviationStuffGroups}
             />
           </div>
         </div>

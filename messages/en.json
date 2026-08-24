@@ -36,6 +36,7 @@
   },
   "DomainsPie": {
     "title": "Knowledge Domains",
+    "subtitle": "Click on a section below to learn more.",
     "slices": {
       "Category1": {
         "title": "Product Engineering",
@@ -69,6 +70,7 @@
   },
   "CapabilitiesPie": {
     "title": "Core Capabilities",
+    "subtitle": "Click on a section below to learn more.",
     "slices": {
       "Category1": {
         "title": "Full Stack Web Development",
@@ -102,7 +104,7 @@
   },
   "TechStacks": {
     "sectionTitle": "My Technology Stack",
-    "sectionSubtitle": "Tools I use to build the stuff I make",
+    "sectionSubtitle": "Click on a section below to learn more.",
     "fullStackWebDev": {
       "title": "Full Stack Web Development",
       "description": "Full stack web development means building every layer of a website or web application: the part users see and click, the server logic behind it, and the database where information lives. The tools below are the ones I use to take a product from idea to a live, working site.",
@@ -144,6 +146,67 @@
         "vercel": "Vercel is a cloud platform built for modern websites like this one; it publishes updates globally in seconds and keeps pages loading fast anywhere in the world.",
         "awsS3Lambda": "Amazon's S3 stores files — images, videos, 3D models — cheaply and reliably, while Lambda runs small pieces of code on demand without a dedicated server. Together they handle storage and background work.",
         "github": "GitHub is where the source code lives. It tracks every change to a project, backs it up, and lets multiple people (and automated checks) collaborate on the same codebase safely."
+      }
+    },
+    "digitalDesignCreativeTools": {
+      "title": "Digital Design/Creative Tools",
+      "description": "Digital design and creative tools are the applications I use to make images, 3D models, animation, video, and music. The stack below covers modeling and animation, video and audio production, and two-dimensional layout work.",
+      "groups": {
+        "threeDDesignAnimation": {
+          "label": "3D Design & Animation",
+          "description": "3D design and animation is the work of building objects and scenes in three dimensions, then moving them through space over time — for product mockups, architectural views, and animated sequences."
+        },
+        "videoMusicProduction": {
+          "label": "Video & Music Production",
+          "description": "Video and music production covers editing footage, composing and producing audio, and creating 2D motion graphics so finished media can be shared on the web and elsewhere."
+        },
+        "twoDDesignLayout": {
+          "label": "2D Design Layout",
+          "description": "2D design layout is the craft of arranging type, photos, and graphics on a page or screen — posters, icons, illustrations, and print-ready files."
+        }
+      },
+      "items": {
+        "blender": "Blender is a free, professional 3D suite for modeling, sculpting, lighting, and animation. It is used to build scenes and moving images that can be rendered as stills, video, or assets for the web.",
+        "sketchup": "SketchUp is a 3D modeling tool known for a straightforward, sketch-like workflow. It is widely used for architecture, furniture, and spatial layouts that need to be easy to revise.",
+        "davinciResolve": "DaVinci Resolve is a professional video editor and color-grading tool used to cut footage, correct color, mix audio, and export finished films and clips.",
+        "lmms": "LMMS is a digital audio workstation for composing music with virtual instruments, samples, and a timeline — useful for original scores and soundtrack sketches without expensive studio software.",
+        "sunoAi": "Suno AI is a generative music tool that turns text prompts into finished songs. It is a fast way to explore styles and produce backing tracks for video and other projects.",
+        "calvary": "Cavalry is a professional 2D animation tool used to create moving graphics — animated logos, explainer visuals, and motion effects — that can be exported for use on the web and in video.",
+        "affinity": "Affinity is a suite of design apps for illustration, photo editing, and page layout. It is used to produce polished print and digital artwork without a subscription.",
+        "fontforge": "FontForge is an open-source font editor for drawing, spacing, and exporting typefaces. It is how custom lettering becomes a usable font file.",
+        "inkscape": "Inkscape is a free vector-graphics editor for logos, icons, and illustrations that stay sharp at any size. Files can be exported for print, the web, and other design tools.",
+        "gimp": "GIMP is a free image editor for photos and raster artwork — cropping, retouching, compositing, and preparing images for the web and print."
+      }
+    },
+    "aviationStuff": {
+      "title": "Aviation Stuff",
+      "description": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, and war-gaming and flight-sim testing.",
+      "groups": {
+        "uavDesignTools": {
+          "label": "UAV Design Tools",
+          "description": "UAV design tools are used to shape airframes, airfoils, and 3D parts before anything is built or flown — from performance estimates to CAD models that can be manufactured."
+        },
+        "uavFlightOperations": {
+          "label": "UAV Flight Operations",
+          "description": "UAV flight operations is the software that runs on the aircraft and on the ground station: autopilots, mission planning, and the links that let a vehicle take off, follow a path, and come home."
+        },
+        "testingWarGaming": {
+          "label": "Testing & War Gaming",
+          "description": "Testing and war gaming are simulators used to fly aircraft and scenarios in software first — practicing procedures, evaluating designs, and rehearsing missions without risking a real airframe."
+        }
+      },
+      "items": {
+        "planeMaker": "PlaneMaker is the aircraft-design tool bundled with X-Plane. It is used to define an airframe's shape, mass, and flight surfaces so the plane can be flown in the simulator.",
+        "airfoilMaker": "Airfoil Maker is the companion tool for drawing wing and tail sections. Those airfoil shapes feed PlaneMaker and the simulator so lift and drag behave more like the real design.",
+        "xflr5": "XFLR-5 is analysis software for airfoils and small aircraft. It estimates lift, drag, and stability so a UAV layout can be checked before cutting foam or carbon.",
+        "foiltrans": "FoilTrans is a utility for converting and moving airfoil coordinate files between design tools, so a section drawn in one program can be used in another without redrawing it.",
+        "onshape": "Onshape is a browser-based CAD system for 3D mechanical parts — mounts, fuselage pieces, and fittings — that can be shared and sent to a 3D printer or machine shop.",
+        "ardupilot": "ArduPilot is open-source autopilot firmware that flies planes, copters, and other vehicles. It handles stabilization, navigation, and fail-safes on the aircraft itself.",
+        "missionPlanner": "Mission Planner is a ground-control application for ArduPilot. It is used to configure the vehicle, draw waypoints on a map, and monitor a flight from a laptop.",
+        "qGroundControl": "QGroundControl is a ground station that works with PX4 and ArduPilot. It provides maps, vehicle setup, and live telemetry so an operator can plan and watch a mission.",
+        "px4": "PX4 is another open-source autopilot stack used on many research and commercial drones. It runs the flight code on the vehicle and talks to ground stations over standard protocols.",
+        "digitalCombatSimulator": "Digital Combat Simulator is a highly detailed combat-flight simulator. It is useful for practicing procedures, sensors, and tactical scenarios in a realistic cockpit environment.",
+        "xPlane12": "X-Plane 12 is a flight simulator known for its aerodynamic model. Custom aircraft from PlaneMaker can be flown here to see how a design handles before it exists in the real world."
       }
     }
   },

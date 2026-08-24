@@ -47,6 +47,7 @@ const STACKING_ORDER = true
 type Props = {
   data: DomainsChartDatum[]
   title: string
+  subtitle: string
   onSelectSlice: (slice: DomainsChartDatum) => void
   /** When the detail panel closes, clear any sticky touch highlight. */
   panelOpen?: boolean
@@ -60,6 +61,7 @@ function stackLargestOnTop(data: DomainsChartDatum[]): DomainsChartDatum[] {
 export default function BarChartMobile({
   data,
   title,
+  subtitle,
   onSelectSlice,
   panelOpen = false,
 }: Props) {
@@ -142,10 +144,9 @@ export default function BarChartMobile({
   const showChart = width != null && width > 0
 
   return (
-    <div ref={containerRef} className="flex w-full flex-col gap-4">
-      <motion.h2
-        className="text-center font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
-        style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
+    <div ref={containerRef} className="flex w-full flex-col gap-[22.4px]">
+      <motion.div
+        className="flex w-full flex-col items-center gap-[5.376px] text-center"
         initial={
           reduceMotion
             ? { opacity: 1, y: 0 }
@@ -161,8 +162,14 @@ export default function BarChartMobile({
           ease: [0.22, 1, 0.36, 1],
         }}
       >
-        {title}
-      </motion.h2>
+        <h2
+          className="font-bold tracking-wide text-zinc-700 dark:text-zinc-50"
+          style={{ fontFamily, fontSize: TITLE_FONT_SIZE }}
+        >
+          {title}
+        </h2>
+        <p className="text-[0.9rem] italic">{subtitle}</p>
+      </motion.div>
       <div
         dir="ltr"
         className="relative w-full overflow-visible"

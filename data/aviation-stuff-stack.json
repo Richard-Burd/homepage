@@ -1,0 +1,90 @@
+{
+  "id": "aviationStuff",
+  "color": "#C7C2B2",
+  "groups": [
+    {
+      "id": "uavDesignTools",
+      "color": "#A8D4C8",
+      "items": [
+        {
+          "id": "planeMaker",
+          "label": "PlaneMaker",
+          "value": 10,
+          "color": "#5CBF6A"
+        },
+        {
+          "id": "airfoilMaker",
+          "label": "Airfoilmaker",
+          "value": 8,
+          "color": "#7EC8E3"
+        },
+        {
+          "id": "xflr5",
+          "label": "XFLR-5",
+          "value": 9,
+          "color": "#3DB8A8"
+        },
+        {
+          "id": "foiltrans",
+          "label": "Foiltrans",
+          "value": 8,
+          "color": "#B5D94A"
+        },
+        {
+          "id": "onshape",
+          "label": "Onshape",
+          "value": 10,
+          "color": "#6495ED"
+        }
+      ]
+    },
+    {
+      "id": "uavFlightOperations",
+      "color": "#D4C4A8",
+      "items": [
+        {
+          "id": "ardupilot",
+          "label": "Ardupilot",
+          "value": 10,
+          "color": "#C5D94A"
+        },
+        {
+          "id": "missionPlanner",
+          "label": "Mission Planner",
+          "value": 9,
+          "color": "#E8A87C"
+        },
+        {
+          "id": "qGroundControl",
+          "label": "QGroundControl",
+          "value": 8,
+          "color": "#E4C04A"
+        },
+        {
+          "id": "px4",
+          "label": "PX4",
+          "value": 8,
+          "color": "#C45B3A"
+        }
+      ]
+    },
+    {
+      "id": "testingWarGaming",
+      "color": "#C5B8D9",
+      "items": [
+        {
+          "id": "digitalCombatSimulator",
+          "label": "Digital Combat Simulator",
+          "value": 12,
+          "color": "#5B8DEF"
+        },
+        {
+          "id": "xPlane12",
+          "label": "X-Plane 12",
+          "value": 8,
+          "color": "#8B6BB5"
+        }
+      ]
+    }
+  ]
+}

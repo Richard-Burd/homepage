@@ -1,0 +1,84 @@
+{
+  "id": "digitalDesignCreativeTools",
+  "color": "#C7C2B2",
+  "groups": [
+    {
+      "id": "threeDDesignAnimation",
+      "color": "#A8D4C4",
+      "items": [
+        {
+          "id": "blender",
+          "label": "Blender",
+          "value": 18,
+          "color": "#5CBF6A"
+        },
+        {
+          "id": "sketchup",
+          "label": "Sketchup",
+          "value": 10,
+          "color": "#3DB8A8"
+        }
+      ]
+    },
+    {
+      "id": "videoMusicProduction",
+      "color": "#C5B8D9",
+      "items": [
+        {
+          "id": "davinciResolve",
+          "label": "DaVinci Resolve (Video)",
+          "value": 16,
+          "color": "#5B8DEF"
+        },
+        {
+          "id": "lmms",
+          "label": "LMMS (🎵 Composition)",
+          "value": 10,
+          "color": "#8B6BB5"
+        },
+        {
+          "id": "sunoAi",
+          "label": "Suno AI (🎵 Production)",
+          "value": 8,
+          "color": "#5B4A9E"
+        },
+        {
+          "id": "calvary",
+          "label": "Calvary (2D Animation)",
+          "value": 8,
+          "color": "#C44B9A"
+        }
+      ]
+    },
+    {
+      "id": "twoDDesignLayout",
+      "color": "#C5DB6E",
+      "items": [
+        {
+          "id": "affinity",
+          "label": "Affinity",
+          "value": 14,
+          "color": "#7BC143"
+        },
+        {
+          "id": "fontforge",
+          "label": "Fontforge",
+          "value": 4,
+          "color": "#C5D94A"
+        },
+        {
+          "id": "inkscape",
+          "label": "Inkscape",
+          "value": 8,
+          "color": "#5AA84A"
+        },
+        {
+          "id": "gimp",
+          "label": "GIMP",
+          "value": 4,
+          "color": "#E4C04A"
+        }
+      ]
+    }
+  ]
+}
