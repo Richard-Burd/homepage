@@ -147,6 +147,36 @@
         "awsS3Lambda": "Amazon's S3 stores files — images, videos, 3D models — cheaply and reliably, while Lambda runs small pieces of code on demand without a dedicated server. Together they handle storage and background work.",
         "github": "GitHub is where the source code lives. It tracks every change to a project, backs it up, and lets multiple people (and automated checks) collaborate on the same codebase safely."
       }
+    },
+    "digitalDesignCreativeTools": {
+      "title": "Digital Design/Creative Tools",
+      "description": "Digital design and creative tools are the applications I use to make images, 3D models, animation, video, and music. The stack below covers modeling and animation, video and audio production, and two-dimensional layout work.",
+      "groups": {
+        "threeDDesignAnimation": {
+          "label": "3D Design & Animation",
+          "description": "3D design and animation is the work of building objects and scenes in three dimensions, then moving them through space over time — for product mockups, architectural views, and animated sequences."
+        },
+        "videoMusicProduction": {
+          "label": "Video & Music Production",
+          "description": "Video and music production covers editing footage, composing and producing audio, and creating 2D motion graphics so finished media can be shared on the web and elsewhere."
+        },
+        "twoDDesignLayout": {
+          "label": "2D Design Layout",
+          "description": "2D design layout is the craft of arranging type, photos, and graphics on a page or screen — posters, icons, illustrations, and print-ready files."
+        }
+      },
+      "items": {
+        "blender": "Blender is a free, professional 3D suite for modeling, sculpting, lighting, and animation. It is used to build scenes and moving images that can be rendered as stills, video, or assets for the web.",
+        "sketchup": "SketchUp is a 3D modeling tool known for a straightforward, sketch-like workflow. It is widely used for architecture, furniture, and spatial layouts that need to be easy to revise.",
+        "davinciResolve": "DaVinci Resolve is a professional video editor and color-grading tool used to cut footage, correct color, mix audio, and export finished films and clips.",
+        "lmms": "LMMS is a digital audio workstation for composing music with virtual instruments, samples, and a timeline — useful for original scores and soundtrack sketches without expensive studio software.",
+        "sunoAi": "Suno AI is a generative music tool that turns text prompts into finished songs. It is a fast way to explore styles and produce backing tracks for video and other projects.",
+        "calvary": "Cavalry is a professional 2D animation tool used to create moving graphics — animated logos, explainer visuals, and motion effects — that can be exported for use on the web and in video.",
+        "affinity": "Affinity is a suite of design apps for illustration, photo editing, and page layout. It is used to produce polished print and digital artwork without a subscription.",
+        "fontforge": "FontForge is an open-source font editor for drawing, spacing, and exporting typefaces. It is how custom lettering becomes a usable font file.",
+        "inkscape": "Inkscape is a free vector-graphics editor for logos, icons, and illustrations that stay sharp at any size. Files can be exported for print, the web, and other design tools.",
+        "gimp": "GIMP is a free image editor for photos and raster artwork — cropping, retouching, compositing, and preparing images for the web and print."
+      }
     }
   },
   "Footer": {

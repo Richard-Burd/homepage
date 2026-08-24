@@ -20,6 +20,7 @@ import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
+import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
@@ -83,6 +84,9 @@ export default async function Home({ params }: Props) {
   const tCapabilities = await getTranslations('CapabilitiesPie')
   const tTechStacks = await getTranslations('TechStacks')
   const tFullStackWebDev = await getTranslations('TechStacks.fullStackWebDev')
+  const tDigitalDesignCreativeTools = await getTranslations(
+    'TechStacks.digitalDesignCreativeTools'
+  )
 
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
@@ -115,6 +119,20 @@ export default async function Home({ params }: Props) {
       })),
     })
   )
+
+  const digitalDesignCreativeToolsGroups =
+    digitalDesignCreativeToolsStackData.groups.map((group) => ({
+      id: group.id,
+      label: tDigitalDesignCreativeTools(`groups.${group.id}.label`),
+      description: tDigitalDesignCreativeTools(
+        `groups.${group.id}.description`
+      ),
+      color: group.color,
+      items: group.items.map((item) => ({
+        ...item,
+        description: tDigitalDesignCreativeTools(`items.${item.id}`),
+      })),
+    }))
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
@@ -206,6 +224,12 @@ export default async function Home({ params }: Props) {
               description={tFullStackWebDev('description')}
               color={fullStackWebDevStackData.color}
               groups={fullStackWebDevGroups}
+            />
+            <TechStackBar
+              title={tDigitalDesignCreativeTools('title')}
+              description={tDigitalDesignCreativeTools('description')}
+              color={digitalDesignCreativeToolsStackData.color}
+              groups={digitalDesignCreativeToolsGroups}
             />
           </div>
         </div>
