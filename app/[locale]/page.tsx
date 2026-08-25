@@ -18,6 +18,7 @@ import ScrollToHash from '@/components/ScrollToHash'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
+import { Link } from '@/i18n/navigation'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
@@ -94,7 +95,16 @@ export default async function Home({ params }: Props) {
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
     label: tDomains(`slices.${slice.id}.title`),
-    description: tDomains(`slices.${slice.id}.Description`),
+    description: tDomains.rich(`slices.${slice.id}.Description`, {
+      kurdistan: (chunks) => (
+        <Link
+          href="/kurdistan"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
+    }),
     value: slice.value,
     color: slice.color,
   }))
