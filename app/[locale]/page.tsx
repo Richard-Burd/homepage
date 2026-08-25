@@ -14,6 +14,7 @@ import { SiSketchup } from 'react-icons/si'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
 import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
+import ScrollToHash from '@/components/ScrollToHash'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
@@ -149,6 +150,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
+      <ScrollToHash />
       <main
         id="home"
         className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-4 py-32 sm:items-start dark:bg-black"
@@ -272,17 +274,6 @@ export default async function Home({ params }: Props) {
             priority
           />
         </div>
-
-        {/* {locale === 'he' ? (
-          <div className="mt-6">
-            <Image
-              src={assetUrl('ketubah-test-image.jpg')}
-              alt={t('ketubahImageAlt')}
-              width={800}
-              height={1100}
-            />
-          </div>
-        ) : null} */}
 
         <nav
           aria-label={t('socialNav')}
