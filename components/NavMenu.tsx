@@ -4,6 +4,8 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState, type MouseEvent } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
+import { Link, usePathname } from '@/i18n/navigation'
+
 function fontForLocale(code: string) {
   if (code === 'ar') return 'var(--font-arabic)'
   if (code === 'he') return 'var(--font-hebrew)'
@@ -23,6 +25,7 @@ export default function NavMenu() {
   const tTechStacks = useTranslations('TechStacks')
   const tHome = useTranslations('HomePage')
   const locale = useLocale()
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const listId = useId()
@@ -49,20 +52,24 @@ export default function NavMenu() {
     }
   }, [open])
 
-  function goToHash(event: MouseEvent<HTMLAnchorElement>, hash: string) {
-    event.preventDefault()
+  function goToHomeHash(event: MouseEvent<HTMLAnchorElement>, hash: string) {
     setOpen(false)
+
+    if (pathname !== '/') {
+      return
+    }
+
+    event.preventDefault()
 
     const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
 
-    if (hash === '#home') {
+    if (hash === 'home') {
       window.scrollTo({ top: 0, behavior })
     } else {
-      const id = hash.slice(1)
-      document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' })
+      document.getElementById(hash)?.scrollIntoView({ behavior, block: 'start' })
     }
 
-    history.pushState(null, '', hash)
+    history.pushState(null, '', `#${hash}`)
   }
 
   const itemClassName =
@@ -90,48 +97,48 @@ export default function NavMenu() {
           className="absolute top-full inset-s-0 z-50 mt-1 min-w-full overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
         >
           <li role="none">
-            <a
+            <Link
               role="menuitem"
-              href="#home"
+              href={{ pathname: '/', hash: 'home' }}
               style={itemFont}
               className={itemClassName}
-              onClick={(event) => goToHash(event, '#home')}
+              onClick={(event) => goToHomeHash(event, 'home')}
             >
               {t('home')}
-            </a>
+            </Link>
           </li>
           <li role="none">
-            <a
+            <Link
               role="menuitem"
-              href="#knowledge-domains"
+              href={{ pathname: '/', hash: 'knowledge-domains' }}
               style={itemFont}
               className={itemClassName}
-              onClick={(event) => goToHash(event, '#knowledge-domains')}
+              onClick={(event) => goToHomeHash(event, 'knowledge-domains')}
             >
               {tDomains('title')}
-            </a>
+            </Link>
           </li>
           <li role="none">
-            <a
+            <Link
               role="menuitem"
-              href="#core-capabilities"
+              href={{ pathname: '/', hash: 'core-capabilities' }}
               style={itemFont}
               className={itemClassName}
-              onClick={(event) => goToHash(event, '#core-capabilities')}
+              onClick={(event) => goToHomeHash(event, 'core-capabilities')}
             >
               {tCapabilities('title')}
-            </a>
+            </Link>
           </li>
           <li role="none">
-            <a
+            <Link
               role="menuitem"
-              href="#technology-stack"
+              href={{ pathname: '/', hash: 'technology-stack' }}
               style={itemFont}
               className={itemClassName}
-              onClick={(event) => goToHash(event, '#technology-stack')}
+              onClick={(event) => goToHomeHash(event, 'technology-stack')}
             >
               {tTechStacks('sectionTitle')}
-            </a>
+            </Link>
           </li>
           <li role="none">
             <a
