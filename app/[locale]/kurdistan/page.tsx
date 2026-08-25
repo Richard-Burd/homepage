@@ -103,7 +103,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-0.jpg')}
-          alt={t('daesh on a stolen APC')}
+          alt={t('imageAlt0')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -155,7 +155,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-1.jpg')}
-          alt={t('bilingual description of capabilities')}
+          alt={t('imageAlt1')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -165,7 +165,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-2.jpg')}
-          alt={t('fabrication guide')}
+          alt={t('imageAlt2')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -180,7 +180,7 @@ export default async function KurdistanPage({ params }: Props) {
         >
           <Image
             src={assetUrl('kurdistan-fig-3.jpg')}
-            alt={t('fuselage with innards on a test bench')}
+            alt={t('imageAlt3')}
             width={1200}
             height={800}
             className="my-6 h-auto w-full"
@@ -199,7 +199,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-4.jpg')}
-          alt={t('airflow over splats top view')}
+          alt={t('imageAlt4')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -216,7 +216,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-5.jpg')}
-          alt={t('airflow over splats side view')}
+          alt={t('imageAlt5')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -235,7 +235,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-6.jpg')}
-          alt={t('airflow at cruising attitude side elevation view')}
+          alt={t('imageAlt6')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -245,7 +245,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-7.jpg')}
-          alt={t('camera gimbal')}
+          alt={t('imageAlt7')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -255,7 +255,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-8.jpg')}
-          alt={t('electronics schematic')}
+          alt={t('imageAlt8')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -263,7 +263,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-9.jpg')}
-          alt={t('three amigos with drone')}
+          alt={t('imageAlt9')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -273,7 +273,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-10.jpg')}
-          alt={t('bungee launch')}
+          alt={t('imageAlt10')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -283,7 +283,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-11.jpg')}
-          alt={t('view from above')}
+          alt={t('imageAlt11')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -293,7 +293,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-12.jpg')}
-          alt={t('on the berm with ground control station')}
+          alt={t('imageAlt12')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -303,7 +303,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-13.jpg')}
-          alt={t('120mm mortar firing')}
+          alt={t('imageAlt13')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -319,7 +319,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-14.jpg')}
-          alt={t('first aid training')}
+          alt={t('imageAlt14')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -329,7 +329,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-15.jpg')}
-          alt={t('first aid graduation')}
+          alt={t('imageAlt15')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
@@ -339,7 +339,7 @@ export default async function KurdistanPage({ params }: Props) {
 
         <Image
           src={assetUrl('kurdistan-fig-16.jpg')}
-          alt={t('Hi mom im on tv')}
+          alt={t('imageAlt16')}
           width={1200}
           height={800}
           className="my-6 h-auto w-full"
