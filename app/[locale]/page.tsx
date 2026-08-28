@@ -112,7 +112,16 @@ export default async function Home({ params }: Props) {
   const capabilitiesChart = capabilitiesChartData.slices.map((slice) => ({
     id: slice.id,
     label: tCapabilities(`slices.${slice.id}.title`),
-    description: tCapabilities(`slices.${slice.id}.Description`),
+    description: tCapabilities.rich(`slices.${slice.id}.Description`, {
+      animations: (chunks) => (
+        <Link
+          href="/animations"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
+    }),
     value: slice.value,
     color: slice.color,
   }))

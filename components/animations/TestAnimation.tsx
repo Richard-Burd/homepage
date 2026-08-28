@@ -16,6 +16,7 @@ export default function TestAnimation() {
   const reduceMotion = usePrefersReducedMotion()
   const [animationData, setAnimationData] = useState<object | null>(null)
   const [loadError, setLoadError] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -45,6 +46,12 @@ export default function TestAnimation() {
     api.setDirection(direction)
     if (api.animationItem) api.animationItem.loop = true
     api.play()
+    setIsPlaying(true)
+  }
+
+  const pauseAnimation = () => {
+    lottieRef.current?.pause()
+    setIsPlaying(false)
   }
 
   const handleMouseEnter = () => {
@@ -56,7 +63,7 @@ export default function TestAnimation() {
 
   const handleMouseLeave = () => {
     isHoveringRef.current = false
-    lottieRef.current?.pause()
+    pauseAnimation()
   }
 
   const handleClick = () => {
@@ -64,6 +71,17 @@ export default function TestAnimation() {
 
     const nextDirection = directionRef.current === 1 ? -1 : 1
     playLooping(nextDirection)
+  }
+
+  const handleTogglePlayback = () => {
+    if (reduceMotion) return
+
+    if (isPlaying) {
+      pauseAnimation()
+      return
+    }
+
+    playLooping(directionRef.current)
   }
 
   const handleDomLoaded = () => {
@@ -88,22 +106,33 @@ export default function TestAnimation() {
   }
 
   return (
-    <div
-      className="w-full max-w-2xl cursor-pointer"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-      role="img"
-      aria-label="Interactive test animation"
-    >
-      <Lottie
-        lottieRef={lottieRef}
-        animationData={animationData}
-        autoplay={false}
-        loop={false}
-        onDOMLoaded={handleDomLoaded}
-        className="w-full"
-      />
+    <div className="flex w-full max-w-2xl flex-col items-center gap-4">
+      <div
+        className="w-full cursor-pointer"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+        role="img"
+        aria-label="Interactive test animation"
+      >
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={animationData}
+          autoplay={false}
+          loop={false}
+          onDOMLoaded={handleDomLoaded}
+          className="w-full"
+        />
+      </div>
+      {!reduceMotion ? (
+        <button
+          type="button"
+          onClick={handleTogglePlayback}
+          className="rounded border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 min-[800px]:hidden dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200"
+        >
+          {isPlaying ? 'Stop Animation' : 'Start Animation'}
+        </button>
+      ) : null}
     </div>
   )
 }
