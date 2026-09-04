@@ -8,6 +8,8 @@ import {
   useState,
   useSyncExternalStore,
   type CSSProperties,
+  type MouseEvent,
+  type PointerEvent,
 } from 'react'
 
 import {
@@ -35,6 +37,9 @@ const TOGGLE_SIZE = { width: 74.295, height: 41.575 } as const
  * The control shows the destination theme (moon while in light, sun while in
  * dark) so it reads as "click to switch to this". Resting poses sit at the
  * hover↔transition boundaries.
+ *
+ * Click while hovering: rewind hover to its first frame, play that loop once,
+ * then run the morph (which starts where the hover clip ends).
  */
 const DARK_MODE_HOVER_START_FRAME = 0
 const DARK_MODE_HOVER_END_FRAME = 7
@@ -119,6 +124,50 @@ function hoverSegmentForTheme(theme: Theme): [number, number] {
     : [LIGHT_MODE_HOVER_START_FRAME, LIGHT_MODE_HOVER_END_FRAME + 1]
 }
 
+function morphSegmentForNextTheme(nextTheme: Theme): [number, number] {
+  return nextTheme === 'light'
+    ? TRANSITION_ANIMATION
+    : [TRANSITION_ANIMATION[1], TRANSITION_ANIMATION[0]]
+}
+
+type LottieItem = NonNullable<LottieRefCurrentProps['animationItem']>
+
+/** Composition frame currently on screen (playSegments is relative to firstFrame). */
+function getAbsoluteFrame(item: LottieItem) {
+  return item.firstFrame + item.currentFrame
+}
+
+function isMorphSegment(item: LottieItem) {
+  return (
+    item.firstFrame === TRANSITION_ANIMATION[0] &&
+    item.totalFrames === TRANSITION_ANIMATION[1] - TRANSITION_ANIMATION[0]
+  )
+}
+
+/**
+ * Hover-then-click: rewind to the hover start, play hover once, then morph.
+ * Idle click: morph only (already parked on the hover↔morph boundary).
+ */
+function clickPlaybackSegments(
+  currentFrame: number,
+  currentTheme: Theme,
+  nextTheme: Theme,
+  isHovering: boolean
+): [number, number][] {
+  const morph = morphSegmentForNextTheme(nextTheme)
+  if (!isHovering) return [morph]
+
+  const hover = hoverSegmentForTheme(currentTheme)
+  const hoverStart = hover[0]
+  const current = Math.min(Math.max(currentFrame, hoverStart), hover[1] - 1)
+
+  const sequence: [number, number][] = []
+  if (current > hoverStart) sequence.push([current, hoverStart])
+  sequence.push(hover)
+  sequence.push(morph)
+  return sequence
+}
+
 function snapToTheme(api: LottieRefCurrentProps, theme: Theme) {
   const absoluteFrame = frameForTheme(theme)
   const item = api.animationItem
@@ -153,8 +202,11 @@ export default function ThemeToggleAnimation({
   const isReadyRef = useRef(false)
   const isHoveringRef = useRef(false)
   const isTransitioningRef = useRef(false)
+  const currentFrameRef = useRef(frameForTheme(theme))
   const pendingThemeRef = useRef<Theme | null>(null)
   const themeAppliedMidwayRef = useRef(false)
+  // Fire on press so hold / drag-off still toggles; suppress the trailing click.
+  const activatedByPointerRef = useRef(false)
   const themeRef = useRef(theme)
   const reduceMotion = usePrefersReducedMotion()
   const reduceMotionRef = useRef(reduceMotion)
@@ -215,12 +267,7 @@ export default function ThemeToggleAnimation({
 
     isTransitioningRef.current = true
     if (api.animationItem) api.animationItem.loop = false
-    api.playSegments(
-      theme === 'light'
-        ? TRANSITION_ANIMATION
-        : [TRANSITION_ANIMATION[1], TRANSITION_ANIMATION[0]],
-      true
-    )
+    api.playSegments(morphSegmentForNextTheme(theme), true)
   }, [theme])
 
   function handleDomLoaded() {
@@ -230,6 +277,9 @@ export default function ThemeToggleAnimation({
     isReadyRef.current = true
     api.setSubframe(false)
     snapToTheme(api, theme)
+    if (api.animationItem) {
+      currentFrameRef.current = getAbsoluteFrame(api.animationItem)
+    }
   }
 
   function playHoverLoop() {
@@ -250,10 +300,11 @@ export default function ThemeToggleAnimation({
   }
 
   function handleEnterFrame() {
-    if (!pendingThemeRef.current || themeAppliedMidwayRef.current) return
-
     const item = lottieRef.current?.animationItem
-    if (!item || item.totalFrames <= 0) return
+    if (item) currentFrameRef.current = getAbsoluteFrame(item)
+
+    if (!pendingThemeRef.current || themeAppliedMidwayRef.current) return
+    if (!item || item.totalFrames <= 0 || !isMorphSegment(item)) return
 
     const rawProgress = item.currentRawFrame / item.totalFrames
     // Reverse morphs count down through the segment.
@@ -302,6 +353,9 @@ export default function ThemeToggleAnimation({
 
     if (api.animationItem) api.animationItem.loop = false
     snapToTheme(api, themeRef.current)
+    if (api.animationItem) {
+      currentFrameRef.current = getAbsoluteFrame(api.animationItem)
+    }
   }
 
   function toggleTheme() {
@@ -326,13 +380,36 @@ export default function ThemeToggleAnimation({
     pendingThemeRef.current = nextTheme
     themeAppliedMidwayRef.current = false
     isTransitioningRef.current = true
-    if (api.animationItem) api.animationItem.loop = false
+    if (api.animationItem) {
+      api.animationItem.loop = false
+      currentFrameRef.current = getAbsoluteFrame(api.animationItem)
+    }
     api.playSegments(
-      nextTheme === 'light'
-        ? TRANSITION_ANIMATION
-        : [TRANSITION_ANIMATION[1], TRANSITION_ANIMATION[0]],
+      clickPlaybackSegments(
+        currentFrameRef.current,
+        themeRef.current,
+        nextTheme,
+        isHoveringRef.current
+      ),
       true
     )
+  }
+
+  // Fire on press so hold / drag-off still toggles; suppress the trailing click.
+  function handlePointerDown(event: PointerEvent<HTMLButtonElement>) {
+    if (event.button !== 0) return
+    activatedByPointerRef.current = true
+    toggleTheme()
+  }
+
+  function handleClick(event: MouseEvent<HTMLButtonElement>) {
+    if (activatedByPointerRef.current) {
+      activatedByPointerRef.current = false
+      event.preventDefault()
+      return
+    }
+    // Keyboard (Enter / Space) still arrives as click without a prior pointerdown.
+    toggleTheme()
   }
 
   return (
@@ -340,7 +417,8 @@ export default function ThemeToggleAnimation({
       type="button"
       aria-label={t('label')}
       aria-pressed={theme === 'dark'}
-      onClick={toggleTheme}
+      onPointerDown={handlePointerDown}
+      onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={
@@ -350,7 +428,7 @@ export default function ThemeToggleAnimation({
           '--toggle-border-dark': darkBorderColor,
         } as CSSProperties
       }
-      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] transition-shadow duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)]"
+      className="inline-flex shrink-0 touch-manipulation select-none cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] transition-shadow duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)]"
     >
       {animationData ? (
         <Lottie
