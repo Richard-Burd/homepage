@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import NavMenu from '@/components/NavMenu'
-import ThemeToggle from '@/components/ThemeToggle'
+// import ThemeToggle from '@/components/ThemeToggle'
 import ThemeToggleAnimation from '@/components/ThemeToggleAnimation'
 
 export default function Navbar() {

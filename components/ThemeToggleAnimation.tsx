@@ -14,7 +14,7 @@ import {
   type Theme,
 } from '@/lib/theme'
 
-const ANIMATION_FILE = 'light-dark-mode-button.json'
+const ANIMATION_FILE = 'light-dark-mode-button.2.json'
 const TOGGLE_SIZE = { width: 74.295, height: 41.575 } as const
 
 /**
