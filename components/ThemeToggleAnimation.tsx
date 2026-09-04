@@ -14,28 +14,116 @@ import {
   type Theme,
 } from '@/lib/theme'
 
-const ANIMATION_FILE = 'light-dark-mode-button.2.json'
+const ANIMATION_FILE = 'light-dark-mode-button.3.json'
 const TOGGLE_SIZE = { width: 74.295, height: 41.575 } as const
 
 /**
- * The file's in-point is -1, but lottie-web initializes renderedFrame to -1
- * and skips a render when the target matches that sentinel — so the sun never
- * paints on first load. Frame 0 is the same sun. Last drawn moon is 38;
- * frames 39–40 have no layer. Segment end is exclusive.
+ * Frame layout (composition op = 60; segment ends are exclusive):
+ * - Dark-mode hover loop: 0–7
+ * - Sun ↔ moon transition: 7–50
+ * - Light-mode hover loop: 50–59
  *
  * The control shows the destination theme (moon while in light, sun while in
- * dark) so it reads as "click to switch to this".
+ * dark) so it reads as "click to switch to this". Resting poses sit at the
+ * hover↔transition boundaries.
  */
-const SUN_FRAME = 0
-const MOON_FRAME = 38
-const PLAYABLE_SEGMENT: [number, number] = [SUN_FRAME, MOON_FRAME + 1]
+const DARK_MODE_HOVER_START_FRAME = 0
+const DARK_MODE_HOVER_END_FRAME = 7
+const LIGHT_MODE_HOVER_START_FRAME = 50
+const LIGHT_MODE_HOVER_END_FRAME = 58
+
+const SUN_FRAME = DARK_MODE_HOVER_END_FRAME
+const MOON_FRAME = LIGHT_MODE_HOVER_START_FRAME
+const TRANSITION_ANIMATION: [number, number] = [
+  DARK_MODE_HOVER_END_FRAME,
+  LIGHT_MODE_HOVER_START_FRAME + 1,
+]
+
+/**
+ * Cavalry morph leftovers: moon/sun shapes collapsed to a single point still
+ * keep stroke width, which paints as tiny white dots on the dark pill.
+ */
+const COLLAPSED_PATH_EPS = 0.05
+
+function pathSpan(vertices: number[][]) {
+  let minX = Infinity
+  let minY = Infinity
+  let maxX = -Infinity
+  let maxY = -Infinity
+  for (const [x, y] of vertices) {
+    if (x < minX) minX = x
+    if (y < minY) minY = y
+    if (x > maxX) maxX = x
+    if (y > maxY) maxY = y
+  }
+  return Math.max(maxX - minX, maxY - minY)
+}
+
+function hideCollapsedShapes(node: unknown): void {
+  if (!node || typeof node !== 'object') return
+  if (Array.isArray(node)) {
+    for (const child of node) hideCollapsedShapes(child)
+    return
+  }
+
+  const obj = node as Record<string, unknown>
+  if (obj.ty === 'gr' && Array.isArray(obj.it)) {
+    const items = obj.it as Record<string, unknown>[]
+    const shape = items.find((item) => item.ty === 'sh') as
+      | { ks?: { k?: { v?: number[][] } } }
+      | undefined
+    const vertices = shape?.ks?.k?.v
+    if (vertices && pathSpan(vertices) < COLLAPSED_PATH_EPS) {
+      for (const item of items) {
+        if (item.ty === 'fl' || item.ty === 'st') {
+          const opacity = item.o as { k?: number } | undefined
+          if (opacity && typeof opacity.k === 'number') opacity.k = 0
+        }
+        if (item.ty === 'st') {
+          const width = item.w as { k?: number } | undefined
+          if (width && typeof width.k === 'number') width.k = 0
+        }
+        if (item.ty === 'tr') {
+          const opacity = item.o as { k?: number } | undefined
+          if (opacity && typeof opacity.k === 'number') opacity.k = 0
+        }
+      }
+    }
+  }
+
+  for (const value of Object.values(obj)) hideCollapsedShapes(value)
+}
+
+function sanitizeThemeToggleAnimation(data: object) {
+  hideCollapsedShapes(data)
+  return data
+}
 
 function frameForTheme(theme: Theme) {
   return theme === 'light' ? MOON_FRAME : SUN_FRAME
 }
 
+function hoverSegmentForTheme(theme: Theme): [number, number] {
+  return theme === 'dark'
+    ? [DARK_MODE_HOVER_START_FRAME, DARK_MODE_HOVER_END_FRAME + 1]
+    : [LIGHT_MODE_HOVER_START_FRAME, LIGHT_MODE_HOVER_END_FRAME + 1]
+}
+
 function snapToTheme(api: LottieRefCurrentProps, theme: Theme) {
-  api.goToAndStop(frameForTheme(theme), true)
+  const absoluteFrame = frameForTheme(theme)
+  const item = api.animationItem
+
+  if (item) {
+    item.loop = false
+    item.pause()
+    // playSegments leaves firstFrame at the hover segment start; goToAndStop is
+    // relative to that, so restore the transition segment before seeking.
+    item.setSegment(TRANSITION_ANIMATION[0], TRANSITION_ANIMATION[1])
+    api.goToAndStop(absoluteFrame - TRANSITION_ANIMATION[0], true)
+    return
+  }
+
+  api.goToAndStop(absoluteFrame, true)
 }
 
 export default function ThemeToggleAnimation() {
@@ -47,12 +135,18 @@ export default function ThemeToggleAnimation() {
   )
   const lottieRef = useRef<LottieRefCurrentProps | null>(null)
   const isReadyRef = useRef(false)
+  const isHoveringRef = useRef(false)
+  const themeRef = useRef(theme)
   const reduceMotion = usePrefersReducedMotion()
   const reduceMotionRef = useRef(reduceMotion)
 
   useEffect(() => {
     reduceMotionRef.current = reduceMotion
   }, [reduceMotion])
+
+  useEffect(() => {
+    themeRef.current = theme
+  }, [theme])
 
   const [animationData, setAnimationData] = useState<object | null>(null)
   const [loadError, setLoadError] = useState(false)
@@ -65,8 +159,8 @@ export default function ThemeToggleAnimation() {
         if (!response.ok) throw new Error('Failed to load animation')
         return response.json()
       })
-      .then((data) => {
-        if (!cancelled) setAnimationData(data)
+      .then((data: object) => {
+        if (!cancelled) setAnimationData(sanitizeThemeToggleAnimation(data))
       })
       .catch(() => {
         if (!cancelled) setLoadError(true)
@@ -83,13 +177,22 @@ export default function ThemeToggleAnimation() {
     const api = lottieRef.current
     if (!api) return
 
+    isHoveringRef.current = false
+
     if (reduceMotionRef.current) {
+      if (api.animationItem) api.animationItem.loop = false
       snapToTheme(api, theme)
       return
     }
 
-    api.setDirection(theme === 'light' ? 1 : -1)
-    api.play()
+    if (api.animationItem) api.animationItem.loop = false
+    // playSegments derives direction from endpoint order (end < start ⇒ reverse).
+    api.playSegments(
+      theme === 'light'
+        ? TRANSITION_ANIMATION
+        : [TRANSITION_ANIMATION[1], TRANSITION_ANIMATION[0]],
+      true
+    )
   }, [theme])
 
   function handleDomLoaded() {
@@ -99,6 +202,31 @@ export default function ThemeToggleAnimation() {
     isReadyRef.current = true
     api.setSubframe(false)
     snapToTheme(api, theme)
+  }
+
+  function playHoverLoop() {
+    const api = lottieRef.current
+    if (!api || reduceMotionRef.current) return
+
+    if (api.animationItem) api.animationItem.loop = true
+    api.setDirection(1)
+    api.playSegments(hoverSegmentForTheme(themeRef.current), true)
+  }
+
+  function handleMouseEnter() {
+    if (!isReadyRef.current || reduceMotionRef.current) return
+    isHoveringRef.current = true
+    playHoverLoop()
+  }
+
+  function handleMouseLeave() {
+    isHoveringRef.current = false
+
+    const api = lottieRef.current
+    if (!api) return
+
+    if (api.animationItem) api.animationItem.loop = false
+    snapToTheme(api, themeRef.current)
   }
 
   function toggleTheme() {
@@ -111,6 +239,8 @@ export default function ThemeToggleAnimation() {
       aria-label={t('label')}
       aria-pressed={theme === 'dark'}
       onClick={toggleTheme}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       style={TOGGLE_SIZE}
       className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-300"
     >
@@ -118,7 +248,7 @@ export default function ThemeToggleAnimation() {
         <Lottie
           lottieRef={lottieRef}
           animationData={animationData}
-          initialSegment={PLAYABLE_SEGMENT}
+          initialSegment={TRANSITION_ANIMATION}
           autoplay={false}
           loop={false}
           onDOMLoaded={handleDomLoaded}
