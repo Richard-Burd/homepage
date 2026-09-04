@@ -4,7 +4,7 @@ import Lottie, { type LottieRefCurrentProps } from 'lottie-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 
-import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/shared'
+import { usePrefersReducedMotion, useIsCoarsePointer } from '@/components/pie-and-bar-chart-combo/shared'
 import { proxiedAssetUrl } from '@/lib/assets'
 import {
   getResolvedTheme,
@@ -149,10 +149,18 @@ export default function ThemeToggleAnimation({
   const themeRef = useRef(theme)
   const reduceMotion = usePrefersReducedMotion()
   const reduceMotionRef = useRef(reduceMotion)
+  const isCoarsePointer = useIsCoarsePointer()
+  const isCoarsePointerRef = useRef(isCoarsePointer)
 
   useEffect(() => {
     reduceMotionRef.current = reduceMotion
   }, [reduceMotion])
+
+  useEffect(() => {
+    isCoarsePointerRef.current = isCoarsePointer
+    // Touch can leave a sticky mouseenter; drop hover if we switch to coarse.
+    if (isCoarsePointer) isHoveringRef.current = false
+  }, [isCoarsePointer])
 
   useEffect(() => {
     themeRef.current = theme
@@ -217,7 +225,7 @@ export default function ThemeToggleAnimation({
 
   function playHoverLoop() {
     const api = lottieRef.current
-    if (!api || reduceMotionRef.current) return
+    if (!api || reduceMotionRef.current || isCoarsePointerRef.current) return
 
     if (api.animationItem) api.animationItem.loop = true
     api.setDirection(1)
@@ -253,12 +261,25 @@ export default function ThemeToggleAnimation({
     isTransitioningRef.current = false
     themeAppliedMidwayRef.current = false
 
-    if (!isHoveringRef.current || reduceMotionRef.current) return
+    if (
+      !isHoveringRef.current ||
+      reduceMotionRef.current ||
+      isCoarsePointerRef.current
+    ) {
+      return
+    }
     playHoverLoop()
   }
 
   function handleMouseEnter() {
-    if (!isReadyRef.current || reduceMotionRef.current) return
+    // Phones synthesize mouseenter on tap and keep it until another tap elsewhere.
+    if (
+      !isReadyRef.current ||
+      reduceMotionRef.current ||
+      isCoarsePointerRef.current
+    ) {
+      return
+    }
     isHoveringRef.current = true
     if (isTransitioningRef.current) return
     playHoverLoop()
@@ -276,6 +297,9 @@ export default function ThemeToggleAnimation({
 
   function toggleTheme() {
     if (isTransitioningRef.current) return
+
+    // Clear sticky touch-hover so the idle loop doesn't start after the morph.
+    if (isCoarsePointerRef.current) isHoveringRef.current = false
 
     const nextTheme: Theme = theme === 'light' ? 'dark' : 'light'
 
@@ -317,7 +341,7 @@ export default function ThemeToggleAnimation({
           '--toggle-border-dark': darkBorderColor,
         } as CSSProperties
       }
-      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] outline-none transition-shadow duration-200 ease-out hover:shadow-[0_0_0_2px_var(--toggle-border-light)] focus-visible:ring-2 focus-visible:ring-zinc-500 dark:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)] dark:focus-visible:ring-offset-zinc-950"
+      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] outline-none transition-shadow duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] focus-visible:ring-2 focus-visible:ring-zinc-500 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)] dark:focus-visible:ring-offset-zinc-950"
     >
       {animationData ? (
         <Lottie
