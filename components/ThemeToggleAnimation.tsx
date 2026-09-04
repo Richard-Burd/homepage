@@ -2,7 +2,7 @@
 
 import Lottie, { type LottieRefCurrentProps } from 'lottie-react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 
 import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/shared'
 import { proxiedAssetUrl } from '@/lib/assets'
@@ -38,6 +38,8 @@ const TRANSITION_ANIMATION: [number, number] = [
   DARK_MODE_HOVER_END_FRAME,
   LIGHT_MODE_HOVER_START_FRAME + 1,
 ]
+/** Apply document theme when the toggle morph is halfway done. */
+const THEME_SWAP_AT_PROGRESS = 0.5
 
 /**
  * Cavalry morph leftovers: moon/sun shapes collapsed to a single point still
@@ -70,8 +72,7 @@ function hideCollapsedShapes(node: unknown): void {
   if (obj.ty === 'gr' && Array.isArray(obj.it)) {
     const items = obj.it as Record<string, unknown>[]
     const shape = items.find((item) => item.ty === 'sh') as
-      | { ks?: { k?: { v?: number[][] } } }
-      | undefined
+      { ks?: { k?: { v?: number[][] } } } | undefined
     const vertices = shape?.ks?.k?.v
     if (vertices && pathSpan(vertices) < COLLAPSED_PATH_EPS) {
       for (const item of items) {
@@ -126,7 +127,13 @@ function snapToTheme(api: LottieRefCurrentProps, theme: Theme) {
   api.goToAndStop(absoluteFrame, true)
 }
 
-export default function ThemeToggleAnimation() {
+export default function ThemeToggleAnimation({
+  lightBorderColor,
+  darkBorderColor,
+}: {
+  lightBorderColor: string
+  darkBorderColor: string
+}) {
   const t = useTranslations('ThemeSwitcher')
   const theme = useSyncExternalStore(
     subscribeTheme,
@@ -136,6 +143,9 @@ export default function ThemeToggleAnimation() {
   const lottieRef = useRef<LottieRefCurrentProps | null>(null)
   const isReadyRef = useRef(false)
   const isHoveringRef = useRef(false)
+  const isTransitioningRef = useRef(false)
+  const pendingThemeRef = useRef<Theme | null>(null)
+  const themeAppliedMidwayRef = useRef(false)
   const themeRef = useRef(theme)
   const reduceMotion = usePrefersReducedMotion()
   const reduceMotionRef = useRef(reduceMotion)
@@ -177,7 +187,8 @@ export default function ThemeToggleAnimation() {
     const api = lottieRef.current
     if (!api) return
 
-    isHoveringRef.current = false
+    // Click-driven morph already owns playback; don't restart when theme flips mid-way.
+    if (isTransitioningRef.current) return
 
     if (reduceMotionRef.current) {
       if (api.animationItem) api.animationItem.loop = false
@@ -185,8 +196,8 @@ export default function ThemeToggleAnimation() {
       return
     }
 
+    isTransitioningRef.current = true
     if (api.animationItem) api.animationItem.loop = false
-    // playSegments derives direction from endpoint order (end < start ⇒ reverse).
     api.playSegments(
       theme === 'light'
         ? TRANSITION_ANIMATION
@@ -213,9 +224,43 @@ export default function ThemeToggleAnimation() {
     api.playSegments(hoverSegmentForTheme(themeRef.current), true)
   }
 
+  function applyPendingThemeIfNeeded() {
+    const pending = pendingThemeRef.current
+    if (!pending) return
+    pendingThemeRef.current = null
+    themeAppliedMidwayRef.current = true
+    setTheme(pending)
+  }
+
+  function handleEnterFrame() {
+    if (!pendingThemeRef.current || themeAppliedMidwayRef.current) return
+
+    const item = lottieRef.current?.animationItem
+    if (!item || item.totalFrames <= 0) return
+
+    const rawProgress = item.currentRawFrame / item.totalFrames
+    // Reverse morphs count down through the segment.
+    const progress = item.playDirection < 0 ? 1 - rawProgress : rawProgress
+
+    if (progress >= THEME_SWAP_AT_PROGRESS) {
+      applyPendingThemeIfNeeded()
+    }
+  }
+
+  function handleComplete() {
+    // Safety net if enter-frame skipped the midpoint (e.g. very fast seek).
+    applyPendingThemeIfNeeded()
+    isTransitioningRef.current = false
+    themeAppliedMidwayRef.current = false
+
+    if (!isHoveringRef.current || reduceMotionRef.current) return
+    playHoverLoop()
+  }
+
   function handleMouseEnter() {
     if (!isReadyRef.current || reduceMotionRef.current) return
     isHoveringRef.current = true
+    if (isTransitioningRef.current) return
     playHoverLoop()
   }
 
@@ -223,14 +268,38 @@ export default function ThemeToggleAnimation() {
     isHoveringRef.current = false
 
     const api = lottieRef.current
-    if (!api) return
+    if (!api || isTransitioningRef.current) return
 
     if (api.animationItem) api.animationItem.loop = false
     snapToTheme(api, themeRef.current)
   }
 
   function toggleTheme() {
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    if (isTransitioningRef.current) return
+
+    const nextTheme: Theme = theme === 'light' ? 'dark' : 'light'
+
+    if (reduceMotionRef.current || !isReadyRef.current) {
+      setTheme(nextTheme)
+      return
+    }
+
+    const api = lottieRef.current
+    if (!api) {
+      setTheme(nextTheme)
+      return
+    }
+
+    pendingThemeRef.current = nextTheme
+    themeAppliedMidwayRef.current = false
+    isTransitioningRef.current = true
+    if (api.animationItem) api.animationItem.loop = false
+    api.playSegments(
+      nextTheme === 'light'
+        ? TRANSITION_ANIMATION
+        : [TRANSITION_ANIMATION[1], TRANSITION_ANIMATION[0]],
+      true
+    )
   }
 
   return (
@@ -241,8 +310,14 @@ export default function ThemeToggleAnimation() {
       onClick={toggleTheme}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={TOGGLE_SIZE}
-      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-300"
+      style={
+        {
+          ...TOGGLE_SIZE,
+          '--toggle-border-light': lightBorderColor,
+          '--toggle-border-dark': darkBorderColor,
+        } as CSSProperties
+      }
+      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] outline-none transition-shadow duration-200 ease-out hover:shadow-[0_0_0_2px_var(--toggle-border-light)] focus-visible:ring-2 focus-visible:ring-zinc-500 dark:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)] dark:focus-visible:ring-offset-zinc-950"
     >
       {animationData ? (
         <Lottie
@@ -252,6 +327,8 @@ export default function ThemeToggleAnimation() {
           autoplay={false}
           loop={false}
           onDOMLoaded={handleDomLoaded}
+          onEnterFrame={handleEnterFrame}
+          onComplete={handleComplete}
           aria-hidden
           className="pointer-events-none size-full"
         />
