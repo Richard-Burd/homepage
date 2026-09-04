@@ -2,9 +2,18 @@
 
 import Lottie, { type LottieRefCurrentProps } from 'lottie-react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+} from 'react'
 
-import { usePrefersReducedMotion, useIsCoarsePointer } from '@/components/pie-and-bar-chart-combo/shared'
+import {
+  usePrefersReducedMotion,
+  useIsCoarsePointer,
+} from '@/components/pie-and-bar-chart-combo/shared'
 import { proxiedAssetUrl } from '@/lib/assets'
 import {
   getResolvedTheme,
@@ -14,7 +23,7 @@ import {
   type Theme,
 } from '@/lib/theme'
 
-const ANIMATION_FILE = 'light-dark-mode-button.3.json'
+const ANIMATION_FILE = 'light-dark-mode-button.4.json'
 const TOGGLE_SIZE = { width: 74.295, height: 41.575 } as const
 
 /**
@@ -341,7 +350,7 @@ export default function ThemeToggleAnimation({
           '--toggle-border-dark': darkBorderColor,
         } as CSSProperties
       }
-      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] outline-none transition-shadow duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] focus-visible:ring-2 focus-visible:ring-zinc-500 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)] dark:focus-visible:ring-offset-zinc-950"
+      className="inline-flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] transition-shadow duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)]"
     >
       {animationData ? (
         <Lottie
