@@ -6,6 +6,7 @@ import { useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import NavMenu from '@/components/NavMenu'
 import ThemeToggle from '@/components/ThemeToggle'
+import ThemeToggleAnimation from '@/components/ThemeToggleAnimation'
 
 export default function Navbar() {
   const { scrollY } = useScroll()
@@ -35,7 +36,8 @@ export default function Navbar() {
         <NavMenu />
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
+          <ThemeToggleAnimation />
         </div>
       </nav>
     </motion.header>
