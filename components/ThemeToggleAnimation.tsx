@@ -46,6 +46,11 @@ const DARK_MODE_HOVER_END_FRAME = 7
 const LIGHT_MODE_HOVER_START_FRAME = 50
 const LIGHT_MODE_HOVER_END_FRAME = 58
 
+/** Playback rates (1 = Lottie default). Lower = slower. */
+const DARK_MODE_HOVER_SPEED = 1
+const LIGHT_MODE_HOVER_SPEED = 1
+const TRANSITION_SPEED = 1
+
 const SUN_FRAME = DARK_MODE_HOVER_END_FRAME
 const MOON_FRAME = LIGHT_MODE_HOVER_START_FRAME
 const TRANSITION_ANIMATION: [number, number] = [
@@ -122,6 +127,10 @@ function hoverSegmentForTheme(theme: Theme): [number, number] {
   return theme === 'dark'
     ? [DARK_MODE_HOVER_START_FRAME, DARK_MODE_HOVER_END_FRAME + 1]
     : [LIGHT_MODE_HOVER_START_FRAME, LIGHT_MODE_HOVER_END_FRAME + 1]
+}
+
+function hoverSpeedForTheme(theme: Theme) {
+  return theme === 'dark' ? DARK_MODE_HOVER_SPEED : LIGHT_MODE_HOVER_SPEED
 }
 
 function morphSegmentForNextTheme(nextTheme: Theme): [number, number] {
@@ -267,6 +276,7 @@ export default function ThemeToggleAnimation({
 
     isTransitioningRef.current = true
     if (api.animationItem) api.animationItem.loop = false
+    api.setSpeed(TRANSITION_SPEED)
     api.playSegments(morphSegmentForNextTheme(theme), true)
   }, [theme])
 
@@ -288,6 +298,7 @@ export default function ThemeToggleAnimation({
 
     if (api.animationItem) api.animationItem.loop = true
     api.setDirection(1)
+    api.setSpeed(hoverSpeedForTheme(themeRef.current))
     api.playSegments(hoverSegmentForTheme(themeRef.current), true)
   }
 
@@ -384,6 +395,7 @@ export default function ThemeToggleAnimation({
       api.animationItem.loop = false
       currentFrameRef.current = getAbsoluteFrame(api.animationItem)
     }
+    api.setSpeed(TRANSITION_SPEED)
     api.playSegments(
       clickPlaybackSegments(
         currentFrameRef.current,
@@ -428,7 +440,7 @@ export default function ThemeToggleAnimation({
           '--toggle-border-dark': darkBorderColor,
         } as CSSProperties
       }
-      className="inline-flex shrink-0 touch-manipulation select-none cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] transition-shadow duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)]"
+      className="inline-flex shrink-0 cursor-pointer touch-manipulation items-center justify-center overflow-hidden rounded-full bg-transparent p-0 shadow-[0_0_0_2px_transparent] transition-shadow duration-200 ease-out outline-none select-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-950 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-light)] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_0_2px_var(--toggle-border-dark)]"
     >
       {animationData ? (
         <Lottie
