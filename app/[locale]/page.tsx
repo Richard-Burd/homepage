@@ -259,7 +259,7 @@ export default async function Home({ params }: Props) {
               >
                 {tTechStacks('sectionTitle')}
               </h2>
-              <p className="text-[0.9rem] text-zinc-400 italic md:text-[1.4rem]">
+              <p className="text-[0.9rem] italic md:text-[1.4rem] md:text-zinc-400">
                 {tTechStacks('sectionSubtitle')}
               </p>
             </div>
