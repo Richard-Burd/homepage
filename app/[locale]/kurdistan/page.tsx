@@ -1,7 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 import type { ReactNode } from 'react'
-import { FaYoutube } from 'react-icons/fa'
 
 import { assetUrl } from '@/lib/assets'
 
@@ -10,6 +9,77 @@ type Props = {
 }
 
 const linkClassName = 'text-blue-600 underline dark:text-blue-400'
+const figureClassName = 'my-6 h-auto w-full'
+
+type ThemedSrc = {
+  src: string
+  width: number
+  height: number
+}
+
+function figureImage(src: ThemedSrc, alt: string, className: string) {
+  return (
+    <Image
+      src={assetUrl(src.src)}
+      alt={alt}
+      width={src.width}
+      height={src.height}
+      className={className}
+    />
+  )
+}
+
+function ThemedImage({
+  alt,
+  light,
+  dark,
+}: {
+  alt: string
+  light: ThemedSrc
+  dark: ThemedSrc
+}) {
+  return (
+    <>
+      {figureImage(light, alt, `${figureClassName} dark:hidden`)}
+      {figureImage(dark, alt, `${figureClassName} hidden dark:block`)}
+    </>
+  )
+}
+
+function ThemedArtDirectedImage({
+  alt,
+  lightDesktop,
+  lightMobile,
+  darkDesktop,
+  darkMobile,
+}: {
+  alt: string
+  lightDesktop: ThemedSrc
+  lightMobile: ThemedSrc
+  darkDesktop: ThemedSrc
+  darkMobile: ThemedSrc
+}) {
+  return (
+    <>
+      <div className="dark:hidden">
+        {figureImage(lightMobile, alt, `${figureClassName} min-[800px]:hidden`)}
+        {figureImage(
+          lightDesktop,
+          alt,
+          `${figureClassName} hidden min-[800px]:block`
+        )}
+      </div>
+      <div className="hidden dark:block">
+        {figureImage(darkMobile, alt, `${figureClassName} min-[800px]:hidden`)}
+        {figureImage(
+          darkDesktop,
+          alt,
+          `${figureClassName} hidden min-[800px]:block`
+        )}
+      </div>
+    </>
+  )
+}
 
 function extLink(href: string) {
   function RichLink(chunks: ReactNode) {
@@ -73,7 +143,7 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <p className="my-6">
+        <p className="my-6 flex justify-center">
           <a
             href="https://youtu.be/Dy6FYWNopsE"
             target="_blank"
@@ -81,7 +151,14 @@ export default async function KurdistanPage({ params }: Props) {
             aria-label={t('youtubeAria')}
             className="inline-flex items-center transition-opacity hover:opacity-70"
           >
-            <FaYoutube size={50} color="#FF0000" aria-hidden />
+            <Image
+              src={assetUrl('you-tube-icon.svg')}
+              alt=""
+              width={50}
+              height={50}
+              unoptimized
+              aria-hidden
+            />
           </a>
         </p>
 
@@ -153,22 +230,34 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-1.jpg')}
+        <ThemedImage
           alt={t('imageAlt1')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          light={{
+            src: 'kurdistan-fig-1-light.png',
+            width: 1000,
+            height: 1736,
+          }}
+          dark={{
+            src: 'kurdistan-fig-1-dark.2.png',
+            width: 1000,
+            height: 1847,
+          }}
         />
 
         <p>{t('pExpendable')}</p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-2.jpg')}
+        <ThemedImage
           alt={t('imageAlt2')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          light={{
+            src: 'kurdistan-fig-2-light.png',
+            width: 2604,
+            height: 1315,
+          }}
+          dark={{
+            src: 'kurdistan-fig-2-dark.png',
+            width: 1000,
+            height: 505,
+          }}
         />
 
         <p>{t('pRange')}</p>
@@ -197,12 +286,18 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-4.jpg')}
+        <ThemedImage
           alt={t('imageAlt4')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          light={{
+            src: 'kurdistan-fig-4-light.png',
+            width: 1000,
+            height: 810,
+          }}
+          dark={{
+            src: 'kurdistan-fig-4-dark.png',
+            width: 1000,
+            height: 812,
+          }}
         />
 
         <p>
@@ -214,12 +309,18 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-5.jpg')}
+        <ThemedImage
           alt={t('imageAlt5')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          light={{
+            src: 'kurdistan-fig-5-light.png',
+            width: 1000,
+            height: 679,
+          }}
+          dark={{
+            src: 'kurdistan-fig-5-dark.png',
+            width: 1000,
+            height: 679,
+          }}
         />
 
         <p>
@@ -233,32 +334,60 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-6.jpg')}
+        <ThemedImage
           alt={t('imageAlt6')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          light={{
+            src: 'kurdistan-fig-6-light.png',
+            width: 1000,
+            height: 394,
+          }}
+          dark={{
+            src: 'kurdistan-fig-6-dark.png',
+            width: 1000,
+            height: 394,
+          }}
         />
 
         <p>{t('pGimbal')}</p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-7.jpg')}
+        <ThemedArtDirectedImage
           alt={t('imageAlt7')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          lightDesktop={{
+            src: 'kurdistan-fig-7-light-desktop.2.png',
+            width: 1000,
+            height: 1422,
+          }}
+          lightMobile={{
+            src: 'kurdistan-fig-7-light-mobile.png',
+            width: 600,
+            height: 2656,
+          }}
+          darkDesktop={{
+            src: 'kurdistan-fig-7-dark-desktop.2.png',
+            width: 1000,
+            height: 1422,
+          }}
+          darkMobile={{
+            src: 'kurdistan-fig-7-dark-mobile.png',
+            width: 600,
+            height: 2656,
+          }}
         />
 
         <p>{t('pAvionics')}</p>
 
-        <Image
-          src={assetUrl('kurdistan-fig-8.jpg')}
+        <ThemedImage
           alt={t('imageAlt8')}
-          width={1200}
-          height={800}
-          className="my-6 h-auto w-full"
+          light={{
+            src: 'kurdistan-fig-8-light.png',
+            width: 1000,
+            height: 2350,
+          }}
+          dark={{
+            src: 'kurdistan-fig-8-dark.png',
+            width: 1000,
+            height: 2350,
+          }}
         />
 
         <Image
