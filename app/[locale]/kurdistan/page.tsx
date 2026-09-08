@@ -230,17 +230,27 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <ThemedImage
+        <ThemedArtDirectedImage
           alt={t('imageAlt1')}
-          light={{
-            src: 'kurdistan-fig-1-light.png',
+          lightDesktop={{
+            src: 'kurdistan-fig-1-light-desktop.3.png',
             width: 1000,
-            height: 1736,
+            height: 1867,
           }}
-          dark={{
-            src: 'kurdistan-fig-1-dark.2.png',
+          lightMobile={{
+            src: 'kurdistan-fig-1-light-mobile.2.png',
             width: 1000,
-            height: 1847,
+            height: 3738,
+          }}
+          darkDesktop={{
+            src: 'kurdistan-fig-1-dark-desktop.3.png',
+            width: 1000,
+            height: 1850,
+          }}
+          darkMobile={{
+            src: 'kurdistan-fig-1-dark-mobile.2.png',
+            width: 1000,
+            height: 3738,
           }}
         />
 
@@ -286,17 +296,27 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <ThemedImage
+        <ThemedArtDirectedImage
           alt={t('imageAlt4')}
-          light={{
-            src: 'kurdistan-fig-4-light.png',
+          lightDesktop={{
+            src: 'kurdistan-fig-4-light-desktop.3.png',
             width: 1000,
-            height: 810,
+            height: 813,
           }}
-          dark={{
-            src: 'kurdistan-fig-4-dark.png',
+          lightMobile={{
+            src: 'kurdistan-fig-4-light-mobile.3.png',
+            width: 800,
+            height: 661,
+          }}
+          darkDesktop={{
+            src: 'kurdistan-fig-4-dark-desktop.3.png',
             width: 1000,
             height: 812,
+          }}
+          darkMobile={{
+            src: 'kurdistan-fig-4-dark-mobile.3.png',
+            width: 800,
+            height: 658,
           }}
         />
 
@@ -309,17 +329,27 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <ThemedImage
+        <ThemedArtDirectedImage
           alt={t('imageAlt5')}
-          light={{
-            src: 'kurdistan-fig-5-light.png',
+          lightDesktop={{
+            src: 'kurdistan-fig-5-light-desktop.3.png',
             width: 1000,
             height: 679,
           }}
-          dark={{
-            src: 'kurdistan-fig-5-dark.png',
+          lightMobile={{
+            src: 'kurdistan-fig-5-light-mobile.3.png',
+            width: 800,
+            height: 579,
+          }}
+          darkDesktop={{
+            src: 'kurdistan-fig-5-dark-desktop.3.png',
             width: 1000,
             height: 679,
+          }}
+          darkMobile={{
+            src: 'kurdistan-fig-5-dark-mobile.3.png',
+            width: 800,
+            height: 579,
           }}
         />
 
@@ -334,17 +364,27 @@ export default async function KurdistanPage({ params }: Props) {
           })}
         </p>
 
-        <ThemedImage
+        <ThemedArtDirectedImage
           alt={t('imageAlt6')}
-          light={{
-            src: 'kurdistan-fig-6-light.png',
+          lightDesktop={{
+            src: 'kurdistan-fig-6-light-desktop.3.png',
             width: 1000,
             height: 394,
           }}
-          dark={{
-            src: 'kurdistan-fig-6-dark.png',
+          lightMobile={{
+            src: 'kurdistan-fig-6-light-mobile.3.png',
+            width: 800,
+            height: 316,
+          }}
+          darkDesktop={{
+            src: 'kurdistan-fig-6-dark-desktop.3.png',
             width: 1000,
             height: 394,
+          }}
+          darkMobile={{
+            src: 'kurdistan-fig-6-dark-mobile.3.png',
+            width: 800,
+            height: 316,
           }}
         />
 
