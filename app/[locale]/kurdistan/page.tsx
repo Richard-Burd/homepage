@@ -272,19 +272,13 @@ export default async function KurdistanPage({ params }: Props) {
 
         <p>{t('pRange')}</p>
 
-        <a
-          href="https://drive.google.com/file/d/10ZuGIDeXtm0N71myGmhpH4qinqqLj3C2/view?usp=sharing"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            src={assetUrl('kurdistan-fig-3.jpg')}
-            alt={t('imageAlt3')}
-            width={1200}
-            height={800}
-            className="my-6 h-auto w-full"
-          />
-        </a>
+        <Image
+          src={assetUrl('kurdistan-fig-3.jpg')}
+          alt={t('imageAlt3')}
+          width={1200}
+          height={800}
+          className="my-6 h-auto w-full"
+        />
 
         <p>
           {t.rich('pSplatsName', {
