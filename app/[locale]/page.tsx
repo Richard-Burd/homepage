@@ -104,6 +104,14 @@ export default async function Home({ params }: Props) {
           {chunks}
         </Link>
       ),
+      flyingWing: (chunks) => (
+        <Link
+          href="/flying-wing"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
     }),
     value: slice.value,
     color: slice.color,
