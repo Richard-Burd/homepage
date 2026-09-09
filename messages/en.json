@@ -51,7 +51,7 @@
       },
       "Category3": {
         "title": "Unmanned Aviation",
-        "Description": "I have spent years around uncrewed aircraft: airframes, flight characteristics, ground-control software, and what it takes to keep a small UAV flying in the real world. I design and test systems that have to launch, land, and survive abuse, and I care about the unglamorous parts—parameters, airfoils, field repairs—as much as the sortie itself. For me the interesting problem is making a cheap, maintainable aircraft do a useful job when conditions are ugly."
+        "Description": "The flying wing diagram can be found <flyingWing>here</flyingWing>."
       },
       "Category4": {
         "title": "Military Affairs",
@@ -212,6 +212,15 @@
         "xPlane12": "X-Plane 12 is a flight simulator known for its aerodynamic model. Custom aircraft from PlaneMaker can be flown here to see how a design handles before it exists in the real world."
       }
     }
+  },
+  "FlyingWingPage": {
+    "metaTitle": "Flying Wing",
+    "metaDescription": "Flying wing diagram.",
+    "title": "Flying Wing",
+    "imageAlt": "Flying wing diagram",
+    "downloadPng": "Download this image as a PNG",
+    "expandImage": "View larger image",
+    "shrinkImage": "View smaller image"
   },
   "KurdistanPage": {
     "metaTitle": "Kurdistan",
