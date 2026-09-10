@@ -49,6 +49,10 @@ export default function Navbar() {
     const updateHeight = () => {
       const height = el.getBoundingClientRect().height
       heightRef.current = height
+      document.documentElement.style.setProperty(
+        '--navbar-height',
+        `${height}px`
+      )
       // Keep a partial hide valid if the bar resizes (font/zoom/menu).
       y.set(Math.min(0, Math.max(-height, y.get())))
     }
