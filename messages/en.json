@@ -273,6 +273,62 @@
     "imageAlt16": "Hi mom im on tv",
     "pHiMom": "Hi mom, I’m on TV!"
   },
+  "SchematicVisualizationPage": {
+    "metaTitle": "Schematic Visualization",
+    "metaDescription": "Full-bleed two-rail layout with a parallax media rail, leader lines, and paired sections.",
+    "title": "The Title of this Page Goes Here",
+    "subtitle": "Page subtitle goes here below the page's main title",
+    "heroAlt": "Hero image",
+    "heroCaption": "This is the hero image",
+    "parallaxAlt": "Parallax background",
+    "parallaxCaption": "This is the parallax image",
+    "sections": {
+      "section-1": {
+        "title": "Section 1 Goes Here",
+        "paragraph-1": "This is the Section 1 Paragraph, more specifically, this is the first paragraph of the first section.  There may be more, or this may be the only one.  There can also be no paragraphs in a section, but just images instead.  Conversely, a section may have a single paragraph, or multiple paragraphs, and absolutely no images whatsoever.  Paragraphs must have the ability to show <b>bold text</b>, <i>italic text</i>, and text that is <b><i>both bold, and italic</i></b>.",
+        "image-1": {
+          "alt": "Section 1 image 1",
+          "caption": "Section-1 Image-1"
+        },
+        "image-2": {
+          "alt": "Section 1 image 2",
+          "caption": "Section-1 Image-2",
+          "description-title": "Section 1 Image-2 Description",
+          "description-text": "Each paragraph or image must have the ability to display this optional, right-justified, description on the left rail (desktop) or description above the paragraph or image (mobile) NOTE: this “Element Description” is vertically centered on the commensurate element on the right rail, in this case, the Section-1 Image-2"
+        }
+      },
+      "section-2": {
+        "title": "Section 2 Goes Here",
+        "paragraph-1": "This is the Section 2 Paragraph, more specifically, this is the first paragraph of the second section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
+        "image-1": {
+          "alt": "Section 2 image 1",
+          "caption": "Section-2 Image-1"
+        },
+        "paragraph-2": "This is the second Section 2 Paragraph, more specifically, this is the second paragraph of the second section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
+      },
+      "section-3": {
+        "title": "Section 3 Goes Here",
+        "paragraph-1": "This Section 3 paragraph is double spaced like all the other paragraphs on the right rail.  Note that all images, regardless of their size, are resized so their left and right sides align with the paragraphs above and below them.",
+        "image-1": {
+          "alt": "Section 3 image 1",
+          "caption": "Section-3 Image-1",
+          "description-title": "Section 3 Image-1 Description",
+          "description-text": "This is another image description that appears on the left rail"
+        },
+        "image-2": {
+          "alt": "Section 3 image 2",
+          "caption": "Section-3 Image-2"
+        },
+        "paragraph-2": "This is the second Section 3 Paragraph, more specifically, this is the second paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
+        "paragraph-3": "This is the third Section 3 Paragraph, more specifically, this is the third paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
+        "image-3": {
+          "alt": "Section 3 image 3",
+          "caption": "Section-3 Image-3"
+        },
+        "paragraph-4": "This is the fourth Section 3 Paragraph, more specifically, this is the fourth paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
+      }
+    }
+  },
   "Footer": {
     "copyright": "<name>© {year} Richard Burd.</name> All rights reserved."
   }
