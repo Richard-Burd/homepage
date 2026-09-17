@@ -1,9 +1,16 @@
 'use client'
 
-import { motion, useMotionValue, useScroll, useTransform } from 'motion/react'
+import {
+  frame,
+  motion,
+  useMotionValue,
+  useScroll,
+  useTransform,
+} from 'motion/react'
 import Image from 'next/image'
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -87,21 +94,37 @@ export function RailCellBackdrop() {
   const { scrollY } = useScroll()
   const windowTop = useMotionValue(0)
 
+  const measure = useCallback(() => {
+    const element = windowRef.current
+    if (!element) return
+    windowTop.set(element.getBoundingClientRect().top + window.scrollY)
+  }, [windowTop])
+
+  // Anything above this cell that grows after the first measurement leaves the
+  // offset stale, which slides the image out of its window and exposes the page
+  // behind it. Switching locales is the clearest case: the rails re-render with
+  // copy of a different length and images reload behind their placeholders.
+  useEffect(measure)
+
   useEffect(() => {
     const element = windowRef.current
     if (!element) return
 
-    const measure = () => {
-      windowTop.set(element.getBoundingClientRect().top + window.scrollY)
-    }
-
-    measure()
-    // Rail cells shift as fonts and images settle, so re-measure on any reflow.
+    // `documentElement` is pinned to the viewport, so watch `body` to catch the
+    // page growing as copy, fonts, and images settle.
     const observer = new ResizeObserver(measure)
-    observer.observe(document.documentElement)
+    observer.observe(document.body)
     observer.observe(element)
-    return () => observer.disconnect()
-  }, [windowTop])
+
+    // A reflow that keeps the page the same height still moves this cell, and
+    // only scrolling reveals it, so re-read the offset as the page moves.
+    const remeasure = () => frame.read(measure)
+    window.addEventListener('scroll', remeasure, { passive: true })
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', remeasure)
+    }
+  }, [measure])
 
   const y = useTransform(
     [scrollY, windowTop],
