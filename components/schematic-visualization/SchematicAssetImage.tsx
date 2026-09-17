@@ -50,7 +50,8 @@ export default function SchematicAssetImage({
         width={1600}
         height={900}
         sizes="(min-width: 800px) 50vw, 100vw"
-        priority={priority}
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : undefined}
         className={
           status === 'loaded'
             ? 'relative h-auto w-full'

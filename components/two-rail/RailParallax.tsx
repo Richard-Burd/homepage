@@ -1,0 +1,141 @@
+'use client'
+
+import { motion, useMotionValue, useScroll, useTransform } from 'motion/react'
+import Image from 'next/image'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  type RefObject,
+} from 'react'
+
+import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/shared'
+import { assetUrl } from '@/lib/assets'
+
+export type ParallaxImage = {
+  src: string
+  alt: string
+}
+
+const ParallaxContext = createContext<ParallaxImage | null>(null)
+
+export const ParallaxProvider = ParallaxContext.Provider
+
+/** The layer overhangs its window, so translating it never exposes an edge. */
+const OVERHANG = 'h-[130%]'
+
+/**
+ * Shared by the desktop rail and the mobile backdrop so both resolve to the
+ * same source and the browser fetches the image once.
+ */
+const PARALLAX_SIZES = '(min-width: 800px) 50vw, 100vw'
+
+export function ParallaxRail({
+  image,
+  scrollTarget,
+}: {
+  image: ParallaxImage
+  scrollTarget: RefObject<HTMLElement | null>
+}) {
+  const reduceMotion = usePrefersReducedMotion()
+  const { scrollYProgress } = useScroll({
+    target: scrollTarget,
+    offset: ['start start', 'end end'],
+  })
+  // The rail is pinned, so the image has to travel up to trail the content
+  // scrolling past it. A short distance reads as "far away".
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduceMotion ? ['0%', '0%'] : ['0%', '-20%']
+  )
+
+  return (
+    // Pins to the viewport top, not below the navbar, which slides away on scroll.
+    <div className="pointer-events-none sticky top-0 z-0 hidden h-dvh w-1/2 overflow-hidden min-[800px]:block">
+      <motion.div className={`relative w-full ${OVERHANG}`} style={{ y }}>
+        <Image
+          src={assetUrl(image.src)}
+          alt={image.alt}
+          fill
+          sizes={PARALLAX_SIZES}
+          // Same image is the LCP candidate at both breakpoints, so `loading`
+          // and `fetchPriority` are preferred over `preload`.
+          loading="eager"
+          fetchPriority="high"
+          className="object-cover"
+        />
+      </motion.div>
+    </div>
+  )
+}
+
+/**
+ * Mobile-only backdrop for a rail cell. The cell is a window onto a
+ * viewport-sized image that holds its place while the page scrolls past, the
+ * way a distant mountain stays put when the foreground moves.
+ *
+ * `background-attachment: fixed` is the CSS equivalent but is unreliable on
+ * mobile Safari, and a `fixed` child cannot be clipped by an `overflow: hidden`
+ * parent, so the page scroll is cancelled out with a transform instead.
+ */
+export function RailCellBackdrop() {
+  const image = useContext(ParallaxContext)
+  const windowRef = useRef<HTMLDivElement>(null)
+  const reduceMotion = usePrefersReducedMotion()
+  const { scrollY } = useScroll()
+  const windowTop = useMotionValue(0)
+
+  useEffect(() => {
+    const element = windowRef.current
+    if (!element) return
+
+    const measure = () => {
+      windowTop.set(element.getBoundingClientRect().top + window.scrollY)
+    }
+
+    measure()
+    // Rail cells shift as fonts and images settle, so re-measure on any reflow.
+    const observer = new ResizeObserver(measure)
+    observer.observe(document.documentElement)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [windowTop])
+
+  const y = useTransform(
+    [scrollY, windowTop],
+    ([scrolled, top]: number[]) => scrolled - top
+  )
+
+  if (!image) return null
+
+  return (
+    <div
+      ref={windowRef}
+      aria-hidden
+      className="pointer-events-none absolute inset-0 overflow-hidden min-[800px]:hidden"
+    >
+      <motion.div
+        // Anchored to the viewport's top edge, so it covers whatever slice of
+        // the cell is on screen.
+        className={
+          reduceMotion ? 'absolute inset-0' : 'absolute inset-x-0 top-0 h-dvh'
+        }
+        style={reduceMotion ? undefined : { y }}
+      >
+        <Image
+          // Same resolved source as the rail image, so this costs no extra fetch.
+          src={assetUrl(image.src)}
+          alt=""
+          fill
+          sizes={PARALLAX_SIZES}
+          loading="eager"
+          className="object-cover"
+        />
+      </motion.div>
+      {/* Keeps heading text legible over the photo. */}
+      <div className="absolute inset-0 bg-white/60 dark:bg-black/55" />
+    </div>
+  )
+}

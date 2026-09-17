@@ -1,11 +1,9 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Fragment, type ReactNode } from 'react'
 
-import SchematicArticle, {
-  RailEnd,
-  RailStart,
-} from '@/components/schematic-visualization/SchematicArticle'
 import SchematicAssetImage from '@/components/schematic-visualization/SchematicAssetImage'
+import { RailEnd, RailStart } from '@/components/two-rail/Rail'
+import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
 import {
   getSchematicSections,
   isSchematicImageBlock,
@@ -54,12 +52,14 @@ export default async function SchematicVisualizationPage({ params }: Props) {
   const lastBlock = lastSection?.blocks.at(-1)
 
   return (
-    <SchematicArticle
-      parallaxSrc={schematicVisualizationContent['parallax-image']}
-      parallaxAlt={t('parallaxAlt')}
-      parallaxCaption={t('parallaxCaption')}
+    <TwoRailLayout
+      className="bg-zinc-200 dark:bg-zinc-800"
+      parallax={{
+        src: schematicVisualizationContent['parallax-image'],
+        alt: t('parallaxAlt'),
+      }}
     >
-      <RailStart tick spine="start">
+      <RailStart tick tickLevel="page" spine="start">
         <div className="flex flex-col items-center min-[800px]:items-end">
           <h1
             className={`${headingClass} text-center text-3xl min-[800px]:text-end min-[800px]:text-[2.25rem] min-[800px]:leading-tight`}
@@ -151,6 +151,6 @@ export default async function SchematicVisualizationPage({ params }: Props) {
           })}
         </section>
       ))}
-    </SchematicArticle>
+    </TwoRailLayout>
   )
 }
