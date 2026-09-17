@@ -50,9 +50,8 @@ export default async function SchematicVisualizationPage({ params }: Props) {
   const t = await getTranslations('SchematicVisualizationPage')
   const headingClass = headingClassName(locale)
   const sections = getSchematicSections()
-
-  let rowIndex = 0
-  const heroRow = rowIndex++
+  const lastSection = sections.at(-1)
+  const lastBlock = lastSection?.blocks.at(-1)
 
   return (
     <SchematicArticle
@@ -60,7 +59,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
       parallaxAlt={t('parallaxAlt')}
       parallaxCaption={t('parallaxCaption')}
     >
-      <RailStart rowIndex={heroRow} tick>
+      <RailStart tick spine="start">
         <div className="flex flex-col items-center min-[800px]:items-end">
           <h1
             className={`${headingClass} text-center text-3xl min-[800px]:text-end min-[800px]:text-[2.25rem] min-[800px]:leading-tight`}
@@ -85,20 +84,22 @@ export default async function SchematicVisualizationPage({ params }: Props) {
       {sections.map((section) => (
         <section key={section.id} id={section.id} className="contents">
           {section.blocks.map((entry, blockIndex) => {
-            const currentRow = rowIndex++
             const showTitle = blockIndex === 0
             const description = isSchematicImageBlock(entry.block)
               ? Boolean(entry.block.hasDescription)
               : false
             const hasLeftContent = showTitle || description
+            const isLastBlock =
+              section.id === lastSection?.id && entry.id === lastBlock?.id
 
             return (
               <Fragment key={entry.id}>
                 <RailStart
-                  rowIndex={currentRow}
                   tick={showTitle}
                   align={description && !showTitle ? 'center' : 'start'}
                   hideWhenEmpty={!hasLeftContent}
+                  spine={isLastBlock ? 'end' : 'full'}
+                  endAnchor={entry.block.type === 'image' ? 'media' : 'text'}
                 >
                   {showTitle ? (
                     <h2

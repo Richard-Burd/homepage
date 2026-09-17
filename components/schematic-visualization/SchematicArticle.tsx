@@ -2,7 +2,13 @@
 
 import { motion, useScroll, useTransform, type MotionValue } from 'motion/react'
 import Image from 'next/image'
-import { Children, useRef, useState, type ReactNode } from 'react'
+import {
+  Children,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 
 import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/shared'
 import { assetUrl } from '@/lib/assets'
@@ -14,8 +20,19 @@ type ArticleProps = {
   parallaxCaption: string
 }
 
-const STAGGER = 0.07
-const SPINE_EASE = [0.22, 1, 0.36, 1] as const
+/**
+ * Where the leader line meets the first line of a row's content. Each value is
+ * the row's top padding plus half the first line box, so ticks and the spine
+ * endpoints all land on the same baseline.
+ */
+const railAnchors = {
+  // Rail cell py-8 (2rem) + half of a heading line.
+  '--rail-title-anchor': '2.65rem',
+  // Paragraph py-8 (2rem) + half of leading-loose at 1.125rem (1.125rem).
+  '--rail-text-anchor': '3.125rem',
+  // Image wrapper py-6.
+  '--rail-media-anchor': '1.5rem',
+} as CSSProperties
 
 export default function SchematicArticle({
   children,
@@ -38,9 +55,11 @@ export default function SchematicArticle({
   return (
     <article
       ref={articleRef}
+      style={railAnchors}
       className="relative flex w-full flex-1 flex-col bg-zinc-200 pt-(--navbar-height,4.15rem) dark:bg-zinc-800"
     >
-      <div className="pointer-events-none sticky top-(--navbar-height,4.15rem) z-0 hidden h-[calc(100dvh-var(--navbar-height,4.15rem))] w-1/2 overflow-hidden min-[800px]:block">
+      {/* Pins to the viewport top, not below the navbar, which slides away on scroll. */}
+      <div className="pointer-events-none sticky top-0 z-0 hidden h-dvh w-1/2 overflow-hidden min-[800px]:block">
         <ParallaxLayer
           src={parallaxSrc}
           alt={parallaxAlt}
@@ -49,7 +68,7 @@ export default function SchematicArticle({
         />
       </div>
 
-      <div className="relative z-10 grid grid-cols-1 min-[800px]:-mt-[calc(100dvh-var(--navbar-height,4.15rem))] min-[800px]:grid-cols-2">
+      <div className="relative z-10 grid grid-cols-1 min-[800px]:mt-[-100dvh] min-[800px]:grid-cols-2">
         {children}
       </div>
     </article>
@@ -95,12 +114,19 @@ function ParallaxLayer({
   )
 }
 
+/**
+ * `start` begins at the page title's tick, `end` stops at the first line of the
+ * final row, and `full` spans the cell so stacked rows read as one line.
+ */
+type SpineVariant = 'full' | 'start' | 'end'
+
 type RailStartProps = {
   children?: ReactNode
-  rowIndex: number
   tick?: boolean
   align?: 'start' | 'center'
   hideWhenEmpty?: boolean
+  spine?: SpineVariant
+  endAnchor?: 'text' | 'media'
 }
 
 // Children.toArray drops null, undefined, and booleans.
@@ -110,10 +136,11 @@ function hasRenderableChildren(children: ReactNode) {
 
 export function RailStart({
   children,
-  rowIndex,
   tick = false,
   align = 'start',
   hideWhenEmpty = false,
+  spine = 'full',
+  endAnchor = 'text',
 }: RailStartProps) {
   const hasContent = hasRenderableChildren(children)
   const empty = hideWhenEmpty && !hasContent
@@ -126,12 +153,8 @@ export function RailStart({
         align === 'center' ? 'items-center' : 'items-start'
       } bg-teal-200 text-teal-950 min-[800px]:bg-transparent dark:bg-teal-950 dark:text-teal-50 min-[800px]:dark:bg-transparent`}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 inset-e-0 hidden w-10 bg-green-300 min-[800px]:block dark:bg-green-800"
-      />
-      <LeaderSpine delay={rowIndex * STAGGER} />
-      {tick ? <LeaderTick delay={rowIndex * STAGGER} /> : null}
+      <LeaderSpine variant={spine} endAnchor={endAnchor} />
+      {tick ? <LeaderTick /> : null}
       {hasContent ? (
         <div className="relative z-10 w-full px-4 py-6 min-[800px]:px-8 min-[800px]:py-8">
           {children}
@@ -159,38 +182,37 @@ export function RailEnd({
   )
 }
 
-function LeaderSpine({ delay }: { delay: number }) {
-  const reduceMotion = usePrefersReducedMotion()
+function LeaderSpine({
+  variant,
+  endAnchor,
+}: {
+  variant: SpineVariant
+  endAnchor: 'text' | 'media'
+}) {
+  const extent =
+    variant === 'start'
+      ? 'top-(--rail-title-anchor) bottom-0'
+      : variant === 'end'
+        ? `top-0 ${
+            endAnchor === 'media'
+              ? 'h-(--rail-media-anchor)'
+              : 'h-(--rail-text-anchor)'
+          }`
+        : 'inset-y-0'
 
   return (
-    <motion.span
+    <span
       aria-hidden
-      className="pointer-events-none absolute inset-y-0 inset-e-5 z-20 hidden w-px origin-top bg-zinc-900 min-[800px]:block dark:bg-zinc-100"
-      initial={reduceMotion ? false : { scaleY: 0 }}
-      animate={{ scaleY: 1 }}
-      transition={{
-        duration: reduceMotion ? 0 : 0.55,
-        delay: reduceMotion ? 0 : delay,
-        ease: SPINE_EASE,
-      }}
+      className={`pointer-events-none absolute inset-e-5 z-20 hidden w-px bg-zinc-900 min-[800px]:block dark:bg-zinc-100 ${extent}`}
     />
   )
 }
 
-function LeaderTick({ delay }: { delay: number }) {
-  const reduceMotion = usePrefersReducedMotion()
-
+function LeaderTick() {
   return (
-    <motion.span
+    <span
       aria-hidden
-      className="pointer-events-none absolute inset-e-5 top-[2.65rem] z-20 hidden h-px w-8 origin-right bg-zinc-900 min-[800px]:block rtl:origin-left dark:bg-zinc-100"
-      initial={reduceMotion ? false : { scaleX: 0, opacity: 0 }}
-      animate={{ scaleX: 1, opacity: 1 }}
-      transition={{
-        duration: reduceMotion ? 0 : 0.35,
-        delay: reduceMotion ? 0 : delay + 0.28,
-        ease: 'easeOut',
-      }}
+      className="pointer-events-none absolute inset-e-5 top-(--rail-title-anchor) z-20 hidden h-px w-8 bg-zinc-900 min-[800px]:block dark:bg-zinc-100"
     />
   )
 }
