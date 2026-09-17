@@ -112,6 +112,14 @@ export default async function Home({ params }: Props) {
           {chunks}
         </Link>
       ),
+      schematicVisualization: (chunks) => (
+        <Link
+          href="/schematic-visualization"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
     }),
     value: slice.value,
     color: slice.color,
