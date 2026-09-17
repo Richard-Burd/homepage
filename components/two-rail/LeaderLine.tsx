@@ -61,11 +61,25 @@ const TITLE_LIFT_PX = 10
 const PAGE_TITLE_LIFT_PX = 15
 
 /**
- * Distance from the top of the viewport, navbar included, down to the page
- * title's first line and its tick. Raise it to sit the title lower against a
- * taller hero image. Pages can override it with the `pageTitleOffset` anchor.
+ * Hero height as a fraction of its width. The hero fills one rail, so this is
+ * what turns the layout's width into a hero height. Update it if the hero's
+ * proportions change; every hero is expected to share the one ratio.
  */
-const PAGE_TITLE_OFFSET = '500px'
+const HERO_HEIGHT_RATIO = 1148 / 1309
+
+/** Where the page title lands on the hero, as a fraction of its height. */
+const PAGE_TITLE_HERO_FRACTION = 0.5
+
+/**
+ * Distance from the top of the viewport, navbar included, down to the page
+ * title's first line and its tick. `cqw` is a percentage of the rail grid's
+ * width, and the hero is half of that, so the title tracks the hero's height
+ * as the viewport widens or narrows. Pages can override it with the
+ * `pageTitleOffset` anchor.
+ */
+const PAGE_TITLE_OFFSET = `calc(var(--navbar-height, 4.15rem) + ${
+  50 * HERO_HEIGHT_RATIO * PAGE_TITLE_HERO_FRACTION
+}cqw)`
 
 export const defaultRailAnchors: Required<RailAnchors> = {
   // Rail cell py-8 (2rem) + half of a heading line.

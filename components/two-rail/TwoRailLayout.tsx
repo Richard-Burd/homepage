@@ -43,7 +43,10 @@ export default function TwoRailLayout({
       >
         <ParallaxRail image={parallax} scrollTarget={articleRef} />
 
-        <div className="relative z-10 grid grid-cols-1 min-[800px]:mt-[-100dvh] min-[800px]:grid-cols-2">
+        {/* A container, so the page title's offset can be measured against the
+            rails' own width rather than the viewport's, which would fold in
+            the scrollbar. */}
+        <div className="@container relative z-10 grid grid-cols-1 min-[800px]:mt-[-100dvh] min-[800px]:grid-cols-2">
           {children}
         </div>
       </article>

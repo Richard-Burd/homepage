@@ -7,24 +7,38 @@ import { assetUrl } from '@/lib/assets'
 
 type Props = {
   src: string
+  /** When set, shown only in dark mode; `src` is light-mode only. */
+  darkSrc?: string
   alt: string
   caption?: string
   priority?: boolean
   className?: string
   minHeightClassName?: string
+  width?: number
+  height?: number
 }
 
 export default function SchematicAssetImage({
   src,
+  darkSrc,
   alt,
   caption,
   priority,
   className,
   minHeightClassName = 'min-h-[12rem]',
+  width = 1600,
+  height = 900,
 }: Props) {
-  const [status, setStatus] = useState<'pending' | 'loaded' | 'error'>(
+  const [lightStatus, setLightStatus] = useState<
+    'pending' | 'loaded' | 'error'
+  >('pending')
+  const [darkStatus, setDarkStatus] = useState<'pending' | 'loaded' | 'error'>(
     'pending'
   )
+
+  const lightReady = lightStatus === 'loaded'
+  const darkReady = !darkSrc || darkStatus === 'loaded'
+  const showPlaceholder = !(lightReady && darkReady)
 
   return (
     <div
@@ -32,7 +46,7 @@ export default function SchematicAssetImage({
         className ?? ''
       }`}
     >
-      {status !== 'loaded' ? (
+      {showPlaceholder ? (
         <div
           className={`flex ${minHeightClassName} flex-col items-center justify-center px-4 py-10 text-center text-rose-950 dark:text-rose-50`}
         >
@@ -41,25 +55,45 @@ export default function SchematicAssetImage({
               {caption}
             </p>
           ) : null}
-          <p className="mt-2 font-mono text-xs break-all opacity-80">{src}</p>
+          <p className="mt-2 font-mono text-xs break-all opacity-80">
+            {darkSrc ? `${src} / ${darkSrc}` : src}
+          </p>
         </div>
       ) : null}
       <Image
         src={assetUrl(src)}
         alt={alt}
-        width={1600}
-        height={900}
+        width={width}
+        height={height}
         sizes="(min-width: 800px) 50vw, 100vw"
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : undefined}
         className={
-          status === 'loaded'
-            ? 'relative h-auto w-full'
-            : 'absolute inset-0 h-full w-full object-cover opacity-0'
+          showPlaceholder
+            ? 'absolute inset-0 h-full w-full object-cover opacity-0'
+            : `relative h-auto w-full${darkSrc ? ' dark:hidden' : ''}`
         }
-        onLoad={() => setStatus('loaded')}
-        onError={() => setStatus('error')}
+        onLoad={() => setLightStatus('loaded')}
+        onError={() => setLightStatus('error')}
       />
+      {darkSrc ? (
+        <Image
+          src={assetUrl(darkSrc)}
+          alt={alt}
+          width={width}
+          height={height}
+          sizes="(min-width: 800px) 50vw, 100vw"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : undefined}
+          className={
+            showPlaceholder
+              ? 'absolute inset-0 hidden h-full w-full object-cover opacity-0 dark:block'
+              : 'relative hidden h-auto w-full dark:block'
+          }
+          onLoad={() => setDarkStatus('loaded')}
+          onError={() => setDarkStatus('error')}
+        />
+      ) : null}
     </div>
   )
 }
