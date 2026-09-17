@@ -89,6 +89,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
               ? Boolean(entry.block.hasDescription)
               : false
             const hasLeftContent = showTitle || description
+            const isSectionEnd = blockIndex === section.blocks.length - 1
             const isLastBlock =
               section.id === lastSection?.id && entry.id === lastBlock?.id
 
@@ -96,6 +97,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
               <Fragment key={entry.id}>
                 <RailStart
                   tick={showTitle}
+                  mobile={showTitle ? 'heading' : 'prose'}
                   align={description && !showTitle ? 'center' : 'start'}
                   hideWhenEmpty={!hasLeftContent}
                   spine={isLastBlock ? 'end' : 'full'}
@@ -114,14 +116,17 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                         showTitle ? 'mt-8 min-[800px]:mt-16' : ''
                       }`}
                     >
+                      {/* Stacked, a description reads as body copy: its text
+                          matches the end rail's paragraphs and its title sits
+                          one step above them. */}
                       <p
-                        className={`${headingClass} text-sm min-[800px]:text-base`}
+                        className={`${headingClass} max-[799px]:text-[1.125rem] min-[800px]:text-base md:max-[799px]:text-[1.25rem]`}
                       >
                         {t(
                           `sections.${section.id}.${entry.id}.description-title`
                         )}
                       </p>
-                      <p className="mt-2 text-sm leading-relaxed min-[800px]:text-[0.95rem]">
+                      <p className="mt-2 max-[799px]:text-[1rem] max-[799px]:leading-loose min-[800px]:text-[0.95rem] min-[800px]:leading-relaxed md:max-[799px]:text-[1.125rem]">
                         {t(
                           `sections.${section.id}.${entry.id}.description-text`
                         )}
@@ -129,13 +134,13 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                     </div>
                   ) : null}
                 </RailStart>
-                <RailEnd>
+                <RailEnd sectionEnd={isSectionEnd}>
                   {entry.block.type === 'paragraph' ? (
-                    <p className="bg-sky-100 px-6 py-8 text-[1rem] leading-loose text-zinc-800 md:px-10 md:text-[1.125rem] dark:bg-sky-950 dark:text-zinc-50">
+                    <p className="px-6 py-8 text-[1rem] leading-loose text-zinc-800 md:px-10 md:text-[1.125rem] dark:text-zinc-50">
                       {t.rich(`sections.${section.id}.${entry.id}`, richMarks)}
                     </p>
                   ) : (
-                    <div className="bg-white px-6 py-6 md:px-10 dark:bg-black">
+                    <div className="px-6 py-6 md:px-10">
                       <SchematicAssetImage
                         src={entry.block.location}
                         alt={t(`sections.${section.id}.${entry.id}.alt`)}

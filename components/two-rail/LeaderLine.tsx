@@ -18,6 +18,8 @@ export type RailAnchors = {
   title?: string
   text?: string
   media?: string
+  /** Per-page override for `PAGE_TITLE_OFFSET`. */
+  pageTitleOffset?: string
 }
 
 /** Leader line thickness. Half of it centers a line on its anchor. */
@@ -42,6 +44,14 @@ const TICK_INSET = '2.5rem'
 const TICK_LENGTH = '2rem'
 
 /**
+ * Lowers a section's tick, marker, and heading text together, so the tick
+ * lines up with the first line of the paragraph it points at on the right
+ * rail. Raise it if the rail's type scale grows. The page title sets its own
+ * position through `PAGE_TITLE_OFFSET` and ignores this.
+ */
+const TICK_DROP_PX = 8
+
+/**
  * A tick sits at a fixed offset from the top of its cell, but a heading's
  * first line centers at half its own line box, which is taller. These lift the
  * text so its first line centers on the tick; retune them if the type scale or
@@ -50,6 +60,13 @@ const TICK_LENGTH = '2rem'
 const TITLE_LIFT_PX = 10
 const PAGE_TITLE_LIFT_PX = 15
 
+/**
+ * Distance from the top of the viewport, navbar included, down to the page
+ * title's first line and its tick. Raise it to sit the title lower against a
+ * taller hero image. Pages can override it with the `pageTitleOffset` anchor.
+ */
+const PAGE_TITLE_OFFSET = '500px'
+
 export const defaultRailAnchors: Required<RailAnchors> = {
   // Rail cell py-8 (2rem) + half of a heading line.
   title: '2.65rem',
@@ -57,7 +74,11 @@ export const defaultRailAnchors: Required<RailAnchors> = {
   text: '3.125rem',
   // Image wrapper py-6.
   media: '1.5rem',
+  pageTitleOffset: PAGE_TITLE_OFFSET,
 }
+
+/** Rail cell content padding on desktop, the baseline a shift adds to. */
+const CELL_PAD_TOP = '2rem'
 
 export function railAnchorStyle(anchors?: RailAnchors) {
   const merged = { ...defaultRailAnchors, ...anchors }
@@ -73,6 +94,13 @@ export function railAnchorStyle(anchors?: RailAnchors) {
     '--rail-page-title-lift': `${PAGE_TITLE_LIFT_PX}px`,
     '--rail-tick-inset': TICK_INSET,
     '--rail-tick-length': TICK_LENGTH,
+    '--rail-cell-pad-top': CELL_PAD_TOP,
+    // Cells move their tick, marker, and text down by this. Only the page
+    // title overrides it, with the shift below.
+    '--rail-tick-shift': `${TICK_DROP_PX}px`,
+    // What the page title has to travel to land at its offset, measured from
+    // the cell's top, which starts under the navbar.
+    '--rail-page-title-shift': `calc(${merged.pageTitleOffset} - var(--navbar-height, 4.15rem) - ${merged.title})`,
     // How far rail text must stay clear of the line, so it tracks every part
     // of the geometry above rather than just the inset.
     '--rail-text-clearance': `calc(${TICK_INSET} + ${TICK_LENGTH} + ${MARKER_SIZE_PX}px + ${TEXT_GAP_PX}px)`,
@@ -90,7 +118,7 @@ export function LeaderSpine({
   // centered on its anchor rather than starting below it.
   const extent =
     variant === 'start'
-      ? 'top-[calc(var(--rail-title-anchor)-var(--rail-line-half))] bottom-0'
+      ? 'top-[calc(var(--rail-title-anchor)+var(--rail-tick-shift)-var(--rail-line-half))] bottom-0'
       : variant === 'end'
         ? `top-0 ${
             endAnchor === 'media'
@@ -124,10 +152,10 @@ export function LeaderTick() {
     <>
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-e-(--rail-tick-inset) top-[calc(var(--rail-title-anchor)-var(--rail-line-half))] z-20 hidden h-(--rail-line) w-(--rail-tick-length) bg-zinc-900 min-[800px]:block dark:bg-zinc-100"
+        className="pointer-events-none absolute inset-e-(--rail-tick-inset) top-[calc(var(--rail-title-anchor)+var(--rail-tick-shift)-var(--rail-line-half))] z-20 hidden h-(--rail-line) w-(--rail-tick-length) bg-zinc-900 min-[800px]:block dark:bg-zinc-100"
       />
       {/* Logical inset keeps this past the tick's tip in both LTR and RTL. */}
-      <LeaderMarker position="inset-e-[calc(var(--rail-tick-inset)+var(--rail-tick-length))] top-[calc(var(--rail-title-anchor)-var(--rail-marker-half))]" />
+      <LeaderMarker position="inset-e-[calc(var(--rail-tick-inset)+var(--rail-tick-length))] top-[calc(var(--rail-title-anchor)+var(--rail-tick-shift)-var(--rail-marker-half))]" />
     </>
   )
 }
