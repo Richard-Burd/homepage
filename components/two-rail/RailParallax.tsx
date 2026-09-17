@@ -21,7 +21,8 @@ import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/sh
 import { assetUrl } from '@/lib/assets'
 
 export type ParallaxImage = {
-  src: string
+  light: string
+  dark: string
   alt: string
 }
 
@@ -63,7 +64,7 @@ export function ParallaxRail({
     <div className="pointer-events-none sticky top-0 z-0 hidden h-dvh w-1/2 overflow-hidden min-[800px]:block">
       <motion.div className={`relative w-full ${OVERHANG}`} style={{ y }}>
         <Image
-          src={assetUrl(image.src)}
+          src={assetUrl(image.light)}
           alt={image.alt}
           fill
           sizes={PARALLAX_SIZES}
@@ -71,7 +72,18 @@ export function ParallaxRail({
           // and `fetchPriority` are preferred over `preload`.
           loading="eager"
           fetchPriority="high"
-          className="object-cover"
+          // Abstract scrollwork: flip under RTL so the seam-facing edge
+          // stays toward the center rail in Arabic and Hebrew.
+          className="object-cover dark:hidden rtl:-scale-x-100"
+        />
+        <Image
+          src={assetUrl(image.dark)}
+          alt={image.alt}
+          fill
+          sizes={PARALLAX_SIZES}
+          loading="eager"
+          fetchPriority="high"
+          className="hidden object-cover dark:block rtl:-scale-x-100"
         />
       </motion.div>
     </div>
@@ -148,17 +160,23 @@ export function RailCellBackdrop() {
         style={reduceMotion ? undefined : { y }}
       >
         <Image
-          // Same resolved source as the rail image, so this costs no extra fetch.
-          src={assetUrl(image.src)}
+          // Same resolved sources as the rail images, so this costs no extra fetch.
+          src={assetUrl(image.light)}
           alt=""
           fill
           sizes={PARALLAX_SIZES}
           loading="eager"
-          className="object-cover"
+          className="object-cover dark:hidden rtl:-scale-x-100"
+        />
+        <Image
+          src={assetUrl(image.dark)}
+          alt=""
+          fill
+          sizes={PARALLAX_SIZES}
+          loading="eager"
+          className="hidden object-cover dark:block rtl:-scale-x-100"
         />
       </motion.div>
-      {/* Keeps heading text legible over the photo. */}
-      <div className="absolute inset-0 bg-white/60 dark:bg-black/55" />
     </div>
   )
 }

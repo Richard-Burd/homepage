@@ -55,7 +55,8 @@ export default async function SchematicVisualizationPage({ params }: Props) {
     <TwoRailLayout
       className="bg-zinc-200 dark:bg-zinc-800"
       parallax={{
-        src: schematicVisualizationContent['parallax-image'],
+        light: schematicVisualizationContent['parallax-image'].light,
+        dark: schematicVisualizationContent['parallax-image'].dark,
         alt: t('parallaxAlt'),
       }}
     >
@@ -73,9 +74,12 @@ export default async function SchematicVisualizationPage({ params }: Props) {
       </RailStart>
       <RailEnd>
         <SchematicAssetImage
-          src={schematicVisualizationContent['hero-image']}
+          src={schematicVisualizationContent['hero-image'].light}
+          darkSrc={schematicVisualizationContent['hero-image'].dark}
           alt={t('heroAlt')}
           caption={t('heroCaption')}
+          width={schematicVisualizationContent['hero-image'].width}
+          height={schematicVisualizationContent['hero-image'].height}
           priority
           minHeightClassName="min-h-[16rem] min-[800px]:min-h-[22rem]"
         />

@@ -5,8 +5,16 @@
  * `messages/{locale}.json` under `SchematicVisualizationPage`.
  */
 export const schematicVisualizationContent = {
-  'hero-image': 'schematic-vis-hero-image.jpg',
-  'parallax-image': 'schematic-vis-parallax-image.jpg',
+  'hero-image': {
+    light: 'schematic-visualization-hero-light-mode.v.1.jpg',
+    dark: 'schematic-visualization-hero-dark-mode.v.1.jpg',
+    width: 1309,
+    height: 1148,
+  },
+  'parallax-image': {
+    light: 'schematic-visualization-parallax-light-mode.v.1.jpg',
+    dark: 'schematic-visualization-parallax-dark-mode.v.1.jpg',
+  },
   sections: {
     'section-1': {
       'paragraph-1': { type: 'paragraph' },

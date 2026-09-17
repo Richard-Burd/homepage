@@ -65,7 +65,7 @@ const PAGE_TITLE_LIFT_PX = 15
  * what turns the layout's width into a hero height. Update it if the hero's
  * proportions change; every hero is expected to share the one ratio.
  */
-const HERO_HEIGHT_RATIO = 1
+const HERO_HEIGHT_RATIO = 1148 / 1309
 
 /** Where the page title lands on the hero, as a fraction of its height. */
 const PAGE_TITLE_HERO_FRACTION = 0.5
