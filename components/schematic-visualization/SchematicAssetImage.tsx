@@ -17,8 +17,10 @@ type Props = {
   width?: number
   height?: number
   /**
-   * Fill the rail from the navbar to the bottom of the viewport and crop
-   * the sides. Without this, the image scales so the whole frame stays in view.
+   * Fill the rail from the navbar to the bottom of the small viewport and
+   * crop the sides. `svh` is used so mobile browser chrome show/hide does
+   * not resize the crop. Without this, the image scales so the whole frame
+   * stays in view.
    */
   viewportCover?: boolean
 }
@@ -53,7 +55,7 @@ export default function SchematicAssetImage({
     <div
       className={`relative overflow-hidden bg-rose-200 dark:bg-rose-900 ${
         viewportCover
-          ? 'h-[calc(100dvh-var(--navbar-height,4.15rem))]'
+          ? 'h-[calc(100svh-var(--navbar-height,4.15rem))]'
           : ''
       } ${className ?? ''}`}
     >
