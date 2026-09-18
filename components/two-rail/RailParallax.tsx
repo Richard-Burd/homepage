@@ -155,7 +155,9 @@ export function RailCellBackdrop() {
         // Anchored to the viewport's top edge, so it covers whatever slice of
         // the cell is on screen.
         className={
-          reduceMotion ? 'absolute inset-0' : 'absolute inset-x-0 top-0 h-dvh'
+          // `svh` keeps the crop still when mobile browser chrome shows or
+          // hides. `dvh` would resize the object-cover image mid-scroll.
+          reduceMotion ? 'absolute inset-0' : 'absolute inset-x-0 top-0 h-svh'
         }
         style={reduceMotion ? undefined : { y }}
       >
