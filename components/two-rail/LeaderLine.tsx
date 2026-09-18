@@ -66,10 +66,11 @@ const PAGE_TITLE_HERO_FRACTION = 0.5
 /**
  * Distance from the top of the viewport, navbar included, down to the page
  * title's first line and its tick. The hero fills the end rail from the
- * navbar to the bottom of the viewport, so the title tracks half of that
- * visible height. Pages can override it with the `pageTitleOffset` anchor.
+ * navbar to the bottom of the small viewport (`svh` stays put when mobile
+ * browser chrome shows or hides). Pages can override it with the
+ * `pageTitleOffset` anchor.
  */
-const PAGE_TITLE_OFFSET = `calc(var(--navbar-height, 4.15rem) + (100dvh - var(--navbar-height, 4.15rem)) * ${PAGE_TITLE_HERO_FRACTION})`
+const PAGE_TITLE_OFFSET = `calc(var(--navbar-height, 4.15rem) + (100svh - var(--navbar-height, 4.15rem)) * ${PAGE_TITLE_HERO_FRACTION})`
 
 export const defaultRailAnchors: Required<RailAnchors> = {
   // Rail cell py-8 (2rem) + half of a heading line.
