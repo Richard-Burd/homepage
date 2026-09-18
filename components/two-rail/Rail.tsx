@@ -67,8 +67,12 @@ export function RailStart({
       className={`relative overflow-hidden min-[800px]:overflow-visible min-[800px]:pe-(--rail-text-clearance) ${
         empty ? 'hidden min-[800px]:flex' : 'flex'
       } ${align === 'center' ? 'items-center' : 'items-start'} ${
-        className ?? ''
-      }`}
+        // Stacked, prose cells share the end rail's surface so a description
+        // doesn't sit on the page zinc while the copy around it is white/black.
+        mobile === 'prose' && hasContent
+          ? 'max-[799px]:bg-white max-[799px]:dark:bg-black'
+          : ''
+      } ${className ?? ''}`}
     >
       {hasContent && mobile === 'heading' ? <RailCellBackdrop /> : null}
       <LeaderSpine variant={spine} endAnchor={endAnchor} />
@@ -77,7 +81,13 @@ export function RailStart({
         // The cell's own end padding holds the line clearance, so the inner
         // box only pads the outer edge on desktop.
         <div
-          className={`relative z-10 w-full px-4 py-6 min-[800px]:ps-8 min-[800px]:pe-0 min-[800px]:pt-[calc(var(--rail-cell-pad-top)+var(--rail-tick-shift))] min-[800px]:pb-8 ${
+          className={`relative z-10 w-full px-4 min-[800px]:ps-8 min-[800px]:pe-0 min-[800px]:pt-[calc(var(--rail-cell-pad-top)+var(--rail-tick-shift))] min-[800px]:pb-8 ${
+            // Section titles keep a taller parallax band above and below the
+            // heading once the rails stack. The page title stays on py-6.
+            mobile === 'heading' && tickLevel !== 'page'
+              ? 'py-[calc(1.5rem*1.3)]'
+              : 'py-6'
+          } ${
             // Below the split, prose cells take the end rail's paragraph
             // padding so both columns share one text margin.
             mobile === 'prose'
@@ -107,7 +117,7 @@ export function RailEnd({
 }) {
   return (
     <div
-      className={`bg-zinc-200 dark:bg-zinc-800 ${
+      className={`bg-white dark:bg-black ${
         sectionEnd ? 'pb-8' : 'pb-0'
       } ${className ?? ''}`}
     >

@@ -81,6 +81,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
           width={schematicVisualizationContent['hero-image'].width}
           height={schematicVisualizationContent['hero-image'].height}
           priority
+          viewportCover
           minHeightClassName="min-h-[16rem] min-[800px]:min-h-[22rem]"
         />
       </RailEnd>

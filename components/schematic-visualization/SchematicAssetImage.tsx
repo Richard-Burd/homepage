@@ -16,6 +16,11 @@ type Props = {
   minHeightClassName?: string
   width?: number
   height?: number
+  /**
+   * Fill the rail from the navbar to the bottom of the viewport and crop
+   * the sides. Without this, the image scales so the whole frame stays in view.
+   */
+  viewportCover?: boolean
 }
 
 export default function SchematicAssetImage({
@@ -28,6 +33,7 @@ export default function SchematicAssetImage({
   minHeightClassName = 'min-h-[12rem]',
   width = 1600,
   height = 900,
+  viewportCover = false,
 }: Props) {
   const [lightStatus, setLightStatus] = useState<
     'pending' | 'loaded' | 'error'
@@ -39,12 +45,17 @@ export default function SchematicAssetImage({
   const lightReady = lightStatus === 'loaded'
   const darkReady = !darkSrc || darkStatus === 'loaded'
   const showPlaceholder = !(lightReady && darkReady)
+  const loadedImageClassName = viewportCover
+    ? 'absolute inset-0 h-full w-full max-w-none object-cover object-center'
+    : 'relative h-auto w-full'
 
   return (
     <div
       className={`relative overflow-hidden bg-rose-200 dark:bg-rose-900 ${
-        className ?? ''
-      }`}
+        viewportCover
+          ? 'h-[calc(100dvh-var(--navbar-height,4.15rem))]'
+          : ''
+      } ${className ?? ''}`}
     >
       {showPlaceholder ? (
         <div
@@ -71,7 +82,7 @@ export default function SchematicAssetImage({
         className={
           showPlaceholder
             ? 'absolute inset-0 h-full w-full object-cover opacity-0'
-            : `relative h-auto w-full${darkSrc ? ' dark:hidden' : ''}`
+            : `${loadedImageClassName}${darkSrc ? ' dark:hidden' : ''}`
         }
         onLoad={() => setLightStatus('loaded')}
         onError={() => setLightStatus('error')}
@@ -88,7 +99,7 @@ export default function SchematicAssetImage({
           className={
             showPlaceholder
               ? 'absolute inset-0 hidden h-full w-full object-cover opacity-0 dark:block'
-              : 'relative hidden h-auto w-full dark:block'
+              : `${loadedImageClassName} hidden dark:block`
           }
           onLoad={() => setDarkStatus('loaded')}
           onError={() => setDarkStatus('error')}
