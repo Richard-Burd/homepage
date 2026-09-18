@@ -6,14 +6,14 @@
  */
 export const schematicVisualizationContent = {
   'hero-image': {
-    light: 'schematic-visualization-hero-light-mode.v.1.jpg',
-    dark: 'schematic-visualization-hero-dark-mode.v.1.jpg',
+    light: 'schematic-visualization-hero-light-mode.v.2.jpg',
+    dark: 'schematic-visualization-hero-dark-mode.v.2.jpg',
     width: 1309,
     height: 1148,
   },
   'parallax-image': {
-    light: 'schematic-visualization-parallax-light-mode.v.1.jpg',
-    dark: 'schematic-visualization-parallax-dark-mode.v.1.jpg',
+    light: 'schematic-visualization-parallax-light-mode.v.2.jpg',
+    dark: 'schematic-visualization-parallax-dark-mode.v.4.jpg',
   },
   sections: {
     'section-1': {
