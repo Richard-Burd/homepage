@@ -132,9 +132,17 @@ export function RailCellBackdrop() {
     // only scrolling reveals it, so re-read the offset as the page moves.
     const remeasure = () => frame.read(measure)
     window.addEventListener('scroll', remeasure, { passive: true })
+    // Chrome on Android resizes the visual viewport when the URL bar hides,
+    // often without a `window` scroll event. Re-read so the window stays
+    // aligned to that viewport.
+    const visualViewport = window.visualViewport
+    visualViewport?.addEventListener('resize', remeasure)
+    visualViewport?.addEventListener('scroll', remeasure)
     return () => {
       observer.disconnect()
       window.removeEventListener('scroll', remeasure)
+      visualViewport?.removeEventListener('resize', remeasure)
+      visualViewport?.removeEventListener('scroll', remeasure)
     }
   }, [measure])
 
@@ -155,9 +163,11 @@ export function RailCellBackdrop() {
         // Anchored to the viewport's top edge, so it covers whatever slice of
         // the cell is on screen.
         className={
-          // `svh` keeps the crop still when mobile browser chrome shows or
-          // hides. `dvh` would resize the object-cover image mid-scroll.
-          reduceMotion ? 'absolute inset-0' : 'absolute inset-x-0 top-0 h-svh'
+          // `lvh` is the viewport with mobile chrome hidden. It stays put
+          // while scrolling (unlike `dvh`, which resizes the object-cover
+          // crop) and is tall enough to cover the cell after the toolbar
+          // tucks away (unlike `svh`, which leaves a zinc gap at the bottom).
+          reduceMotion ? 'absolute inset-0' : 'absolute inset-x-0 top-0 h-lvh'
         }
         style={reduceMotion ? undefined : { y }}
       >
