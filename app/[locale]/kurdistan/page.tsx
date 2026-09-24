@@ -99,6 +99,296 @@ function extLink(href: string, dir?: 'ltr' | 'rtl') {
   return RichLink
 }
 
+type ArtDirectedSet = {
+  lightDesktop: ThemedSrc
+  lightMobile: ThemedSrc
+  darkDesktop: ThemedSrc
+  darkMobile: ThemedSrc
+}
+
+type PageLocale = 'en' | 'ar' | 'he'
+
+function pageLocale(locale: string): PageLocale {
+  if (locale === 'ar' || locale === 'he') return locale
+  return 'en'
+}
+
+const fig1ByLocale = {
+  en: {
+    lightDesktop: {
+      src: 'kurdistan-fig-1-light-desktop-english-arabic.3.png',
+      width: 1000,
+      height: 2156,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-1-light-mobile-english.3.png',
+      width: 800,
+      height: 2990,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-1-dark-desktop-english-arabic.3.png',
+      width: 1001,
+      height: 2138,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-1-dark-mobile-english.3.png',
+      width: 800,
+      height: 2990,
+    },
+  },
+  ar: {
+    lightDesktop: {
+      src: 'kurdistan-fig-1-light-desktop-english-arabic.3.png',
+      width: 1000,
+      height: 2156,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-1-light-mobile-arabic.3.png',
+      width: 800,
+      height: 2990,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-1-dark-desktop-english-arabic.3.png',
+      width: 1001,
+      height: 2138,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-1-dark-mobile-arabic.3.png',
+      width: 800,
+      height: 2990,
+    },
+  },
+  he: {
+    lightDesktop: {
+      src: 'kurdistan-fig-1-light-desktop-english-hebrew.4.png',
+      width: 1000,
+      height: 2149,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-1-light-mobile-hebrew.4.png',
+      width: 800,
+      height: 2990,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-1-dark-desktop-english-hebrew.4.png',
+      width: 1000,
+      height: 2130,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-1-dark-mobile-hebrew.4.png',
+      width: 800,
+      height: 2990,
+    },
+  },
+} as const satisfies Record<PageLocale, ArtDirectedSet>
+
+const fig4ByLocale = {
+  en: {
+    lightDesktop: {
+      src: 'kurdistan-fig-4-light-desktop-english.3.png',
+      width: 1000,
+      height: 813,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-4-light-mobile-english.3.png',
+      width: 800,
+      height: 661,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-4-dark-desktop-english.3.png',
+      width: 1000,
+      height: 812,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-4-dark-mobile-english.3.png',
+      width: 800,
+      height: 658,
+    },
+  },
+  ar: {
+    lightDesktop: {
+      src: 'kurdistan-fig-4-light-desktop-arabic.3.png',
+      width: 1000,
+      height: 812,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-4-light-mobile-arabic.3.png',
+      width: 800,
+      height: 662,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-4-dark-desktop-arabic.3.png',
+      width: 1000,
+      height: 811,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-4-dark-mobile-arabic.3.png',
+      width: 800,
+      height: 659,
+    },
+  },
+  he: {
+    lightDesktop: {
+      src: 'kurdistan-fig-4-light-desktop-hebrew.3.png',
+      width: 1000,
+      height: 810,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-4-light-mobile-hebrew.3.png',
+      width: 800,
+      height: 657,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-4-dark-desktop-hebrew.3.png',
+      width: 1000,
+      height: 808,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-4-dark-mobile-hebrew.3.png',
+      width: 800,
+      height: 655,
+    },
+  },
+} as const satisfies Record<PageLocale, ArtDirectedSet>
+
+const fig5ByLocale = {
+  en: {
+    lightDesktop: {
+      src: 'kurdistan-fig-5-light-desktop-english.3.png',
+      width: 1000,
+      height: 679,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-5-light-mobile-english.3.png',
+      width: 800,
+      height: 579,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-5-dark-desktop-english.3.png',
+      width: 1000,
+      height: 679,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-5-dark-mobile-english.3.png',
+      width: 800,
+      height: 579,
+    },
+  },
+  ar: {
+    lightDesktop: {
+      src: 'kurdistan-fig-5-light-desktop-arabic.3.png',
+      width: 1000,
+      height: 679,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-5-light-mobile-arabic.3.png',
+      width: 800,
+      height: 595,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-5-dark-desktop-arabic.3.png',
+      width: 1000,
+      height: 679,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-5-dark-mobile-arabic.3.png',
+      width: 800,
+      height: 595,
+    },
+  },
+  he: {
+    lightDesktop: {
+      src: 'kurdistan-fig-5-light-desktop-hebrew.3.png',
+      width: 1000,
+      height: 679,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-5-light-mobile-hebrew.3.png',
+      width: 800,
+      height: 566,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-5-dark-desktop-hebrew.3.png',
+      width: 1000,
+      height: 679,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-5-dark-mobile-hebrew.3.png',
+      width: 800,
+      height: 566,
+    },
+  },
+} as const satisfies Record<PageLocale, ArtDirectedSet>
+
+const fig6ByLocale = {
+  en: {
+    lightDesktop: {
+      src: 'kurdistan-fig-6-light-desktop-english.3.png',
+      width: 1000,
+      height: 394,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-6-light-mobile-english.3.png',
+      width: 800,
+      height: 316,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-6-dark-desktop-english.3.png',
+      width: 1000,
+      height: 394,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-6-dark-mobile-english.3.png',
+      width: 800,
+      height: 316,
+    },
+  },
+  ar: {
+    lightDesktop: {
+      src: 'kurdistan-fig-6-light-desktop-arabic.3.png',
+      width: 1000,
+      height: 394,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-6-light-mobile-arabic.3.png',
+      width: 800,
+      height: 316,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-6-dark-desktop-arabic.3.png',
+      width: 1000,
+      height: 394,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-6-dark-mobile-arabic.3.png',
+      width: 800,
+      height: 316,
+    },
+  },
+  he: {
+    lightDesktop: {
+      src: 'kurdistan-fig-6-light-desktop-hebrew.3.png',
+      width: 1000,
+      height: 394,
+    },
+    lightMobile: {
+      src: 'kurdistan-fig-6-light-mobile-hebrew.3.png',
+      width: 800,
+      height: 316,
+    },
+    darkDesktop: {
+      src: 'kurdistan-fig-6-dark-desktop-hebrew.3.png',
+      width: 1000,
+      height: 394,
+    },
+    darkMobile: {
+      src: 'kurdistan-fig-6-dark-mobile-hebrew.3.png',
+      width: 800,
+      height: 316,
+    },
+  },
+} as const satisfies Record<PageLocale, ArtDirectedSet>
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'KurdistanPage' })
@@ -113,6 +403,11 @@ export default async function KurdistanPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations('KurdistanPage')
+  const imgLocale = pageLocale(locale)
+  const fig1 = fig1ByLocale[imgLocale]
+  const fig4 = fig4ByLocale[imgLocale]
+  const fig5 = fig5ByLocale[imgLocale]
+  const fig6 = fig6ByLocale[imgLocale]
 
   const headingClass =
     locale === 'ar'
@@ -244,26 +539,10 @@ export default async function KurdistanPage({ params }: Props) {
 
           <ThemedArtDirectedImage
             alt={t('imageAlt1')}
-            lightDesktop={{
-              src: 'kurdistan-fig-1-light-desktop.3.png',
-              width: 1000,
-              height: 1867,
-            }}
-            lightMobile={{
-              src: 'kurdistan-fig-1-light-mobile.2.png',
-              width: 1000,
-              height: 3738,
-            }}
-            darkDesktop={{
-              src: 'kurdistan-fig-1-dark-desktop.3.png',
-              width: 1000,
-              height: 1850,
-            }}
-            darkMobile={{
-              src: 'kurdistan-fig-1-dark-mobile.2.png',
-              width: 1000,
-              height: 3738,
-            }}
+            lightDesktop={fig1.lightDesktop}
+            lightMobile={fig1.lightMobile}
+            darkDesktop={fig1.darkDesktop}
+            darkMobile={fig1.darkMobile}
           />
 
           <p>{t('pExpendable')}</p>
@@ -304,26 +583,10 @@ export default async function KurdistanPage({ params }: Props) {
 
           <ThemedArtDirectedImage
             alt={t('imageAlt4')}
-            lightDesktop={{
-              src: 'kurdistan-fig-4-light-desktop.3.png',
-              width: 1000,
-              height: 813,
-            }}
-            lightMobile={{
-              src: 'kurdistan-fig-4-light-mobile.3.png',
-              width: 800,
-              height: 661,
-            }}
-            darkDesktop={{
-              src: 'kurdistan-fig-4-dark-desktop.3.png',
-              width: 1000,
-              height: 812,
-            }}
-            darkMobile={{
-              src: 'kurdistan-fig-4-dark-mobile.3.png',
-              width: 800,
-              height: 658,
-            }}
+            lightDesktop={fig4.lightDesktop}
+            lightMobile={fig4.lightMobile}
+            darkDesktop={fig4.darkDesktop}
+            darkMobile={fig4.darkMobile}
           />
 
           <p>
@@ -349,26 +612,10 @@ export default async function KurdistanPage({ params }: Props) {
 
           <ThemedArtDirectedImage
             alt={t('imageAlt5')}
-            lightDesktop={{
-              src: 'kurdistan-fig-5-light-desktop.3.png',
-              width: 1000,
-              height: 679,
-            }}
-            lightMobile={{
-              src: 'kurdistan-fig-5-light-mobile.3.png',
-              width: 800,
-              height: 579,
-            }}
-            darkDesktop={{
-              src: 'kurdistan-fig-5-dark-desktop.3.png',
-              width: 1000,
-              height: 679,
-            }}
-            darkMobile={{
-              src: 'kurdistan-fig-5-dark-mobile.3.png',
-              width: 800,
-              height: 579,
-            }}
+            lightDesktop={fig5.lightDesktop}
+            lightMobile={fig5.lightMobile}
+            darkDesktop={fig5.darkDesktop}
+            darkMobile={fig5.darkMobile}
           />
 
           <p>
@@ -384,26 +631,10 @@ export default async function KurdistanPage({ params }: Props) {
 
           <ThemedArtDirectedImage
             alt={t('imageAlt6')}
-            lightDesktop={{
-              src: 'kurdistan-fig-6-light-desktop.3.png',
-              width: 1000,
-              height: 394,
-            }}
-            lightMobile={{
-              src: 'kurdistan-fig-6-light-mobile.3.png',
-              width: 800,
-              height: 316,
-            }}
-            darkDesktop={{
-              src: 'kurdistan-fig-6-dark-desktop.3.png',
-              width: 1000,
-              height: 394,
-            }}
-            darkMobile={{
-              src: 'kurdistan-fig-6-dark-mobile.3.png',
-              width: 800,
-              height: 316,
-            }}
+            lightDesktop={fig6.lightDesktop}
+            lightMobile={fig6.lightMobile}
+            darkDesktop={fig6.darkDesktop}
+            darkMobile={fig6.darkMobile}
           />
 
           <p>{t('pGimbal')}</p>
