@@ -81,7 +81,7 @@ function ThemedArtDirectedImage({
   )
 }
 
-function extLink(href: string) {
+function extLink(href: string, dir?: 'ltr' | 'rtl') {
   function RichLink(chunks: ReactNode) {
     return (
       <a
@@ -89,6 +89,7 @@ function extLink(href: string) {
         target="_blank"
         rel="noopener noreferrer"
         className={linkClassName}
+        dir={dir}
       >
         {chunks}
       </a>
@@ -328,9 +329,21 @@ export default async function KurdistanPage({ params }: Props) {
           <p>
             {t.rich('pSplatsDef', {
               spoilers: extLink(
-                'https://en.wikipedia.org/wiki/Spoiler_%28aeronautics%29'
+                locale === 'ar'
+                  ? 'https://ar.wikipedia.org/wiki/%D9%85%D8%AB%D8%A8%D8%B7_%D8%A7%D9%84%D8%B1%D9%81%D8%B9_(%D8%B7%D9%8A%D8%B1%D8%A7%D9%86)'
+                  : locale === 'he'
+                    ? 'https://he.wikipedia.org/wiki/%D7%A1%D7%A4%D7%95%D7%99%D7%9C%D7%A8_(%D7%AA%D7%A2%D7%95%D7%A4%D7%94)'
+                    : 'https://en.wikipedia.org/wiki/Spoiler_%28aeronautics%29',
+                locale === 'ar' ? 'ltr' : undefined
               ),
-              slats: extLink('https://en.wikipedia.org/wiki/Leading-edge_slat'),
+              slats: extLink(
+                locale === 'ar'
+                  ? 'https://ar.wikipedia.org/wiki/%D8%B3%D8%AF%D9%81%D8%A9'
+                  : locale === 'he'
+                    ? 'https://he.wikipedia.org/wiki/%D7%9E%D7%93%D7%A3_(%D7%AA%D7%A2%D7%95%D7%A4%D7%94)'
+                    : 'https://en.wikipedia.org/wiki/Leading-edge_slat',
+                locale === 'he' || locale === 'ar' ? 'ltr' : undefined
+              ),
             })}
           </p>
 
