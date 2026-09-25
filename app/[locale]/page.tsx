@@ -157,6 +157,34 @@ export default async function Home({ params }: Props) {
           {chunks}
         </a>
       ),
+      bespokeCode: (chunks) => (
+        <a
+          href="https://richard-burd.github.io/longest_common_subsequence"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
+      technicalTopics: (chunks) => (
+        <a
+          href="https://richard-burd.github.io/when_big_o_does_and_does_not_matter"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
+      technologyStack: (chunks) => (
+        <Link
+          href={{ pathname: '/', hash: 'technology-stack' }}
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
     }),
     value: slice.value,
     color: slice.color,

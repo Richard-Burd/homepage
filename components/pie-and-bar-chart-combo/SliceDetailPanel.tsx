@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   useState,
   type CSSProperties,
+  type MouseEvent,
   type RefObject,
 } from 'react'
 import { IoClose } from 'react-icons/io5'
@@ -191,7 +192,26 @@ export default function SliceDetailPanel({
                     {slice.label}
                   </h3>
                 </div>
-                <p className="min-h-0 flex-1 overflow-y-auto text-base leading-relaxed font-normal text-zinc-600 dark:text-zinc-300">
+                <p
+                  className="min-h-0 flex-1 overflow-y-auto text-base leading-relaxed font-normal text-zinc-600 dark:text-zinc-300"
+                  onClick={(event: MouseEvent<HTMLParagraphElement>) => {
+                    const target = event.target
+                    if (!(target instanceof Element)) return
+                    const hash = target.closest('a')?.hash?.slice(1)
+                    if (!hash || !document.getElementById(hash)) return
+                    event.preventDefault()
+                    onClose()
+                    const behavior = window.matchMedia(
+                      '(prefers-reduced-motion: reduce)'
+                    ).matches
+                      ? 'auto'
+                      : 'smooth'
+                    document
+                      .getElementById(hash)
+                      ?.scrollIntoView({ behavior, block: 'start' })
+                    history.pushState(null, '', `#${hash}`)
+                  }}
+                >
                   {slice.description}
                 </p>
                 <button

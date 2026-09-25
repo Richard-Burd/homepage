@@ -77,7 +77,7 @@
     "slices": {
       "Category1": {
         "title": "Full Stack Web Development",
-        "Description": "Building end-to-end web apps across interfaces, APIs, and data layers."
+        "Description": "I have been building full stack applications for a variety of startups since 2019.  You can see the technology stack I use <technologyStack>here</technologyStack>.  Most of the projects I’ve worked on are early stage startups. I have vast experience in API calls to AI LLM’s and designing original software layers that handle highly custom, unique (bespoke) workloads.  I also have the ability to create websites with multilanguage support for non-Latin-font languages."
       },
       "Category2": {
         "title": "Data & Design Visualization",
@@ -89,19 +89,19 @@
       },
       "Category4": {
         "title": "Video & Animation Production",
-        "Description": "Producing motion pieces that explain ideas and bring concepts to life."
+        "Description": "I have extensive experience with promotional and informational videos that feature 2D and 3D animations, and more recently, AI-assisted content."
       },
       "Category5": {
         "title": "Rapid Prototyping",
-        "Description": "Quickly testing concepts in working form so feedback can arrive early."
+        "Description": "From 3D printing to <bespokeCode>highly bespoke code</bespokeCode>, I have extensive experience building minimum viable products for early stage startups.  This includes extensive systems design engineering on group-1 UAV’s (drones) working with a variety of hardware components."
       },
       "Category6": {
         "title": "Product Ownership",
-        "Description": "Setting priorities, aligning teams, and guiding a product from backlog to release."
+        "Description": "I often take ownership of the projects I work on and ensure my team reaches its objectives.  I do this with <schematicVisualization>schematic visualizations and treasure mapping</schematicVisualization> to coordinate tasks and ensure everyone on the team has a common understanding of the variables."
       },
       "Category7": {
         "title": "Policy Research",
-        "Description": "Investigating policy questions and turning findings into practical recommendations."
+        "Description": "I have done research & analysis for writers working on a variety of topics including housing & urban development, energy, defense, and diplomacy. I occasionally write on <technicalTopics>technical topics</technicalTopics> as well."
       }
     }
   },
