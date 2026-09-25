@@ -292,7 +292,7 @@
           "alt": "Section 1 image 2",
           "caption": "Section-1 Image-2",
           "description-title": "Section 1 Image-2 Description",
-          "description-text": "Each paragraph or image must have the ability to display this optional, right-justified, description on the left rail (desktop) or description above the paragraph or image (mobile) NOTE: this “Element Description” is vertically centered on the commensurate element on the right rail, in this case, the Section-1 Image-2"
+          "description-text": "Each paragraph or image must have the ability to display this optional, right-justified, description on the left rail (desktop) or description above the paragraph or image (mobile) NOTE: this “Element Description” is vertically centered on the commensurate element on the right rail, in this case, the Section-1 Image-2 The image <orientationText></orientationText> is my favorite image on this page!"
         }
       },
       "section-2": {
@@ -326,6 +326,10 @@
         "paragraph-4": "This is the fourth Section 3 Paragraph, more specifically, this is the fourth paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
       }
     }
+  },
+  "TwoRailOrientationText": {
+    "side": "on the right",
+    "below": "below"
   },
   "Footer": {
     "copyright": "<name>© {year} Richard Burd.</name> All rights reserved."

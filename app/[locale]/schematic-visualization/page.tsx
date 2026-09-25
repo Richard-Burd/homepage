@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Fragment, type ReactNode } from 'react'
 
 import SchematicAssetImage from '@/components/schematic-visualization/SchematicAssetImage'
+import OrientationText from '@/components/two-rail/OrientationText'
 import { RailEnd, RailStart } from '@/components/two-rail/Rail'
 import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
 import {
@@ -46,7 +47,13 @@ export default async function SchematicVisualizationPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations('SchematicVisualizationPage')
+  const rail = await getTranslations('TwoRailOrientationText')
   const headingClass = headingClassName(locale)
+  const descriptionMarks = {
+    orientationText: () => (
+      <OrientationText side={rail('side')} below={rail('below')} />
+    ),
+  }
   const sections = getSchematicSections()
   const lastSection = sections.at(-1)
   const lastBlock = lastSection?.blocks.at(-1)
@@ -132,8 +139,9 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                         )}
                       </p>
                       <p className="mt-2 max-[799px]:text-[1rem] max-[799px]:leading-loose min-[800px]:text-[0.95rem] min-[800px]:leading-relaxed md:max-[799px]:text-[1.125rem]">
-                        {t(
-                          `sections.${section.id}.${entry.id}.description-text`
+                        {t.rich(
+                          `sections.${section.id}.${entry.id}.description-text`,
+                          descriptionMarks
                         )}
                       </p>
                     </div>
