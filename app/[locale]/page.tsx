@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import Image from 'next/image'
 import { BiLogoVenmo } from 'react-icons/bi'
 import {
   FaGithub,
@@ -24,7 +23,6 @@ import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
-import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
   {
@@ -348,19 +346,9 @@ export default async function Home({ params }: Props) {
           </div>
         </div>
 
-        <div className="mt-6">
-          <Image
-            src={assetUrl('columbia-test-image.jpg')}
-            alt={t('imageAlt')}
-            width={800}
-            height={600}
-            priority
-          />
-        </div>
-
         <nav
           aria-label={t('socialNav')}
-          className="mx-4 mt-6 flex flex-row flex-wrap items-center gap-6"
+          className="mt-20 flex w-full flex-row flex-wrap items-center justify-center gap-6"
         >
           {socialLinks.map(({ href, labelKey, Icon }) => (
             <a
