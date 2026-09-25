@@ -6,7 +6,7 @@
   },
   "HomePage": {
     "title": "Richard Burd's Homepage",
-    "intro": "Hi I’m Richard Burd, welcome to my new, supercharged, homepage. I built everything you see here - including charts, diagrams, 3D models, and animations. This website is currently under construction, you can visit my existing homepage <existingHomepage>here</existingHomepage>.",
+    "intro": "Hi, I’m Richard Burd, welcome to my website. I am a one man swiss army knife and startup in a box. I have professional experience across multiple, disparate domains. These days I am doing full stack web development in the startup space as well as policy research in the non-profit realm.",
     "imageAlt": "Columbia campus photograph",
     "socialNav": "Social links",
     "linkedin": "LinkedIn",
@@ -47,27 +47,27 @@
       },
       "Category2": {
         "title": "Design Presentation",
-        "Description": "I make complex systems legible with <schematicVisualization>schematic visualizations</schematicVisualization>."
+        "Description": "I have extensive experience in both 2D graphic design and 3D modeling. I make investor presentations, intuitive website designs, and custom dashboards."
       },
       "Category3": {
         "title": "Unmanned Aviation",
-        "Description": "The flying wing diagram can be found <flyingWing>here</flyingWing>."
+        "Description": "I began building remote-controlled airplanes as a child, and continued doing so through adulthood.  These would evolve into hobby-drones in the early 2010s as off-the-shelf avionics systems became available.  Since 2012, I have worked with drones in a variety of civilian and military applications.  I specialize in <flyingWing>flying wing aerodynamics</flyingWing> and building computer simulation models of unconventional aircraft shapes."
       },
       "Category4": {
         "title": "Military Affairs",
-        "Description": "I spent 4 years in the U.S. Army as a commissioned officer in transportation logistics. I served as a platoon leader, a contracting officer representative, and a liaison on brigade staff in Afghanistan. I also volunteered with <kurdistan>Kurdish forces</kurdistan> fighting the Islamic State (ISIS) in Northern Iraq. Later I volunteered to assist the Armed Forces of Ukraine staff medical volunteers during their war with Russia."
+        "Description": "I was a transportation-logistics officer in the U.S. Army and deployed to Afghanistan in 2010.  I also served as a <kurdistan>drone pilot in the Kurdish Peshmerga</kurdistan> in 2016 when the Kurds were fighting ISIS.  In 2022 I was involved in helping the Armed Forces of Ukraine (AFU) with their fledgling drone program, as well as recruiting western medical professionals to serve in Ukraine as combat medics for the AFU."
       },
       "Category5": {
         "title": "The Middle East",
-        "Description": "I try to take the region on its own terms: language, local partners, and the difference between a map and a place. Arabic, Hebrew, and Aramaic are part of how I listen, and time in Afghanistan and Iraqi Kurdistan taught me to pay attention to the people who actually live there. I follow the politics, culture, and history because they are not abstractions; they shape daily life and the choices available on the ground."
+        "Description": "I have a degree in Middle Eastern Studies from the University of Arizona and have traveled to the region extensively with a variety of institutions.  I speak Arabic & Hebrew proficiently, and specialize in the Israeli-Palestinian conflict, as well as Kurdish affairs."
       },
       "Category6": {
         "title": "Architecture & Urban Planning",
-        "Description": "My career started in architecture: floor plans, construction documents, permits, and coordinating with electrical, mechanical, and plumbing engineers on multi-unit buildings. I still think in those terms—how a building gets approved, how codes hide in the details, and how a drawing set either helps a job site or leaves it guessing. I am also interested in how cities themselves change: how people live, move, and scatter as technology rearranges what a place is for."
+        "Description": "I began my professional life working in an architectural firm for 7 years.  I specialized in affordable housing from preliminary design to construction documents and pulling building permits.  More recently I do urban planning policy research at <urbanCruiseShip>Urban Cruise Ship</urbanCruiseShip>."
       },
       "Category7": {
         "title": "Persuasion & Influence",
-        "Description": "I pay attention to how people actually decide, not how the meeting agenda says they will. Rank, boredom, and the fear of looking wrong can bury the real disagreement, so I try to get concerns onto a table where they can be weighed without the social theater. Framing matters: the same facts can move a room or lose it, and I work at putting an argument in a form that someone with power can act on."
+        "Description": "I use the following working hypothesis to win friends and influence people: Human beings are evolved social animals whose behavior is driven by motives involving status, identity, reputation, belonging, relationships, resources, ideology, and coalition membership.  Much of this motivational machinery operates outside conscious awareness. People therefore do not always accurately understand or report why they behave as they do; conscious reasoning frequently interprets and communicates decisions produced by subconscious processes. Because these processes contain predictable mechanisms, human behavior can also be systematically influenced."
       }
     }
   },
@@ -81,11 +81,11 @@
       },
       "Category2": {
         "title": "Data & Design Visualization",
-        "Description": "Making data readable through charts, maps, and purposeful visual design."
+        "Description": "I create intuitive <schematicVisualization>schematic visualizations</schematicVisualization> for complex product designs and business models involving a myriad of moving parts & variables.  I also design frontend end user experiences, graphics, logos, and even data-visualization dashboards."
       },
       "Category3": {
         "title": "3D Modeling",
-        "Description": "Creating spatial models for products, places, and interactive experiences."
+        "Description": "I have used a variety of 3D programs used in different industries.  These include ArchiCAD & Revit for architecture, Blender for websites & animations, as well as Solidworks for mechanical designs in the avionics industry.  I have a <sketchupPortfolio>public Sketchup portfolio</sketchupPortfolio> of various personal projects I have built over the years."
       },
       "Category4": {
         "title": "Video & Animation Production",

@@ -112,6 +112,16 @@ export default async function Home({ params }: Props) {
           {chunks}
         </Link>
       ),
+      urbanCruiseShip: (chunks) => (
+        <a
+          href="https://www.urbancruiseship.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
       schematicVisualization: (chunks) => (
         <Link
           href="/schematic-visualization"
@@ -128,7 +138,26 @@ export default async function Home({ params }: Props) {
   const capabilitiesChart = capabilitiesChartData.slices.map((slice) => ({
     id: slice.id,
     label: tCapabilities(`slices.${slice.id}.title`),
-    description: tCapabilities(`slices.${slice.id}.Description`),
+    description: tCapabilities.rich(`slices.${slice.id}.Description`, {
+      schematicVisualization: (chunks) => (
+        <Link
+          href="/schematic-visualization"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
+      sketchupPortfolio: (chunks) => (
+        <a
+          href="https://3dwarehouse.sketchup.com/by/richardburd"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
+    }),
     value: slice.value,
     color: slice.color,
   }))
