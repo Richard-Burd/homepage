@@ -85,7 +85,7 @@ export function RailStart({
             // Section titles keep a taller parallax band above and below the
             // heading once the rails stack. The page title stays on py-6.
             mobile === 'heading' && tickLevel !== 'page'
-              ? 'py-[calc(1.5rem*1.3)]'
+              ? 'py-[1.95rem]'
               : 'py-6'
           } ${
             // Below the split, prose cells take the end rail's paragraph

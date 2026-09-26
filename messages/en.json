@@ -6,8 +6,7 @@
   },
   "HomePage": {
     "title": "Richard Burd's Homepage",
-    "intro": "Hi I’m Richard Burd, welcome to my new, supercharged, homepage. I built everything you see here - including charts, diagrams, 3D models, and animations. This website is currently under construction, you can visit my existing homepage <existingHomepage>here</existingHomepage>.",
-    "imageAlt": "Columbia campus photograph",
+    "intro": "Hi, I’m Richard Burd, welcome to my website. I am a one man swiss army knife and startup in a box. I have professional experience across multiple, disparate domains. These days I am doing full stack web development in the startup space as well as policy research in the non-profit realm.",
     "socialNav": "Social links",
     "linkedin": "LinkedIn",
     "instagram": "Instagram",
@@ -47,27 +46,27 @@
       },
       "Category2": {
         "title": "Design Presentation",
-        "Description": "I make complex systems legible with <schematicVisualization>schematic visualizations</schematicVisualization>."
+        "Description": "I have extensive experience in both 2D graphic design and 3D modeling. I make investor presentations, intuitive website designs, and custom dashboards."
       },
       "Category3": {
         "title": "Unmanned Aviation",
-        "Description": "The flying wing diagram can be found <flyingWing>here</flyingWing>."
+        "Description": "I began building remote-controlled airplanes as a child, and continued doing so through adulthood.  These would evolve into hobby-drones in the early 2010s as off-the-shelf avionics systems became available.  Since 2012, I have worked with drones in a variety of civilian and military applications.  I specialize in <flyingWing>flying wing aerodynamics</flyingWing> and building computer simulation models of unconventional aircraft shapes."
       },
       "Category4": {
         "title": "Military Affairs",
-        "Description": "I spent 4 years in the U.S. Army as a commissioned officer in transportation logistics. I served as a platoon leader, a contracting officer representative, and a liaison on brigade staff in Afghanistan. I also volunteered with <kurdistan>Kurdish forces</kurdistan> fighting the Islamic State (ISIS) in Northern Iraq. Later I volunteered to assist the Armed Forces of Ukraine staff medical volunteers during their war with Russia."
+        "Description": "I was a transportation-logistics officer in the U.S. Army and deployed to Afghanistan in 2010.  I also served as a <kurdistan>drone pilot in the Kurdish Peshmerga</kurdistan> in 2016 when the Kurds were fighting ISIS.  In 2022 I was involved in helping the Armed Forces of Ukraine (AFU) with their fledgling drone program, as well as recruiting western medical professionals to serve in Ukraine as combat medics for the AFU."
       },
       "Category5": {
         "title": "The Middle East",
-        "Description": "I try to take the region on its own terms: language, local partners, and the difference between a map and a place. Arabic, Hebrew, and Aramaic are part of how I listen, and time in Afghanistan and Iraqi Kurdistan taught me to pay attention to the people who actually live there. I follow the politics, culture, and history because they are not abstractions; they shape daily life and the choices available on the ground."
+        "Description": "I have a degree in Middle Eastern Studies from the University of Arizona and have traveled to the region extensively with a variety of institutions.  I speak Arabic & Hebrew proficiently, and specialize in the Israeli-Palestinian conflict, as well as Kurdish affairs."
       },
       "Category6": {
         "title": "Architecture & Urban Planning",
-        "Description": "My career started in architecture: floor plans, construction documents, permits, and coordinating with electrical, mechanical, and plumbing engineers on multi-unit buildings. I still think in those terms—how a building gets approved, how codes hide in the details, and how a drawing set either helps a job site or leaves it guessing. I am also interested in how cities themselves change: how people live, move, and scatter as technology rearranges what a place is for."
+        "Description": "I began my professional life working in an architectural firm for 7 years.  I specialized in affordable housing from preliminary design to construction documents and pulling building permits.  More recently I do urban planning policy research at <urbanCruiseShip>Urban Cruise Ship</urbanCruiseShip>."
       },
       "Category7": {
         "title": "Persuasion & Influence",
-        "Description": "I pay attention to how people actually decide, not how the meeting agenda says they will. Rank, boredom, and the fear of looking wrong can bury the real disagreement, so I try to get concerns onto a table where they can be weighed without the social theater. Framing matters: the same facts can move a room or lose it, and I work at putting an argument in a form that someone with power can act on."
+        "Description": "I use the following working hypothesis to win friends and influence people: Human beings are evolved social animals whose behavior is driven by motives involving status, identity, reputation, belonging, relationships, resources, ideology, and coalition membership.  Much of this motivational machinery operates outside conscious awareness. People therefore do not always accurately understand or report why they behave as they do; conscious reasoning frequently interprets and communicates decisions produced by subconscious processes. Because these processes contain predictable mechanisms, human behavior can also be systematically influenced."
       }
     }
   },
@@ -77,31 +76,31 @@
     "slices": {
       "Category1": {
         "title": "Full Stack Web Development",
-        "Description": "Building end-to-end web apps across interfaces, APIs, and data layers."
+        "Description": "I have been building full stack applications for a variety of startups since 2019.  You can see the technology stack I use <technologyStack>here</technologyStack>.  Most of the projects I’ve worked on are early stage startups. I have vast experience in API calls to AI LLM’s and designing original software layers that handle highly custom, unique (bespoke) workloads.  I also have the ability to create websites with multilanguage support for non-Latin-font languages."
       },
       "Category2": {
         "title": "Data & Design Visualization",
-        "Description": "Making data readable through charts, maps, and purposeful visual design."
+        "Description": "I create intuitive <schematicVisualization>schematic visualizations</schematicVisualization> for complex product designs and business models involving a myriad of moving parts & variables.  I also design frontend end user experiences, graphics, logos, and even data-visualization dashboards."
       },
       "Category3": {
         "title": "3D Modeling",
-        "Description": "Creating spatial models for products, places, and interactive experiences."
+        "Description": "I have used a variety of 3D programs used in different industries.  These include ArchiCAD & Revit for architecture, Blender for websites & animations, as well as Solidworks for mechanical designs in the avionics industry.  I have a <sketchupPortfolio>public Sketchup portfolio</sketchupPortfolio> of various personal projects I have built over the years."
       },
       "Category4": {
         "title": "Video & Animation Production",
-        "Description": "Producing motion pieces that explain ideas and bring concepts to life."
+        "Description": "I have extensive experience with promotional and informational videos that feature 2D and 3D animations, and more recently, AI-assisted content."
       },
       "Category5": {
         "title": "Rapid Prototyping",
-        "Description": "Quickly testing concepts in working form so feedback can arrive early."
+        "Description": "From 3D printing to <bespokeCode>highly bespoke code</bespokeCode>, I have extensive experience building minimum viable products for early stage startups.  This includes extensive systems design engineering on group-1 UAV’s (drones) working with a variety of hardware components."
       },
       "Category6": {
         "title": "Product Ownership",
-        "Description": "Setting priorities, aligning teams, and guiding a product from backlog to release."
+        "Description": "I often take ownership of the projects I work on and ensure my team reaches its objectives.  I do this with <schematicVisualization>schematic visualizations and treasure mapping</schematicVisualization> to coordinate tasks and ensure everyone on the team has a common understanding of the variables."
       },
       "Category7": {
         "title": "Policy Research",
-        "Description": "Investigating policy questions and turning findings into practical recommendations."
+        "Description": "I have done research & analysis for writers working on a variety of topics including housing & urban development, energy, defense, and diplomacy. I occasionally write on <technicalTopics>technical topics</technicalTopics> as well."
       }
     }
   },
@@ -276,15 +275,15 @@
   "SchematicVisualizationPage": {
     "metaTitle": "Schematic Visualization",
     "metaDescription": "Full-bleed two-rail layout with a parallax media rail, leader lines, and paired sections.",
-    "title": "The Title of this Page Goes Here",
-    "subtitle": "Page subtitle goes here below the page's main title",
+    "title": "Schematic Visualization & Treasure Mapping",
+    "subtitle": "Capturing your development on living whiteboards",
     "heroAlt": "Hero image",
     "heroCaption": "This is the hero image",
     "parallaxAlt": "Parallax background",
     "sections": {
       "section-1": {
-        "title": "Section 1 Goes Here",
-        "paragraph-1": "This is the Section 1 Paragraph, more specifically, this is the first paragraph of the first section.  There may be more, or this may be the only one.  There can also be no paragraphs in a section, but just images instead.  Conversely, a section may have a single paragraph, or multiple paragraphs, and absolutely no images whatsoever.  Paragraphs must have the ability to show <b>bold text</b>, <i>italic text</i>, and text that is <b><i>both bold, and italic</i></b>.",
+        "title": "See what is going on while you discuss it",
+        "paragraph-1": "<b>Schematic visualizations</b> show disparate categories of information on a single page that are normally dispersed across a range of information sources.  Contemporary design projects are growing increasingly complex and teams are now stretching themselves to ever increasing levels of efficiency and productivity.  Having just the right information displayed to the correct decisionmakers (with minimal noise distraction) is more important now than ever before.  Schematic visualizations are a way to consolidate & distill information for decisionmakers and share nuanced details with design partners so that everyone can access information they need and ignore what they don't.",
         "image-1": {
           "alt": "Section 1 image 1",
           "caption": "Section-1 Image-1"
@@ -292,27 +291,27 @@
         "image-2": {
           "alt": "Section 1 image 2",
           "caption": "Section-1 Image-2",
-          "description-title": "Section 1 Image-2 Description",
-          "description-text": "Each paragraph or image must have the ability to display this optional, right-justified, description on the left rail (desktop) or description above the paragraph or image (mobile) NOTE: this “Element Description” is vertically centered on the commensurate element on the right rail, in this case, the Section-1 Image-2"
+          "description-title": "Ruby on Rails Illustrated",
+          "description-text": "This image <orientationText></orientationText> captures the essence of how a Ruby on Rails project is architected, along with various bespoke layers & elements.  In the era before AI, these would be used to document a codebase and even design & debug new features."
         }
       },
       "section-2": {
-        "title": "Section 2 Goes Here",
-        "paragraph-1": "This is the Section 2 Paragraph, more specifically, this is the first paragraph of the second section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
+        "title": "Building consensus around diagrams instead of meetings",
+        "paragraph-1": "<b>Treasure mapping</b> is a process of using schematic visualizations to guide design projects.  The treasure-mapper interviews the design team members individually and discovers <b><i>pain points</i></b> between them and other forces acting outside the team.  The treasure-mapper then schematically visualizes these pain points into illustrations that can be used to develop solutions that are in turn also rendered schematically so that everyone can see (and build consensus around) the solution that is being proposed.  The process is iterative and the treasure map becomes a ground-zero starting point for discussing the design project.",
         "image-1": {
           "alt": "Section 2 image 1",
           "caption": "Section-2 Image-1"
         },
-        "paragraph-2": "This is the second Section 2 Paragraph, more specifically, this is the second paragraph of the second section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
+        "paragraph-2": "<b>Meetings are unproductive because people get bored and think the person talking is just wasting time.</b>  Your design team members may even be incentivized to just shut up in order to end the meeting early, or to avoid being shamed for disagreeing with more senior staff.  When your meetings are replaced with treasure mapping, every team member gets one on one attention and their concerns are not only heard, but rendered and mapped to relevant variables decisionmakers can see and understand.  This lets decisionmakers weigh input without the interference of social dynamics."
       },
       "section-3": {
-        "title": "Section 3 Goes Here",
-        "paragraph-1": "This Section 3 paragraph is double spaced like all the other paragraphs on the right rail.  Note that all images, regardless of their size, are resized so their left and right sides align with the paragraphs above and below them.",
+        "title": "Understand your design and who does what",
+        "paragraph-1": "At some point, your data metrics fail to capture key information related to your design project such as where and why there are disagreements and communication breakdowns within your team.  You need to know all of the relevant variables before you make a decision.",
         "image-1": {
           "alt": "Section 3 image 1",
           "caption": "Section-3 Image-1",
-          "description-title": "Section 3 Image-1 Description",
-          "description-text": "This is another image description that appears on the left rail"
+          "description-title": "Show everyone on the team everything they need to know",
+          "description-text": "Treasure mapping uses schematic visualizations to show your individual team members information they are currently unaware of, but should be in order for them to be successful.  In simplest terms, they show all of the relevant variables, to all of the relevant stakeholders."
         },
         "image-2": {
           "alt": "Section 3 image 2",
@@ -327,6 +326,10 @@
         "paragraph-4": "This is the fourth Section 3 Paragraph, more specifically, this is the fourth paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
       }
     }
+  },
+  "TwoRailOrientationText": {
+    "side": "on the right",
+    "below": "below"
   },
   "Footer": {
     "copyright": "<name>© {year} Richard Burd.</name> All rights reserved."

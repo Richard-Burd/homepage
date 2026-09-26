@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import Image from 'next/image'
 import { BiLogoVenmo } from 'react-icons/bi'
 import {
   FaGithub,
@@ -24,7 +23,6 @@ import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
-import { assetUrl } from '@/lib/assets'
 
 const socialLinks = [
   {
@@ -112,6 +110,16 @@ export default async function Home({ params }: Props) {
           {chunks}
         </Link>
       ),
+      urbanCruiseShip: (chunks) => (
+        <a
+          href="https://www.urbancruiseship.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
       schematicVisualization: (chunks) => (
         <Link
           href="/schematic-visualization"
@@ -128,7 +136,54 @@ export default async function Home({ params }: Props) {
   const capabilitiesChart = capabilitiesChartData.slices.map((slice) => ({
     id: slice.id,
     label: tCapabilities(`slices.${slice.id}.title`),
-    description: tCapabilities(`slices.${slice.id}.Description`),
+    description: tCapabilities.rich(`slices.${slice.id}.Description`, {
+      schematicVisualization: (chunks) => (
+        <Link
+          href="/schematic-visualization"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
+      sketchupPortfolio: (chunks) => (
+        <a
+          href="https://3dwarehouse.sketchup.com/by/richardburd"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
+      bespokeCode: (chunks) => (
+        <a
+          href="https://richard-burd.github.io/longest_common_subsequence"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
+      technicalTopics: (chunks) => (
+        <a
+          href="https://richard-burd.github.io/when_big_o_does_and_does_not_matter"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
+      technologyStack: (chunks) => (
+        <Link
+          href={{ pathname: '/', hash: 'technology-stack' }}
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
+    }),
     value: slice.value,
     color: slice.color,
   }))
@@ -291,19 +346,9 @@ export default async function Home({ params }: Props) {
           </div>
         </div>
 
-        <div className="mt-6">
-          <Image
-            src={assetUrl('columbia-test-image.jpg')}
-            alt={t('imageAlt')}
-            width={800}
-            height={600}
-            priority
-          />
-        </div>
-
         <nav
           aria-label={t('socialNav')}
-          className="mx-4 mt-6 flex flex-row flex-wrap items-center gap-6"
+          className="mt-20 flex w-full flex-row flex-wrap items-center justify-center gap-6"
         >
           {socialLinks.map(({ href, labelKey, Icon }) => (
             <a

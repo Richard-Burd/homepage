@@ -20,11 +20,11 @@ export const schematicVisualizationContent = {
       'paragraph-1': { type: 'paragraph' },
       'image-1': {
         type: 'image',
-        location: 'schematic-vis-sec-1-img-1.jpg',
+        location: 'schematic-visualization-executive-dashboard.1.jpg',
       },
       'image-2': {
         type: 'image',
-        location: 'schematic-vis-sec-1-img-2.jpg',
+        location: 'schematic-visualization-ruby-on-rails-preview.1.jpg',
         hasDescription: true,
       },
     },
@@ -32,7 +32,12 @@ export const schematicVisualizationContent = {
       'paragraph-1': { type: 'paragraph' },
       'image-1': {
         type: 'image',
-        location: 'schematic-vis-sec-2-img-1.jpg',
+        light: 'schematic-visualization-treasure-map-light-mode.1.jpg',
+        dark: 'schematic-visualization-treasure-map-dark-mode.1.jpg',
+        width: 1992,
+        height: 1476,
+        darkWidth: 1992,
+        darkHeight: 1476,
       },
       'paragraph-2': { type: 'paragraph' },
     },
@@ -40,12 +45,86 @@ export const schematicVisualizationContent = {
       'paragraph-1': { type: 'paragraph' },
       'image-1': {
         type: 'image',
-        location: 'schematic-vis-sec-3-img-1.jpg',
         hasDescription: true,
+        byLocale: {
+          en: {
+            desktop: {
+              src: 'schematic-visualization-blueprint-cloud-desktop-english.1.jpg',
+              width: 1000,
+              height: 687,
+            },
+            mobile: {
+              src: 'schematic-visualization-blueprint-cloud-mobile-englsih.1.jpg',
+              width: 400,
+              height: 582,
+            },
+          },
+          ar: {
+            desktop: {
+              src: 'schematic-visualization-blueprint-cloud-desktop-arabic.1.jpg',
+              width: 1000,
+              height: 687,
+            },
+            mobile: {
+              src: 'schematic-visualization-blueprint-cloud-mobile-arabic.1.jpg',
+              width: 400,
+              height: 582,
+            },
+          },
+          he: {
+            desktop: {
+              src: 'schematic-visualization-blueprint-cloud-desktop-hebrew.1.jpg',
+              width: 1000,
+              height: 687,
+            },
+            mobile: {
+              src: 'schematic-visualization-blueprint-cloud-mobile-hebrew.1.jpg',
+              width: 400,
+              height: 582,
+            },
+          },
+        },
       },
       'image-2': {
         type: 'image',
-        location: 'schematic-vis-sec-3-img-2.jpg',
+        byLocale: {
+          en: {
+            desktop: {
+              src: 'schematic-visualization-blueprint-box-desktop-english.1.jpg',
+              width: 1000,
+              height: 687,
+            },
+            mobile: {
+              src: 'schematic-visualization-blueprint-box-mobile-english.1.jpg',
+              width: 400,
+              height: 582,
+            },
+          },
+          ar: {
+            desktop: {
+              src: 'schematic-visualization-blueprint-box-desktop-arabic.1.jpg',
+              width: 1000,
+              height: 687,
+            },
+            mobile: {
+              src: 'schematic-visualization-blueprint-box-mobile-arabic.1.jpg',
+              width: 400,
+              height: 582,
+            },
+          },
+          he: {
+            desktop: {
+              src: 'schematic-visualization-blueprint-box-desktop-hebrew.1.jpg',
+              width: 1000,
+              height: 687,
+            },
+            mobile: {
+              src: 'schematic-visualization-blueprint-box-mobile-hebrew.1.jpg',
+              width: 472,
+              height: 687,
+            },
+          },
+        },
       },
       'paragraph-2': { type: 'paragraph' },
       'paragraph-3': { type: 'paragraph' },
@@ -62,11 +141,43 @@ export type SchematicParagraphBlock = {
   type: 'paragraph'
 }
 
-export type SchematicImageBlock = {
+type SchematicImageBase = {
   type: 'image'
-  location: string
   hasDescription?: boolean
 }
+
+export type SchematicSingleImageBlock = SchematicImageBase & {
+  location: string
+}
+
+/** Light and dark files, each with its own pixel size, as on the Kurdistan page. */
+export type SchematicThemedImageBlock = SchematicImageBase & {
+  light: string
+  dark: string
+  width: number
+  height: number
+  darkWidth: number
+  darkHeight: number
+}
+
+export type SchematicArtSrc = {
+  src: string
+  width: number
+  height: number
+}
+
+/** Desktop and mobile files for each locale, as on the Kurdistan page. */
+export type SchematicArtDirectedImageBlock = SchematicImageBase & {
+  byLocale: Record<
+    'en' | 'ar' | 'he',
+    { desktop: SchematicArtSrc; mobile: SchematicArtSrc }
+  >
+}
+
+export type SchematicImageBlock =
+  | SchematicSingleImageBlock
+  | SchematicThemedImageBlock
+  | SchematicArtDirectedImageBlock
 
 export type SchematicBlock = SchematicParagraphBlock | SchematicImageBlock
 
@@ -101,4 +212,31 @@ export function isSchematicImageBlock(
   block: SchematicBlock
 ): block is SchematicImageBlock {
   return block.type === 'image'
+}
+
+function pageLocale(locale: string): 'en' | 'ar' | 'he' {
+  if (locale === 'ar' || locale === 'he') return locale
+  return 'en'
+}
+
+export function schematicImageSources(
+  block: SchematicImageBlock,
+  locale: string
+) {
+  if ('byLocale' in block) {
+    return { artDirected: block.byLocale[pageLocale(locale)] }
+  }
+
+  if ('location' in block) {
+    return { src: block.location }
+  }
+
+  return {
+    src: block.light,
+    darkSrc: block.dark,
+    width: block.width,
+    height: block.height,
+    darkWidth: block.darkWidth,
+    darkHeight: block.darkHeight,
+  }
 }
