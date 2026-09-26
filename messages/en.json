@@ -275,15 +275,15 @@
   "SchematicVisualizationPage": {
     "metaTitle": "Schematic Visualization",
     "metaDescription": "Full-bleed two-rail layout with a parallax media rail, leader lines, and paired sections.",
-    "title": "The Title of this Page Goes Here",
-    "subtitle": "Page subtitle goes here below the page's main title",
+    "title": "Schematic Visualization & Treasure Mapping",
+    "subtitle": "Capturing your development on living whiteboards",
     "heroAlt": "Hero image",
     "heroCaption": "This is the hero image",
     "parallaxAlt": "Parallax background",
     "sections": {
       "section-1": {
-        "title": "Section 1 Goes Here",
-        "paragraph-1": "This is the Section 1 Paragraph, more specifically, this is the first paragraph of the first section.  There may be more, or this may be the only one.  There can also be no paragraphs in a section, but just images instead.  Conversely, a section may have a single paragraph, or multiple paragraphs, and absolutely no images whatsoever.  Paragraphs must have the ability to show <b>bold text</b>, <i>italic text</i>, and text that is <b><i>both bold, and italic</i></b>.",
+        "title": "See what is going on while you discuss it",
+        "paragraph-1": "<b>Schematic visualizations</b> show disparate categories of information on a single page that are normally dispersed across a range of information sources.  Contemporary design projects are growing increasingly complex and teams are now stretching themselves to ever increasing levels of efficiency and productivity.  Having just the right information displayed to the correct decisionmakers (with minimal noise distraction) is more important now than ever before.  Schematic visualizations are a way to consolidate & distill information for decisionmakers and share nuanced details with design partners so that everyone can access information they need and ignore what they don't.",
         "image-1": {
           "alt": "Section 1 image 1",
           "caption": "Section-1 Image-1"
@@ -291,27 +291,27 @@
         "image-2": {
           "alt": "Section 1 image 2",
           "caption": "Section-1 Image-2",
-          "description-title": "Section 1 Image-2 Description",
-          "description-text": "Each paragraph or image must have the ability to display this optional, right-justified, description on the left rail (desktop) or description above the paragraph or image (mobile) NOTE: this “Element Description” is vertically centered on the commensurate element on the right rail, in this case, the Section-1 Image-2 The image <orientationText></orientationText> is my favorite image on this page!"
+          "description-title": "Ruby on Rails Illustrated",
+          "description-text": "This image <orientationText></orientationText> captures the essence of how a Ruby on Rails project is architected, along with various bespoke layers & elements.  In the era before AI, these would be used to document a codebase and even design & debug new features."
         }
       },
       "section-2": {
-        "title": "Section 2 Goes Here",
-        "paragraph-1": "This is the Section 2 Paragraph, more specifically, this is the first paragraph of the second section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
+        "title": "Building consensus around diagrams instead of meetings",
+        "paragraph-1": "<b>Treasure mapping</b> is a process of using schematic visualizations to guide design projects.  The treasure-mapper interviews the design team members individually and discovers <b><i>pain points</i></b> between them and other forces acting outside the team.  The treasure-mapper then schematically visualizes these pain points into illustrations that can be used to develop solutions that are in turn also rendered schematically so that everyone can see (and build consensus around) the solution that is being proposed.  The process is iterative and the treasure map becomes a ground-zero starting point for discussing the design project.",
         "image-1": {
           "alt": "Section 2 image 1",
           "caption": "Section-2 Image-1"
         },
-        "paragraph-2": "This is the second Section 2 Paragraph, more specifically, this is the second paragraph of the second section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
+        "paragraph-2": "<b>Meetings are unproductive because people get bored and think the person talking is just wasting time.</b>  Your design team members may even be incentivized to just shut up in order to end the meeting early, or to avoid being shamed for disagreeing with more senior staff.  When your meetings are replaced with treasure mapping, every team member gets one on one attention and their concerns are not only heard, but rendered and mapped to relevant variables decisionmakers can see and understand.  This lets decisionmakers weigh input without the interference of social dynamics."
       },
       "section-3": {
-        "title": "Section 3 Goes Here",
-        "paragraph-1": "This Section 3 paragraph is double spaced like all the other paragraphs on the right rail.  Note that all images, regardless of their size, are resized so their left and right sides align with the paragraphs above and below them.",
+        "title": "Understand your design and who does what",
+        "paragraph-1": "At some point, your data metrics fail to capture key information related to your design project such as where and why there are disagreements and communication breakdowns within your team.  You need to know all of the relevant variables before you make a decision.",
         "image-1": {
           "alt": "Section 3 image 1",
           "caption": "Section-3 Image-1",
-          "description-title": "Section 3 Image-1 Description",
-          "description-text": "This is another image description that appears on the left rail"
+          "description-title": "Show everyone on the team everything they need to know",
+          "description-text": "Treasure mapping uses schematic visualizations to show your individual team members information they are currently unaware of, but should be in order for them to be successful.  In simplest terms, they show all of the relevant variables, to all of the relevant stakeholders."
         },
         "image-2": {
           "alt": "Section 3 image 2",

@@ -8,6 +8,7 @@ import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
 import {
   getSchematicSections,
   isSchematicImageBlock,
+  schematicImageSources,
   schematicVisualizationContent,
 } from '@/data/schematic-visualization'
 
@@ -155,7 +156,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                   ) : (
                     <div className="px-6 py-6 md:px-10">
                       <SchematicAssetImage
-                        src={entry.block.location}
+                        {...schematicImageSources(entry.block, locale)}
                         alt={t(`sections.${section.id}.${entry.id}.alt`)}
                         caption={t(
                           `sections.${section.id}.${entry.id}.caption`
