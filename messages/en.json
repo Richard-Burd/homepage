@@ -300,7 +300,10 @@
         "paragraph-1": "<b>Treasure mapping</b> is a process of using schematic visualizations to guide design projects.  The treasure-mapper interviews the design team members individually and discovers <b><i>pain points</i></b> between them and other forces acting outside the team.  The treasure-mapper then schematically visualizes these pain points into illustrations that can be used to develop solutions that are in turn also rendered schematically so that everyone can see (and build consensus around) the solution that is being proposed.  The process is iterative and the treasure map becomes a ground-zero starting point for discussing the design project.",
         "image-1": {
           "alt": "Section 2 image 1",
-          "caption": "Section-2 Image-1"
+          "caption": "Section-2 Image-1",
+          "workflowAlt": "Treasure mapping workflow",
+          "showWorkflow": "Show the treasure mapping workflow",
+          "showMap": "Return to the treasure map"
         },
         "paragraph-2": "<b>Meetings are unproductive because people get bored and think the person talking is just wasting time.</b>  Your design team members may even be incentivized to just shut up in order to end the meeting early, or to avoid being shamed for disagreeing with more senior staff.  When your meetings are replaced with treasure mapping, every team member gets one on one attention and their concerns are not only heard, but rendered and mapped to relevant variables decisionmakers can see and understand.  This lets decisionmakers weigh input without the interference of social dynamics."
       },
@@ -316,14 +319,7 @@
         "image-2": {
           "alt": "Section 3 image 2",
           "caption": "Section-3 Image-2"
-        },
-        "paragraph-2": "This is the second Section 3 Paragraph, more specifically, this is the second paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
-        "paragraph-3": "This is the third Section 3 Paragraph, more specifically, this is the third paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure.",
-        "image-3": {
-          "alt": "Section 3 image 3",
-          "caption": "Section-3 Image-3"
-        },
-        "paragraph-4": "This is the fourth Section 3 Paragraph, more specifically, this is the fourth paragraph of the third section.  Each of these paragraphs must render in English, Arabic, or Hebrew, using the apps existing language management infrastructure."
+        }
       }
     }
   },

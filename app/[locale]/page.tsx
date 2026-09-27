@@ -1,15 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { BiLogoVenmo } from 'react-icons/bi'
-import {
-  FaGithub,
-  FaInstagramSquare,
-  FaLinkedinIn,
-  FaMusic,
-  FaPaypal,
-  FaRedditSquare,
-} from 'react-icons/fa'
-import { FaXTwitter } from 'react-icons/fa6'
-import { SiSketchup } from 'react-icons/si'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
 import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
@@ -23,54 +12,6 @@ import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
-
-const socialLinks = [
-  {
-    href: 'https://www.linkedin.com/in/richardburd/',
-    labelKey: 'linkedin' as const,
-    Icon: FaLinkedinIn,
-  },
-  {
-    href: 'https://www.instagram.com/richard.a.burd/',
-    labelKey: 'instagram' as const,
-    Icon: FaInstagramSquare,
-  },
-  {
-    href: 'https://3dwarehouse.sketchup.com/by/richardburd',
-    labelKey: 'sketchup' as const,
-    Icon: SiSketchup,
-  },
-  {
-    href: 'https://github.com/Richard-Burd',
-    labelKey: 'github' as const,
-    Icon: FaGithub,
-  },
-  {
-    href: 'https://audius.co/richardburd',
-    labelKey: 'audius' as const,
-    Icon: FaMusic,
-  },
-  {
-    href: 'https://www.paypal.com/biz/profile/RichardBurdOR',
-    labelKey: 'paypal' as const,
-    Icon: FaPaypal,
-  },
-  {
-    href: 'https://account.venmo.com/u/Richard-A-Burd',
-    labelKey: 'venmo' as const,
-    Icon: BiLogoVenmo,
-  },
-  {
-    href: 'https://x.com/Richard_A_Burd',
-    labelKey: 'x' as const,
-    Icon: FaXTwitter,
-  },
-  {
-    href: 'https://www.reddit.com/user/Richard-Burd/',
-    labelKey: 'reddit' as const,
-    Icon: FaRedditSquare,
-  },
-]
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -357,24 +298,6 @@ export default async function Home({ params }: Props) {
             />
           </div>
         </div>
-
-        <nav
-          aria-label={t('socialNav')}
-          className="mt-20 flex w-full flex-row flex-wrap items-center justify-center gap-6"
-        >
-          {socialLinks.map(({ href, labelKey, Icon }) => (
-            <a
-              key={href}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t(labelKey)}
-              className="transition-opacity hover:opacity-70"
-            >
-              <Icon size={28} color="#698fb5" />
-            </a>
-          ))}
-        </nav>
       </main>
     </div>
   )

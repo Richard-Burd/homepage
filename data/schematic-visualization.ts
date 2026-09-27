@@ -32,12 +32,70 @@ export const schematicVisualizationContent = {
       'paragraph-1': { type: 'paragraph' },
       'image-1': {
         type: 'image',
-        light: 'schematic-visualization-treasure-map-light-mode.1.jpg',
-        dark: 'schematic-visualization-treasure-map-dark-mode.1.jpg',
-        width: 1992,
-        height: 1476,
-        darkWidth: 1992,
-        darkHeight: 1476,
+        closed: {
+          light: {
+            desktop: {
+              src: 'schematic-visualization-treasure-map-light-mode-desktop.1.jpg',
+              width: 1000,
+              height: 741,
+            },
+            mobile: {
+              src: 'schematic-visualization-treasure-map-light-mode-mobile.1.jpg',
+              width: 400,
+              height: 466,
+            },
+          },
+          dark: {
+            desktop: {
+              src: 'schematic-visualization-treasure-map-dark-mode-desktop.1.jpg',
+              width: 1000,
+              height: 741,
+            },
+            mobile: {
+              src: 'schematic-visualization-treasure-map-dark-mode-mobile.1.jpg',
+              width: 400,
+              height: 466,
+            },
+          },
+        },
+        open: {
+          en: {
+            desktop: {
+              src: 'schematic-visualization-treasure-map-workflow-desktop-english.1.jpg',
+              width: 1000,
+              height: 721,
+            },
+            mobile: {
+              src: 'schematic-visualization-treasure-map-workflow-mobile-english.1.jpg',
+              width: 400,
+              height: 811,
+            },
+          },
+          ar: {
+            desktop: {
+              src: 'schematic-visualization-treasure-map-workflow-desktop-arabic.1.jpg',
+              width: 1000,
+              height: 721,
+            },
+            mobile: {
+              src: 'schematic-visualization-treasure-map-workflow-mobile-arabic.1.jpg',
+              width: 400,
+              height: 811,
+            },
+          },
+          he: {
+            desktop: {
+              src: 'schematic-visualization-treasure-map-workflow-desktop-hebrew.1.jpg',
+              width: 1000,
+              height: 721,
+            },
+            mobile: {
+              src: 'schematic-visualization-treasure-map-workflow-mobile-hebrew.1.jpg',
+              width: 400,
+              height: 811,
+            },
+          },
+        },
       },
       'paragraph-2': { type: 'paragraph' },
     },
@@ -126,13 +184,6 @@ export const schematicVisualizationContent = {
           },
         },
       },
-      'paragraph-2': { type: 'paragraph' },
-      'paragraph-3': { type: 'paragraph' },
-      'image-3': {
-        type: 'image',
-        location: 'schematic-vis-sec-3-img-3.jpg',
-      },
-      'paragraph-4': { type: 'paragraph' },
     },
   },
 } as const
@@ -166,18 +217,30 @@ export type SchematicArtSrc = {
   height: number
 }
 
+export type SchematicArtPair = {
+  desktop: SchematicArtSrc
+  mobile: SchematicArtSrc
+}
+
 /** Desktop and mobile files for each locale, as on the Kurdistan page. */
 export type SchematicArtDirectedImageBlock = SchematicImageBase & {
-  byLocale: Record<
-    'en' | 'ar' | 'he',
-    { desktop: SchematicArtSrc; mobile: SchematicArtSrc }
-  >
+  byLocale: Record<'en' | 'ar' | 'he', SchematicArtPair>
+}
+
+/**
+ * Closed frame is light/dark and desktop/mobile. Opening it reveals the
+ * workflow for the current locale, desktop or mobile.
+ */
+export type SchematicTreasureMapBlock = SchematicImageBase & {
+  closed: { light: SchematicArtPair; dark: SchematicArtPair }
+  open: Record<'en' | 'ar' | 'he', SchematicArtPair>
 }
 
 export type SchematicImageBlock =
   | SchematicSingleImageBlock
   | SchematicThemedImageBlock
   | SchematicArtDirectedImageBlock
+  | SchematicTreasureMapBlock
 
 export type SchematicBlock = SchematicParagraphBlock | SchematicImageBlock
 
@@ -214,13 +277,19 @@ export function isSchematicImageBlock(
   return block.type === 'image'
 }
 
+export function isTreasureMapBlock(
+  block: SchematicBlock
+): block is SchematicTreasureMapBlock {
+  return block.type === 'image' && 'closed' in block && 'open' in block
+}
+
 function pageLocale(locale: string): 'en' | 'ar' | 'he' {
   if (locale === 'ar' || locale === 'he') return locale
   return 'en'
 }
 
 export function schematicImageSources(
-  block: SchematicImageBlock,
+  block: Exclude<SchematicImageBlock, SchematicTreasureMapBlock>,
   locale: string
 ) {
   if ('byLocale' in block) {

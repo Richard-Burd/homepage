@@ -97,9 +97,7 @@ export default function SchematicAssetImage({
   return (
     <div
       className={`relative overflow-hidden bg-rose-200 dark:bg-rose-900 ${
-        viewportCover
-          ? 'h-[calc(100svh-var(--navbar-height,4.15rem))]'
-          : ''
+        viewportCover ? 'h-[calc(100svh-var(--navbar-height,4.15rem))]' : ''
       } ${className ?? ''}`}
     >
       {showPlaceholder ? (
@@ -127,7 +125,7 @@ export default function SchematicAssetImage({
         className={
           showPlaceholder
             ? 'absolute inset-0 h-full w-full object-cover opacity-0'
-            : `${loadedImageClassName}${darkSrc ? ' dark:hidden' : ''}`
+            : `${loadedImageClassName}${darkSrc ? 'dark:hidden' : ''}`
         }
         onLoad={() => setLightStatus('loaded')}
         onError={() => setLightStatus('error')}
