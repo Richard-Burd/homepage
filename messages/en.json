@@ -42,7 +42,7 @@
     "slices": {
       "Category1": {
         "title": "Product Engineering",
-        "Description": "I design and ship products end-to-end: requirements, architecture, the working system, and the handoff. For me that work is coordinating pieces that usually live in different rooms—software, hardware, and the people who will actually use the thing—so constraints show up early and nobody is surprised later. I field-test what we build and keep scope honest, so the product that lands is the one we meant to build."
+        "Description": "Most of my career has involved building products to solve problems, in one form or another.  This experience covers the domains of building construction, software architecture, as well as both mechanical and, systems engineering."
       },
       "Category2": {
         "title": "Design Presentation",
@@ -66,7 +66,7 @@
       },
       "Category7": {
         "title": "Persuasion & Influence",
-        "Description": "I use the following working hypothesis to win friends and influence people: Human beings are evolved social animals whose behavior is driven by motives involving status, identity, reputation, belonging, relationships, resources, ideology, and coalition membership.  Much of this motivational machinery operates outside conscious awareness. People therefore do not always accurately understand or report why they behave as they do; conscious reasoning frequently interprets and communicates decisions produced by subconscious processes. Because these processes contain predictable mechanisms, human behavior can also be systematically influenced."
+        "Description": "I am an avid reader of Robert Cialdini and other academicians using evolutionary psychology as a baseline model for predicting human behavior.  I use this model, and the accompanying literature, to win friends and influence people."
       }
     }
   },
@@ -76,7 +76,7 @@
     "slices": {
       "Category1": {
         "title": "Full Stack Web Development",
-        "Description": "I have been building full stack applications for a variety of startups since 2019.  You can see the technology stack I use <technologyStack>here</technologyStack>.  Most of the projects I’ve worked on are early stage startups. I have vast experience in API calls to AI LLM’s and designing original software layers that handle highly custom, unique (bespoke) workloads.  I also have the ability to create websites with multilanguage support for non-Latin-font languages."
+        "Description": "I have been building full stack applications for a variety of startups since 2019.  You can see the technology stack I use <technologyStack>here</technologyStack>.  Although I completed formal training at the prestigious <flatironSchool>Flatiron School</flatironSchool> in software engineering, I now act as a requirements engineer, feeding the AI super prompts in the form of text, as well as <schematicVisualization>schematic visualizations</schematicVisualization> that are optimized for AI understanding.  Occasionally I step in to make architectural decisions, or seek out a human expert where OAuth or security concerns are involved.  Otherwise I define requirements and select the optimal AI to complete the task at hand."
       },
       "Category2": {
         "title": "Data & Design Visualization",
@@ -92,7 +92,7 @@
       },
       "Category5": {
         "title": "Rapid Prototyping",
-        "Description": "From 3D printing to <bespokeCode>highly bespoke code</bespokeCode>, I have extensive experience building minimum viable products for early stage startups.  This includes extensive systems design engineering on group-1 UAV’s (drones) working with a variety of hardware components."
+        "Description": "My design philosophy starts with asking: “How do we create a <b><i>system</i></b> to iteratively test the ambitious <i>thing</i> we want to build?”  As a hillbilly engineer, I am less interested in fancy theories and more concerned with the budget & logistics needed to reach a minimum viable product."
       },
       "Category6": {
         "title": "Product Ownership",

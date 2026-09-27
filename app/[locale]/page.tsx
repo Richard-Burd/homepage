@@ -145,6 +145,16 @@ export default async function Home({ params }: Props) {
           {chunks}
         </Link>
       ),
+      flatironSchool: (chunks) => (
+        <a
+          href="https://flatironschool.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
       sketchupPortfolio: (chunks) => (
         <a
           href="https://3dwarehouse.sketchup.com/by/richardburd"
@@ -165,6 +175,8 @@ export default async function Home({ params }: Props) {
           {chunks}
         </a>
       ),
+      b: (chunks) => <b>{chunks}</b>,
+      i: (chunks) => <i>{chunks}</i>,
       technicalTopics: (chunks) => (
         <a
           href="https://richard-burd.github.io/when_big_o_does_and_does_not_matter"
