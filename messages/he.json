@@ -7,8 +7,6 @@
   "HomePage": {
     "title": "<phrase>דף הבית</phrase> <phrase>של עקיבא ציפור</phrase>",
     "intro": "שלום חברים, אני ריצ'רד אבל אנשים בארץ קוראים לי עקיבא, ברוכים הבאים לאתר שלי. אני סוג של אולר שווייצרי של איש אחד — סטארט־אפ שלם בקופסה. יש לי ניסיון מקצועי במגוון רחב של תחומים שונים ונפרדים זה מזה. בימים אלה אני עוסק בפיתוח Full Stack בעולם הסטארט־אפים, ובמקביל במחקר מדיניות במגזר ללא כוונת רווח.",
-    "contactIntro": "הדרך הטובה ביותר ליצור איתי קשר היא לשלוח דוא\"ל ל:",
-    "emailImageAlt": "rick dot a dot burd at gmail dot com",
     "socialNav": "קישורים חברתיים",
     "linkedin": "LinkedIn",
     "instagram": "Instagram",
@@ -22,7 +20,15 @@
   },
   "NavMenu": {
     "label": "תפריט",
-    "home": "דף הבית"
+    "home": "דף הבית",
+    "contact": "יצירת קשר"
+  },
+  "ContactPage": {
+    "metaTitle": "יצירת קשר",
+    "metaDescription": "איך ליצור קשר עם עקיבא ציפור בדוא\"ל.",
+    "title": "יצירת קשר",
+    "intro": "הדרך הטובה ביותר ליצור איתי קשר היא לשלוח דוא\"ל ל:",
+    "emailImageAlt": "rick dot a dot burd at gmail dot com"
   },
   "LocaleSwitcher": {
     "label": "שפה",

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
@@ -13,7 +12,6 @@ import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
-import { assetUrl } from '@/lib/assets'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -223,7 +221,7 @@ export default async function Home({ params }: Props) {
 
         <div className="flex w-full flex-col items-center">
           <GazeboWithTwoOppositePortals />
-          <p className="mx-4 mt-6 text-[1.0rem] md:mx-20 md:text-[1.4rem]">
+          <p className="mx-4 mt-6 mb-40 text-[1.0rem] sm:text-justify md:mx-20 md:text-[1.4rem]">
             {t.rich('intro', {
               existingHomepage: (chunks) => (
                 <a
@@ -237,16 +235,6 @@ export default async function Home({ params }: Props) {
               ),
             })}
           </p>
-          <p className="mx-4 mt-6 text-[1.0rem] sm:text-justify md:mx-20 md:text-[1.4rem]">
-            {t('contactIntro')}
-          </p>
-          <Image
-            src={assetUrl('gmail-email-address.jpg')}
-            alt={t('emailImageAlt')}
-            width={344}
-            height={98}
-            className="mx-4 mt-4 mb-40 px-4"
-          />
         </div>
 
         {/* <div className="flex w-full items-center justify-center">

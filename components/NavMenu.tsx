@@ -34,7 +34,10 @@ type MenuItemId =
   | 'knowledge-domains'
   | 'core-capabilities'
   | 'technology-stack'
+  | 'contact'
   | 'linkedin'
+
+type HomeHashMenuItemId = Exclude<MenuItemId, 'linkedin' | 'contact'>
 
 function itemClassName(pressed: boolean) {
   return `block w-full cursor-pointer px-3 py-1.5 text-start text-2xl leading-loose whitespace-nowrap outline-none transition-colors duration-150 ${
@@ -113,7 +116,7 @@ export default function NavMenu() {
 
   function goToHomeHash(
     event: MouseEvent<HTMLAnchorElement>,
-    hash: Exclude<MenuItemId, 'linkedin'>
+    hash: HomeHashMenuItemId
   ) {
     if (pathname !== '/') {
       runAfterPress(hash, () => {})
@@ -137,7 +140,7 @@ export default function NavMenu() {
   }
 
   const items: Array<{
-    id: Exclude<MenuItemId, 'linkedin'>
+    id: HomeHashMenuItemId
     label: string
   }> = [
     { id: 'home', label: t('home') },
@@ -212,6 +215,33 @@ export default function NavMenu() {
                 reduceMotion
                   ? { duration: 0 }
                   : { ...menuTransition, delay: 0.04 + items.length * 0.045 }
+              }
+            >
+              <Link
+                role="menuitem"
+                href="/contact"
+                style={itemFont}
+                className={itemClassName(pressedItem === 'contact')}
+                onPointerDown={() => setPressedItem('contact')}
+                onPointerLeave={() => {
+                  if (closeTimerRef.current == null) setPressedItem(null)
+                }}
+                onClick={() => runAfterPress('contact', () => {})}
+              >
+                {t('contact')}
+              </Link>
+            </motion.li>
+            <motion.li
+              role="none"
+              initial={reduceMotion ? false : { opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      ...menuTransition,
+                      delay: 0.04 + (items.length + 1) * 0.045,
+                    }
               }
             >
               <a
