@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Fragment, type ReactNode } from 'react'
 
+import RailsDiagramImage from '@/components/schematic-visualization/RailsDiagramImage'
 import SchematicAssetImage from '@/components/schematic-visualization/SchematicAssetImage'
 import TreasureMapImage from '@/components/schematic-visualization/TreasureMapImage'
 import OrientationText from '@/components/two-rail/OrientationText'
@@ -8,6 +9,7 @@ import { RailEnd, RailStart } from '@/components/two-rail/Rail'
 import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
 import {
   getSchematicSections,
+  isDiagramImageBlock,
   isSchematicImageBlock,
   isTreasureMapBlock,
   schematicImageSources,
@@ -155,6 +157,36 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                     <p className="px-6 py-8 text-[1rem] leading-loose text-zinc-800 md:px-10 md:text-[1.125rem] dark:text-zinc-50">
                       {t.rich(`sections.${section.id}.${entry.id}`, richMarks)}
                     </p>
+                  ) : isDiagramImageBlock(entry.block) ? (
+                    <div className="px-6 py-6 md:px-10">
+                      <RailsDiagramImage
+                        src={entry.block.location}
+                        width={entry.block.width}
+                        height={entry.block.height}
+                        diagramSrc={entry.block.diagram.src}
+                        diagramWidth={entry.block.diagram.width}
+                        diagramHeight={entry.block.diagram.height}
+                        alt={t(`sections.${section.id}.${entry.id}.alt`)}
+                        openLabel={t(
+                          `sections.${section.id}.${entry.id}.openDiagram`
+                        )}
+                        closeLabel={t(
+                          `sections.${section.id}.${entry.id}.closeDiagram`
+                        )}
+                        zoomInLabel={t(
+                          `sections.${section.id}.${entry.id}.zoomIn`
+                        )}
+                        zoomOutLabel={t(
+                          `sections.${section.id}.${entry.id}.zoomOut`
+                        )}
+                        fitLabel={t(
+                          `sections.${section.id}.${entry.id}.fitDiagram`
+                        )}
+                        panHint={t(
+                          `sections.${section.id}.${entry.id}.panHint`
+                        )}
+                      />
+                    </div>
                   ) : isTreasureMapBlock(entry.block) ? (
                     <div className="px-6 py-6 md:px-10">
                       <TreasureMapImage

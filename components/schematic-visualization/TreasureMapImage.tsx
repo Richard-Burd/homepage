@@ -128,12 +128,11 @@ export default function TreasureMapImage({
       }`}
     >
       <motion.div
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-0"
         initial={false}
         animate={{ opacity: revealed ? 0 : 1 }}
         transition={{ duration: frameDuration, ease: frameEase }}
         aria-hidden={revealed}
-        style={{ pointerEvents: revealed ? 'none' : 'auto' }}
         onAnimationComplete={onFrameAnimationComplete}
       >
         <ArtPair
@@ -153,7 +152,7 @@ export default function TreasureMapImage({
               key="reveal"
               type="button"
               aria-label={revealLabel}
-              className="absolute inset-0 z-10 cursor-zoom-in"
+              className="pointer-events-auto absolute right-[22.5%] bottom-[7%] z-10 aspect-square w-[31%] cursor-zoom-in text-zinc-800 min-[800px]:right-[31%] min-[800px]:bottom-[1.5%] min-[800px]:w-[23.5%] dark:text-zinc-50"
               initial={{ opacity: 0 }}
               animate="rest"
               whileHover="hover"
@@ -163,7 +162,7 @@ export default function TreasureMapImage({
               onClick={requestReveal}
             >
               <motion.span
-                className="absolute right-[22.5%] bottom-[7%] aspect-square w-[31%] text-zinc-800 min-[800px]:right-[31%] min-[800px]:bottom-[1.5%] min-[800px]:w-[23.5%] dark:text-zinc-50"
+                className="block size-full"
                 variants={iconVariants}
                 transition={{ duration: reduceMotion ? 0 : 0.2 }}
               >

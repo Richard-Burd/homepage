@@ -291,6 +291,12 @@
         "image-2": {
           "alt": "Section 1 image 2",
           "caption": "Section-1 Image-2",
+          "openDiagram": "Open the diagram",
+          "closeDiagram": "Close diagram",
+          "zoomIn": "Zoom in",
+          "zoomOut": "Zoom out",
+          "fitDiagram": "Show the whole diagram",
+          "panHint": "Drag to move. Scroll or pinch to zoom.",
           "description-title": "Ruby on Rails Illustrated",
           "description-text": "This image <orientationText></orientationText> captures the essence of how a Ruby on Rails project is architected, along with various bespoke layers & elements.  In the era before AI, these would be used to document a codebase and even design & debug new features."
         }

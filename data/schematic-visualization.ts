@@ -24,8 +24,15 @@ export const schematicVisualizationContent = {
       },
       'image-2': {
         type: 'image',
-        location: 'schematic-visualization-ruby-on-rails-preview.1.jpg',
         hasDescription: true,
+        location: 'schematic-visualization-ruby-on-rails-preview.1.jpg',
+        width: 938,
+        height: 625,
+        diagram: {
+          src: 'schematic-visualization-rails-portfolio-enlarged.1.jpg',
+          width: 7700,
+          height: 5969,
+        },
       },
     },
     'section-2': {
@@ -236,11 +243,20 @@ export type SchematicTreasureMapBlock = SchematicImageBase & {
   open: Record<'en' | 'ar' | 'he', SchematicArtPair>
 }
 
+/** Rail preview. Opening it shows a pannable, zoomable diagram. */
+export type SchematicDiagramImageBlock = SchematicImageBase & {
+  location: string
+  width: number
+  height: number
+  diagram: SchematicArtSrc
+}
+
 export type SchematicImageBlock =
   | SchematicSingleImageBlock
   | SchematicThemedImageBlock
   | SchematicArtDirectedImageBlock
   | SchematicTreasureMapBlock
+  | SchematicDiagramImageBlock
 
 export type SchematicBlock = SchematicParagraphBlock | SchematicImageBlock
 
@@ -283,13 +299,22 @@ export function isTreasureMapBlock(
   return block.type === 'image' && 'closed' in block && 'open' in block
 }
 
+export function isDiagramImageBlock(
+  block: SchematicBlock
+): block is SchematicDiagramImageBlock {
+  return block.type === 'image' && 'diagram' in block && 'location' in block
+}
+
 function pageLocale(locale: string): 'en' | 'ar' | 'he' {
   if (locale === 'ar' || locale === 'he') return locale
   return 'en'
 }
 
 export function schematicImageSources(
-  block: Exclude<SchematicImageBlock, SchematicTreasureMapBlock>,
+  block: Exclude<
+    SchematicImageBlock,
+    SchematicTreasureMapBlock | SchematicDiagramImageBlock
+  >,
   locale: string
 ) {
   if ('byLocale' in block) {
