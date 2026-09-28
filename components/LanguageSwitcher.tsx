@@ -110,17 +110,20 @@ export default function LanguageSwitcher() {
       window.clearTimeout(closeTimerRef.current)
     }
 
-    closeTimerRef.current = window.setTimeout(() => {
-      closeTimerRef.current = null
-      setOpen(false)
-      setPressedLocale(null)
-      if (nextLocale === locale) return
+    closeTimerRef.current = window.setTimeout(
+      () => {
+        closeTimerRef.current = null
+        setOpen(false)
+        setPressedLocale(null)
+        if (nextLocale === locale) return
 
-      capturePendingScroll()
-      startTransition(() => {
-        router.replace(pathname, { locale: nextLocale, scroll: false })
-      })
-    }, reduceMotion ? 0 : PRESS_VISIBLE_MS)
+        capturePendingScroll()
+        startTransition(() => {
+          router.replace(pathname, { locale: nextLocale, scroll: false })
+        })
+      },
+      reduceMotion ? 0 : PRESS_VISIBLE_MS
+    )
   }
 
   return (
@@ -149,12 +152,10 @@ export default function LanguageSwitcher() {
             id={listId}
             role="listbox"
             aria-label={t('label')}
-            className="absolute top-full inset-e-0 z-50 mt-1 min-w-36 overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
+            className="absolute inset-e-0 top-full z-50 mt-1 min-w-36 overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
             initial={reduceMotion ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={
-              reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }
-            }
+            exit={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
             transition={reduceMotion ? { duration: 0 } : menuTransition}
           >
             {routing.locales.map((code, index) => {
@@ -182,7 +183,7 @@ export default function LanguageSwitcher() {
                     }}
                     onClick={() => selectLocale(code)}
                     style={{ fontFamily: fontForLocale(code) }}
-                    className={`block w-full cursor-pointer px-3 py-1.5 text-start text-sm whitespace-nowrap outline-none transition-colors duration-150 ${
+                    className={`block w-full cursor-pointer px-3 py-1.5 text-2xl leading-loose whitespace-nowrap transition-colors duration-150 outline-none ${
                       pressed
                         ? 'bg-[#f4ecd4] text-[#8a6914] dark:bg-[#3f3620] dark:text-[#e4c56a]'
                         : `text-black dark:text-zinc-50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#c5d0e2] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#4a5670] ${

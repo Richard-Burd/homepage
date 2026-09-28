@@ -37,7 +37,7 @@ type MenuItemId =
   | 'linkedin'
 
 function itemClassName(pressed: boolean) {
-  return `block w-full cursor-pointer px-3 py-1.5 text-start text-sm whitespace-nowrap outline-none transition-colors duration-150 ${
+  return `block w-full cursor-pointer px-3 py-1.5 text-start text-2xl leading-loose whitespace-nowrap outline-none transition-colors duration-150 ${
     pressed
       ? 'bg-[#f4ecd4] text-[#8a6914] dark:bg-[#3f3620] dark:text-[#e4c56a]'
       : 'text-black dark:text-zinc-50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#c5d0e2] dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#4a5670]'
@@ -100,12 +100,15 @@ export default function NavMenu() {
       window.clearTimeout(closeTimerRef.current)
     }
 
-    closeTimerRef.current = window.setTimeout(() => {
-      closeTimerRef.current = null
-      setOpen(false)
-      setPressedItem(null)
-      action()
-    }, reduceMotion ? 0 : PRESS_VISIBLE_MS)
+    closeTimerRef.current = window.setTimeout(
+      () => {
+        closeTimerRef.current = null
+        setOpen(false)
+        setPressedItem(null)
+        action()
+      },
+      reduceMotion ? 0 : PRESS_VISIBLE_MS
+    )
   }
 
   function goToHomeHash(
@@ -124,7 +127,9 @@ export default function NavMenu() {
       if (hash === 'home') {
         window.scrollTo({ top: 0, behavior })
       } else {
-        document.getElementById(hash)?.scrollIntoView({ behavior, block: 'start' })
+        document
+          .getElementById(hash)
+          ?.scrollIntoView({ behavior, block: 'start' })
       }
 
       history.pushState(null, '', `#${hash}`)
@@ -166,7 +171,7 @@ export default function NavMenu() {
             id={listId}
             role="menu"
             aria-label={t('label')}
-            className="absolute top-full inset-s-0 z-50 mt-1 min-w-full overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
+            className="absolute inset-s-0 top-full z-50 mt-1 min-w-full overflow-hidden rounded border border-zinc-300 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-950"
             initial={reduceMotion ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
