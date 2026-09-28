@@ -1,12 +1,18 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Fragment, type ReactNode } from 'react'
 
+import RailsDiagramImage from '@/components/schematic-visualization/RailsDiagramImage'
 import SchematicAssetImage from '@/components/schematic-visualization/SchematicAssetImage'
+import TreasureMapImage from '@/components/schematic-visualization/TreasureMapImage'
+import OrientationText from '@/components/two-rail/OrientationText'
 import { RailEnd, RailStart } from '@/components/two-rail/Rail'
 import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
 import {
   getSchematicSections,
+  isDiagramImageBlock,
   isSchematicImageBlock,
+  isTreasureMapBlock,
+  schematicImageSources,
   schematicVisualizationContent,
 } from '@/data/schematic-visualization'
 
@@ -46,7 +52,13 @@ export default async function SchematicVisualizationPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations('SchematicVisualizationPage')
+  const rail = await getTranslations('TwoRailOrientationText')
   const headingClass = headingClassName(locale)
+  const descriptionMarks = {
+    orientationText: () => (
+      <OrientationText side={rail('side')} below={rail('below')} />
+    ),
+  }
   const sections = getSchematicSections()
   const lastSection = sections.at(-1)
   const lastBlock = lastSection?.blocks.at(-1)
@@ -132,8 +144,9 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                         )}
                       </p>
                       <p className="mt-2 max-[799px]:text-[1rem] max-[799px]:leading-loose min-[800px]:text-[0.95rem] min-[800px]:leading-relaxed md:max-[799px]:text-[1.125rem]">
-                        {t(
-                          `sections.${section.id}.${entry.id}.description-text`
+                        {t.rich(
+                          `sections.${section.id}.${entry.id}.description-text`,
+                          descriptionMarks
                         )}
                       </p>
                     </div>
@@ -144,10 +157,61 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                     <p className="px-6 py-8 text-[1rem] leading-loose text-zinc-800 md:px-10 md:text-[1.125rem] dark:text-zinc-50">
                       {t.rich(`sections.${section.id}.${entry.id}`, richMarks)}
                     </p>
+                  ) : isDiagramImageBlock(entry.block) ? (
+                    <div className="px-6 py-6 md:px-10">
+                      <RailsDiagramImage
+                        src={entry.block.location}
+                        width={entry.block.width}
+                        height={entry.block.height}
+                        diagramSrc={entry.block.diagram.src}
+                        diagramWidth={entry.block.diagram.width}
+                        diagramHeight={entry.block.diagram.height}
+                        alt={t(`sections.${section.id}.${entry.id}.alt`)}
+                        openLabel={t(
+                          `sections.${section.id}.${entry.id}.openDiagram`
+                        )}
+                        closeLabel={t(
+                          `sections.${section.id}.${entry.id}.closeDiagram`
+                        )}
+                        zoomInLabel={t(
+                          `sections.${section.id}.${entry.id}.zoomIn`
+                        )}
+                        zoomOutLabel={t(
+                          `sections.${section.id}.${entry.id}.zoomOut`
+                        )}
+                        fitLabel={t(
+                          `sections.${section.id}.${entry.id}.fitDiagram`
+                        )}
+                        panHint={t(
+                          `sections.${section.id}.${entry.id}.panHint`
+                        )}
+                      />
+                    </div>
+                  ) : isTreasureMapBlock(entry.block) ? (
+                    <div className="px-6 py-6 md:px-10">
+                      <TreasureMapImage
+                        closed={entry.block.closed}
+                        open={
+                          entry.block.open[
+                            locale === 'ar' || locale === 'he' ? locale : 'en'
+                          ]
+                        }
+                        alt={t(`sections.${section.id}.${entry.id}.alt`)}
+                        workflowAlt={t(
+                          `sections.${section.id}.${entry.id}.workflowAlt`
+                        )}
+                        revealLabel={t(
+                          `sections.${section.id}.${entry.id}.showWorkflow`
+                        )}
+                        restoreLabel={t(
+                          `sections.${section.id}.${entry.id}.showMap`
+                        )}
+                      />
+                    </div>
                   ) : (
                     <div className="px-6 py-6 md:px-10">
                       <SchematicAssetImage
-                        src={entry.block.location}
+                        {...schematicImageSources(entry.block, locale)}
                         alt={t(`sections.${section.id}.${entry.id}.alt`)}
                         caption={t(
                           `sections.${section.id}.${entry.id}.caption`

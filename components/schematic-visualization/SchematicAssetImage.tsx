@@ -5,8 +5,20 @@ import { useState } from 'react'
 
 import { assetUrl } from '@/lib/assets'
 
-type Props = {
+type ArtSrc = {
   src: string
+  width: number
+  height: number
+}
+
+type Props = {
+  src?: string
+  /**
+   * Desktop and mobile files for the current locale. Below 800px the mobile
+   * file is shown; from 800px up, the desktop file. Same breakpoint as the
+   * Kurdistan page.
+   */
+  artDirected?: { desktop: ArtSrc; mobile: ArtSrc }
   /** When set, shown only in dark mode; `src` is light-mode only. */
   darkSrc?: string
   alt: string
@@ -16,6 +28,9 @@ type Props = {
   minHeightClassName?: string
   width?: number
   height?: number
+  /** Intrinsic size of `darkSrc` when it differs from the light image. */
+  darkWidth?: number
+  darkHeight?: number
   /**
    * Fill the rail from the navbar to the bottom of the small viewport and
    * crop the sides. `svh` is used so mobile browser chrome show/hide does
@@ -27,6 +42,7 @@ type Props = {
 
 export default function SchematicAssetImage({
   src,
+  artDirected,
   darkSrc,
   alt,
   caption,
@@ -35,6 +51,8 @@ export default function SchematicAssetImage({
   minHeightClassName = 'min-h-[12rem]',
   width = 1600,
   height = 900,
+  darkWidth,
+  darkHeight,
   viewportCover = false,
 }: Props) {
   const [lightStatus, setLightStatus] = useState<
@@ -43,6 +61,31 @@ export default function SchematicAssetImage({
   const [darkStatus, setDarkStatus] = useState<'pending' | 'loaded' | 'error'>(
     'pending'
   )
+
+  if (artDirected) {
+    return (
+      <div className={className}>
+        <Image
+          src={assetUrl(artDirected.mobile.src)}
+          alt={alt}
+          width={artDirected.mobile.width}
+          height={artDirected.mobile.height}
+          sizes="100vw"
+          className="h-auto w-full min-[800px]:hidden"
+        />
+        <Image
+          src={assetUrl(artDirected.desktop.src)}
+          alt={alt}
+          width={artDirected.desktop.width}
+          height={artDirected.desktop.height}
+          sizes="(min-width: 800px) 50vw, 100vw"
+          className="hidden h-auto w-full min-[800px]:block"
+        />
+      </div>
+    )
+  }
+
+  if (!src) return null
 
   const lightReady = lightStatus === 'loaded'
   const darkReady = !darkSrc || darkStatus === 'loaded'
@@ -54,9 +97,7 @@ export default function SchematicAssetImage({
   return (
     <div
       className={`relative overflow-hidden bg-rose-200 dark:bg-rose-900 ${
-        viewportCover
-          ? 'h-[calc(100svh-var(--navbar-height,4.15rem))]'
-          : ''
+        viewportCover ? 'h-[calc(100svh-var(--navbar-height,4.15rem))]' : ''
       } ${className ?? ''}`}
     >
       {showPlaceholder ? (
@@ -79,12 +120,12 @@ export default function SchematicAssetImage({
         width={width}
         height={height}
         sizes="(min-width: 800px) 50vw, 100vw"
-        loading={priority ? 'eager' : 'lazy'}
+        loading={priority || darkSrc ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : undefined}
         className={
           showPlaceholder
             ? 'absolute inset-0 h-full w-full object-cover opacity-0'
-            : `${loadedImageClassName}${darkSrc ? ' dark:hidden' : ''}`
+            : `${loadedImageClassName}${darkSrc ? 'dark:hidden' : ''}`
         }
         onLoad={() => setLightStatus('loaded')}
         onError={() => setLightStatus('error')}
@@ -93,10 +134,10 @@ export default function SchematicAssetImage({
         <Image
           src={assetUrl(darkSrc)}
           alt={alt}
-          width={width}
-          height={height}
+          width={darkWidth ?? width}
+          height={darkHeight ?? height}
           sizes="(min-width: 800px) 50vw, 100vw"
-          loading={priority ? 'eager' : 'lazy'}
+          loading={priority || darkSrc ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : undefined}
           className={
             showPlaceholder
