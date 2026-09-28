@@ -238,7 +238,7 @@ export default function RailsDiagramImage({
               role="dialog"
               aria-modal="true"
               aria-label={alt}
-              className="fixed inset-0 z-[60] bg-zinc-950"
+              className="fixed inset-0 z-60 bg-zinc-950"
             >
               <div ref={viewerNodeRef} className="absolute inset-0" />
               <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-end p-3">

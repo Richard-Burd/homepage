@@ -123,8 +123,8 @@ export default function TreasureMapImage({
         reduceMotion ? 'duration-0' : 'duration-700'
       } ${
         revealed
-          ? 'aspect-[400/811] min-[800px]:aspect-[1000/721]'
-          : 'aspect-[400/466] min-[800px]:aspect-[1000/741]'
+          ? 'aspect-400/811 min-[800px]:aspect-1000/721'
+          : 'aspect-400/466 min-[800px]:aspect-1000/741'
       }`}
     >
       <motion.div
