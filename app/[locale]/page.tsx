@@ -61,6 +61,16 @@ export default async function Home({ params }: Props) {
           {chunks}
         </a>
       ),
+      link: (chunks) => (
+        <a
+          href="https://www.ketubahmaker.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </a>
+      ),
       schematicVisualization: (chunks) => (
         <Link
           href="/schematic-visualization"
@@ -167,7 +177,18 @@ export default async function Home({ params }: Props) {
       color: group.color,
       items: group.items.map((item) => ({
         ...item,
-        description: tDigitalDesignCreativeTools(`items.${item.id}`),
+        description: tDigitalDesignCreativeTools.rich(`items.${item.id}`, {
+          link: (chunks) => (
+            <a
+              href="https://www.ketubahmaker.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline dark:text-blue-400"
+            >
+              {chunks}
+            </a>
+          ),
+        }),
       })),
     }))
 

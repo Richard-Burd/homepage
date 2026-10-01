@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'motion/react'
 import { useLocale } from 'next-intl'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 
 import SliceDetailPanel from '../pie-and-bar-chart-combo/SliceDetailPanel'
 import {
@@ -23,7 +23,7 @@ import type { DomainsChartDatum } from '../pie-and-bar-chart-combo/types'
 export type TechStackItem = {
   id: string
   label: string
-  description: string
+  description: ReactNode
   value: number
   color: string
 }
@@ -31,7 +31,7 @@ export type TechStackItem = {
 export type TechStackGroup = {
   id: string
   label: string
-  description: string
+  description: ReactNode
   color: string
   items: TechStackItem[]
 }
@@ -169,7 +169,7 @@ function layoutGroups(groups: TechStackGroup[]): {
 function sliceOf(
   id: string,
   label: string,
-  description: string,
+  description: ReactNode,
   value: number,
   color: string
 ): DomainsChartDatum {
