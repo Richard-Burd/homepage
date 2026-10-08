@@ -73,7 +73,7 @@ export const schematicVisualizationContent = {
               height: 721,
             },
             mobile: {
-              src: 'schematic-visualization-treasure-map-workflow-mobile-english.1.jpg',
+              src: 'schematic-visualization-treasure-map-workflow-mobile-english.2.jpg',
               width: 400,
               height: 811,
             },
@@ -119,7 +119,7 @@ export const schematicVisualizationContent = {
               height: 687,
             },
             mobile: {
-              src: 'schematic-visualization-blueprint-cloud-mobile-englsih.1.jpg',
+              src: 'schematic-visualization-blueprint-cloud-mobile-englsih.2.jpg',
               width: 400,
               height: 582,
             },
@@ -160,7 +160,7 @@ export const schematicVisualizationContent = {
               height: 687,
             },
             mobile: {
-              src: 'schematic-visualization-blueprint-box-mobile-english.1.jpg',
+              src: 'schematic-visualization-blueprint-box-mobile-english.2.jpg',
               width: 400,
               height: 582,
             },

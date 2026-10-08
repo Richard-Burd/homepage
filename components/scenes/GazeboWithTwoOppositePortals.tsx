@@ -25,6 +25,7 @@ import {
 
 import ModelErrorBoundary from '@/components/three/ModelErrorBoundary'
 import SceneCanvas from '@/components/three/SceneCanvas'
+import { viewportBoundedCanvasWidth } from '@/components/three/viewportBoundedCanvasWidth'
 import {
   useTurntableAutoRotate,
   useTurntableDrag,
@@ -97,8 +98,27 @@ const PITCH_MAX = Math.PI
 /** The point the model spins around, measured from the bounding-box center. */
 const PIVOT_POINT: [number, number, number] = [0, -0.35, 0]
 
-const CANVAS_WIDTH = '100%'
 const CANVAS_ASPECT: [number, number] = [1.2, 1.3]
+/**
+ * Space above the canvas on the home hero: `main` top padding plus title block
+ * (see `app/[locale]/page.tsx`). Tune if the gazebo still overflows short viewports.
+ */
+const CANVAS_VIEWPORT_RESERVED_ABOVE = '12rem'
+/**
+ * Share of the canvas height that must fit in the viewport below the navbar
+ * and hero title. The gazebo sits in the middle of a tall canvas, so the whole
+ * canvas does not need to be above the fold — 0.4 keeps the model visible
+ * while leaving the canvas at full width on anything but short laptop screens
+ * (with a 768px column the cap starts to bite below roughly 590px tall).
+ * Raise toward 1 to shrink sooner; lower to shrink later.
+ */
+const CANVAS_HEIGHT_FRACTION_ABOVE_FOLD = 0.4
+const CANVAS_WIDTH = viewportBoundedCanvasWidth(
+  CANVAS_ASPECT[0],
+  CANVAS_ASPECT[1],
+  CANVAS_VIEWPORT_RESERVED_ABOVE,
+  CANVAS_HEIGHT_FRACTION_ABOVE_FOLD
+)
 const CANVAS_BACKGROUND_COLOR = 'transparent'
 
 /**
@@ -430,7 +450,7 @@ export default function GazeboWithTwoOppositePortals() {
   )
 
   const canvasStyle = {
-    width: '100%' as const,
+    width: CANVAS_WIDTH,
     aspectRatio: `${CANVAS_ASPECT[0]} / ${CANVAS_ASPECT[1]}`,
     backgroundColor: CANVAS_BACKGROUND_COLOR,
   }
