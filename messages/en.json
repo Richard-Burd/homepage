@@ -190,11 +190,11 @@
     },
     "aviationStuff": {
       "title": "Aviation Stuff",
-      "subtitle": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, and war-gaming and flight-sim testing.",
+      "subtitle": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, war-gaming, and flight-sim testing.",
       "groups": {
         "uavDesignTools": {
           "label": "UAV Design Tools",
-          "description": "UAV design tools are used to shape airframes, airfoils, and 3D parts before anything is built or flown — from performance estimates to CAD models that can be manufactured."
+          "description": "This is the technology stack I use to design airframes and test them in a flight simulator environment before building any real-world prototypes.  The entire process is documented <foiltransRepo>here</foiltransRepo> in a schematic visualization showing you how to take your own airfoils and input them into the flight model using these programs.  The key ingredient is making sure your airfoil polar data are created using the proper <reynoldsNumber>Reynolds number</reynoldsNumber> for each individual airfoil.  When this is done correctly, the models are incredibly accurate and predict aircraft performance."
         },
         "uavFlightOperations": {
           "label": "UAV Flight Operations",

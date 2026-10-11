@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
@@ -192,10 +193,46 @@ export default async function Home({ params }: Props) {
       })),
     }))
 
+  const reynoldsNumberUrl =
+    locale === 'ar'
+      ? 'https://ar.wikipedia.org/wiki/%D8%B9%D8%AF%D8%AF_%D8%B1%D9%8A%D9%86%D9%88%D9%84%D8%AF%D8%B2'
+      : locale === 'he'
+        ? 'https://he.wikipedia.org/wiki/%D7%9E%D7%A1%D7%A4%D7%A8_%D7%A8%D7%99%D7%99%D7%A0%D7%95%D7%9C%D7%93%D7%A1'
+        : 'https://en.wikipedia.org/wiki/Reynolds_number'
+
+  const uavDesignToolsDescriptionMarks = {
+    foiltransRepo: (chunks: ReactNode) => (
+      <a
+        href="https://github.com/Richard-Burd/foiltrans"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline dark:text-blue-400"
+      >
+        {chunks}
+      </a>
+    ),
+    reynoldsNumber: (chunks: ReactNode) => (
+      <a
+        href={reynoldsNumberUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline dark:text-blue-400"
+      >
+        {chunks}
+      </a>
+    ),
+  }
+
   const aviationStuffGroups = aviationStuffStackData.groups.map((group) => ({
     id: group.id,
     label: tAviationStuff(`groups.${group.id}.label`),
-    description: tAviationStuff(`groups.${group.id}.description`),
+    description:
+      group.id === 'uavDesignTools'
+        ? tAviationStuff.rich(
+            `groups.${group.id}.description`,
+            uavDesignToolsDescriptionMarks
+          )
+        : tAviationStuff(`groups.${group.id}.description`),
     color: group.color,
     items: group.items.map((item) => ({
       ...item,
