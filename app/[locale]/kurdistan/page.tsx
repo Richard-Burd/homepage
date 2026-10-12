@@ -673,7 +673,7 @@ export default async function KurdistanPage({ params }: Props) {
               height: 2350,
             }}
             dark={{
-              src: 'kurdistan-fig-8-dark.png',
+              src: 'kurdistan-fig-8-dark.v2.png',
               width: 1000,
               height: 2350,
             }}

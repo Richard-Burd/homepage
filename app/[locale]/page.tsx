@@ -63,6 +63,14 @@ export default async function Home({ params }: Props) {
         </a>
       ),
       link: (chunks) => (
+        <Link
+          href={{ pathname: '/', hash: 'aviation-stuff' }}
+          className="text-blue-600 underline dark:text-blue-400"
+        >
+          {chunks}
+        </Link>
+      ),
+      ketubahmaker: (chunks) => (
         <a
           href="https://www.ketubahmaker.com/"
           target="_blank"
@@ -200,17 +208,19 @@ export default async function Home({ params }: Props) {
         ? 'https://he.wikipedia.org/wiki/%D7%9E%D7%A1%D7%A4%D7%A8_%D7%A8%D7%99%D7%99%D7%A0%D7%95%D7%9C%D7%93%D7%A1'
         : 'https://en.wikipedia.org/wiki/Reynolds_number'
 
+  const foiltransRepoLink = (chunks: ReactNode) => (
+    <a
+      href="https://github.com/Richard-Burd/foiltrans"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 underline dark:text-blue-400"
+    >
+      {chunks}
+    </a>
+  )
+
   const uavDesignToolsDescriptionMarks = {
-    foiltransRepo: (chunks: ReactNode) => (
-      <a
-        href="https://github.com/Richard-Burd/foiltrans"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline dark:text-blue-400"
-      >
-        {chunks}
-      </a>
-    ),
+    foiltransRepo: foiltransRepoLink,
     reynoldsNumber: (chunks: ReactNode) => (
       <a
         href={reynoldsNumberUrl}
@@ -236,7 +246,12 @@ export default async function Home({ params }: Props) {
     color: group.color,
     items: group.items.map((item) => ({
       ...item,
-      description: tAviationStuff(`items.${item.id}`),
+      description:
+        item.id === 'foiltrans'
+          ? tAviationStuff.rich(`items.${item.id}`, {
+              link: foiltransRepoLink,
+            })
+          : tAviationStuff(`items.${item.id}`),
     })),
   }))
 
@@ -348,12 +363,14 @@ export default async function Home({ params }: Props) {
               color={digitalDesignCreativeToolsStackData.color}
               groups={digitalDesignCreativeToolsGroups}
             />
-            <TechStackBar
-              title={tAviationStuff('title')}
-              subtitle={tAviationStuff('subtitle')}
-              color={aviationStuffStackData.color}
-              groups={aviationStuffGroups}
-            />
+            <div id="aviation-stuff" className="scroll-mt-24">
+              <TechStackBar
+                title={tAviationStuff('title')}
+                subtitle={tAviationStuff('subtitle')}
+                color={aviationStuffStackData.color}
+                groups={aviationStuffGroups}
+              />
+            </div>
           </div>
         </div>
       </main>
