@@ -20,7 +20,7 @@ type Props = {
   params: Promise<{ locale: string }>
 }
 
-const richMarks = {
+const richTags = {
   b: (chunks: ReactNode) => <strong className="font-bold">{chunks}</strong>,
   i: (chunks: ReactNode) => <em className="italic">{chunks}</em>,
 }
@@ -54,7 +54,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
   const t = await getTranslations('SchematicVisualizationPage')
   const rail = await getTranslations('TwoRailOrientationText')
   const headingClass = headingClassName(locale)
-  const descriptionMarks = {
+  const descriptionRichTags = {
     orientationText: () => (
       <OrientationText side={rail('side')} below={rail('below')} />
     ),
@@ -146,7 +146,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                       <p className="mt-2 max-[799px]:text-[1rem] max-[799px]:leading-loose min-[800px]:text-[0.95rem] min-[800px]:leading-relaxed md:max-[799px]:text-[1.125rem]">
                         {t.rich(
                           `sections.${section.id}.${entry.id}.description-text`,
-                          descriptionMarks
+                          descriptionRichTags
                         )}
                       </p>
                     </div>
@@ -155,7 +155,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                 <RailEnd sectionEnd={isSectionEnd}>
                   {entry.block.type === 'paragraph' ? (
                     <p className="px-6 py-8 text-[1rem] leading-loose text-zinc-800 md:px-10 md:text-[1.125rem] dark:text-zinc-50">
-                      {t.rich(`sections.${section.id}.${entry.id}`, richMarks)}
+                      {t.rich(`sections.${section.id}.${entry.id}`, richTags)}
                     </p>
                   ) : isDiagramImageBlock(entry.block) ? (
                     <div className="px-6 py-6 md:px-10">

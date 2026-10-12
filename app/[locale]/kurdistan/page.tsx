@@ -1,14 +1,13 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
-import type { ReactNode } from 'react'
 
 import { assetUrl } from '@/lib/assets'
+import { externalRichLink } from '@/lib/rich-text'
 
 type Props = {
   params: Promise<{ locale: string }>
 }
 
-const linkClassName = 'text-blue-600 underline dark:text-blue-400'
 const figureClassName = 'my-6 h-auto w-full'
 
 type ThemedSrc = {
@@ -79,24 +78,6 @@ function ThemedArtDirectedImage({
       </div>
     </>
   )
-}
-
-function extLink(href: string, dir?: 'ltr' | 'rtl') {
-  function RichLink(chunks: ReactNode) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={linkClassName}
-        dir={dir}
-      >
-        {chunks}
-      </a>
-    )
-  }
-
-  return RichLink
 }
 
 type ArtDirectedSet = {
@@ -444,9 +425,13 @@ export default async function KurdistanPage({ params }: Props) {
 
           <p className="italic">
             {t.rich('abstract', {
-              peshmerga: extLink('https://en.wikipedia.org/wiki/Peshmerga'),
-              isis: extLink('https://en.wikipedia.org/wiki/Islamic_State'),
-              mosul: extLink('https://youtu.be/KbsesrAMjTw'),
+              peshmerga: externalRichLink(
+                'https://en.wikipedia.org/wiki/Peshmerga'
+              ),
+              isis: externalRichLink(
+                'https://en.wikipedia.org/wiki/Islamic_State'
+              ),
+              mosul: externalRichLink('https://youtu.be/KbsesrAMjTw'),
             })}
           </p>
 
@@ -474,10 +459,10 @@ export default async function KurdistanPage({ params }: Props) {
 
           <p>
             {t.rich('p2013', {
-              warCrimes: extLink(
+              warCrimes: externalRichLink(
                 'https://en.wikipedia.org/wiki/Genocide_of_Yazidis_by_ISIL'
               ),
-              isisName: extLink(
+              isisName: externalRichLink(
                 'https://en.wikipedia.org/wiki/Islamic_State_of_Iraq_and_the_Levant'
               ),
             })}
@@ -511,7 +496,7 @@ export default async function KurdistanPage({ params }: Props) {
 
           <p className="mt-4">
             {t.rich('pDummy', {
-              dummy: extLink(
+              dummy: externalRichLink(
                 'https://drive.google.com/file/d/1T9fKWgwbUhu5n_UIkCMJMuk2MFkiGEwN/view'
               ),
             })}
@@ -527,11 +512,13 @@ export default async function KurdistanPage({ params }: Props) {
 
           <p>
             {t.rich('pPeshwingIntro', {
-              peshmerga: extLink('https://en.wikipedia.org/wiki/Peshmerga'),
-              krg: extLink(
+              peshmerga: externalRichLink(
+                'https://en.wikipedia.org/wiki/Peshmerga'
+              ),
+              krg: externalRichLink(
                 'https://en.wikipedia.org/wiki/Kurdistan_Regional_Government'
               ),
-              raven: extLink(
+              raven: externalRichLink(
                 'https://en.wikipedia.org/wiki/AeroVironment_RQ-11_Raven'
               ),
             })}
@@ -591,7 +578,7 @@ export default async function KurdistanPage({ params }: Props) {
 
           <p>
             {t.rich('pSplatsDef', {
-              spoilers: extLink(
+              spoilers: externalRichLink(
                 locale === 'ar'
                   ? 'https://ar.wikipedia.org/wiki/%D9%85%D8%AB%D8%A8%D8%B7_%D8%A7%D9%84%D8%B1%D9%81%D8%B9_(%D8%B7%D9%8A%D8%B1%D8%A7%D9%86)'
                   : locale === 'he'
@@ -599,7 +586,7 @@ export default async function KurdistanPage({ params }: Props) {
                     : 'https://en.wikipedia.org/wiki/Spoiler_%28aeronautics%29',
                 locale === 'ar' ? 'ltr' : undefined
               ),
-              slats: extLink(
+              slats: externalRichLink(
                 locale === 'ar'
                   ? 'https://ar.wikipedia.org/wiki/%D8%B3%D8%AF%D9%81%D8%A9'
                   : locale === 'he'
@@ -622,7 +609,7 @@ export default async function KurdistanPage({ params }: Props) {
             {t.rich('pSplatsHow', {
               above: (chunks) => <em>{chunks}</em>,
               below: (chunks) => <em>{chunks}</em>,
-              chord: extLink(
+              chord: externalRichLink(
                 'https://en.wikipedia.org/wiki/Chord_%28aeronautics%29'
               ),
               do: (chunks) => <em>{chunks}</em>,
