@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
@@ -6,15 +7,102 @@ import ScrollToHash from '@/components/ScrollToHash'
 // import RotatingBlenderTestObject from '@/components/scenes/RotatingBlenderTestObject'
 // import RotatingCube from '@/components/RotatingCube'
 import TechStackBar from '@/components/tech-stack-bar/TechStackBar'
-import { Link } from '@/i18n/navigation'
 import domainsChartData from '@/data/knowledge-domains-chart.json'
 import capabilitiesChartData from '@/data/core-capabilities-chart.json'
 import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
+import type { Locale } from '@/i18n/routing'
+import {
+  boldRichTag,
+  externalRichLink,
+  homeHashRichLink,
+  internalRichLink,
+  italicRichTag,
+  type RichTagMap,
+} from '@/lib/rich-text'
 
 type Props = {
   params: Promise<{ locale: string }>
+}
+
+const schematicVisualizationLink = internalRichLink('/schematic-visualization')
+const ketubahmakerLink = externalRichLink('https://www.ketubahmaker.com/')
+const foiltransRepoLink = externalRichLink(
+  'https://github.com/Richard-Burd/foiltrans'
+)
+
+const REYNOLDS_NUMBER_WIKI: Record<Locale, string> = {
+  en: 'https://en.wikipedia.org/wiki/Reynolds_number',
+  ar: 'https://ar.wikipedia.org/wiki/%D8%B9%D8%AF%D8%AF_%D8%B1%D9%8A%D9%86%D9%88%D9%84%D8%AF%D8%B2',
+  he: 'https://he.wikipedia.org/wiki/%D7%9E%D7%A1%D7%A4%D7%A8_%D7%A8%D7%99%D7%99%D7%A0%D7%95%D7%9C%D7%93%D7%A1',
+}
+
+const domainsPieRichTags: RichTagMap = {
+  kurdistan: internalRichLink('/kurdistan'),
+  flyingWing: internalRichLink('/flying-wing'),
+  urbanCruiseShip: externalRichLink('https://www.urbancruiseship.org/'),
+  aviationStuff: homeHashRichLink('aviation-stuff'),
+  ketubahmaker: ketubahmakerLink,
+  schematicVisualization: schematicVisualizationLink,
+}
+
+const capabilitiesPieRichTags: RichTagMap = {
+  schematicVisualization: schematicVisualizationLink,
+  flatironSchool: externalRichLink('https://flatironschool.com/'),
+  sketchupPortfolio: externalRichLink(
+    'https://3dwarehouse.sketchup.com/by/richardburd'
+  ),
+  bespokeCode: externalRichLink(
+    'https://richard-burd.github.io/longest_common_subsequence'
+  ),
+  b: boldRichTag,
+  i: italicRichTag,
+  technicalTopics: externalRichLink(
+    'https://richard-burd.github.io/when_big_o_does_and_does_not_matter'
+  ),
+  technologyStack: homeHashRichLink('technology-stack'),
+}
+
+const digitalDesignItemRichTags: Partial<Record<string, RichTagMap>> = {
+  fontforge: { ketubahmaker: ketubahmakerLink },
+}
+
+type StackTranslator = {
+  (key: string): string
+  rich: (key: string, tags: RichTagMap) => ReactNode
+}
+
+function reynoldsNumberHref(locale: string) {
+  const key: Locale = locale === 'ar' || locale === 'he' ? locale : 'en'
+  return REYNOLDS_NUMBER_WIKI[key]
+}
+
+function mapTechStackGroups<Item extends { id: string }>(
+  groups: Array<{ id: string; color: string; items: Item[] }>,
+  t: StackTranslator,
+  richTags: {
+    groups?: Partial<Record<string, RichTagMap>>
+    items?: Partial<Record<string, RichTagMap>>
+  } = {}
+) {
+  function description(key: string, tags?: RichTagMap) {
+    return tags ? t.rich(key, tags) : t(key)
+  }
+
+  return groups.map((group) => ({
+    id: group.id,
+    label: t(`groups.${group.id}.label`),
+    description: description(
+      `groups.${group.id}.description`,
+      richTags.groups?.[group.id]
+    ),
+    color: group.color,
+    items: group.items.map((item) => ({
+      ...item,
+      description: description(`items.${item.id}`, richTags.items?.[item.id]),
+    })),
+  }))
 }
 
 export default async function Home({ params }: Props) {
@@ -34,52 +122,10 @@ export default async function Home({ params }: Props) {
   const domainsChart = domainsChartData.slices.map((slice) => ({
     id: slice.id,
     label: tDomains(`slices.${slice.id}.title`),
-    description: tDomains.rich(`slices.${slice.id}.Description`, {
-      kurdistan: (chunks) => (
-        <Link
-          href="/kurdistan"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </Link>
-      ),
-      flyingWing: (chunks) => (
-        <Link
-          href="/flying-wing"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </Link>
-      ),
-      urbanCruiseShip: (chunks) => (
-        <a
-          href="https://www.urbancruiseship.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </a>
-      ),
-      link: (chunks) => (
-        <a
-          href="https://www.ketubahmaker.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </a>
-      ),
-      schematicVisualization: (chunks) => (
-        <Link
-          href="/schematic-visualization"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </Link>
-      ),
-    }),
+    description: tDomains.rich(
+      `slices.${slice.id}.Description`,
+      domainsPieRichTags
+    ),
     value: slice.value,
     color: slice.color,
   }))
@@ -87,66 +133,10 @@ export default async function Home({ params }: Props) {
   const capabilitiesChart = capabilitiesChartData.slices.map((slice) => ({
     id: slice.id,
     label: tCapabilities(`slices.${slice.id}.title`),
-    description: tCapabilities.rich(`slices.${slice.id}.Description`, {
-      schematicVisualization: (chunks) => (
-        <Link
-          href="/schematic-visualization"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </Link>
-      ),
-      flatironSchool: (chunks) => (
-        <a
-          href="https://flatironschool.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </a>
-      ),
-      sketchupPortfolio: (chunks) => (
-        <a
-          href="https://3dwarehouse.sketchup.com/by/richardburd"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </a>
-      ),
-      bespokeCode: (chunks) => (
-        <a
-          href="https://richard-burd.github.io/longest_common_subsequence"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </a>
-      ),
-      b: (chunks) => <b>{chunks}</b>,
-      i: (chunks) => <i>{chunks}</i>,
-      technicalTopics: (chunks) => (
-        <a
-          href="https://richard-burd.github.io/when_big_o_does_and_does_not_matter"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </a>
-      ),
-      technologyStack: (chunks) => (
-        <Link
-          href={{ pathname: '/', hash: 'technology-stack' }}
-          className="text-blue-600 underline dark:text-blue-400"
-        >
-          {chunks}
-        </Link>
-      ),
-    }),
+    description: tCapabilities.rich(
+      `slices.${slice.id}.Description`,
+      capabilitiesPieRichTags
+    ),
     value: slice.value,
     color: slice.color,
   }))
@@ -154,54 +144,31 @@ export default async function Home({ params }: Props) {
   // Tier 1 & 2 labels are translated; tier-3 tool names stay in Latin script
   // and come straight from the data file. Descriptions for all tiers are
   // translated and appear in the detail panel when a bar is clicked.
-  const fullStackWebDevGroups = fullStackWebDevStackData.groups.map(
-    (group) => ({
-      id: group.id,
-      label: tFullStackWebDev(`groups.${group.id}.label`),
-      description: tFullStackWebDev(`groups.${group.id}.description`),
-      color: group.color,
-      items: group.items.map((item) => ({
-        ...item,
-        description: tFullStackWebDev(`items.${item.id}`),
-      })),
-    })
+  // Rich tags are attached only for ids whose copy contains matching tags.
+  const fullStackWebDevGroups = mapTechStackGroups(
+    fullStackWebDevStackData.groups,
+    tFullStackWebDev
   )
 
-  const digitalDesignCreativeToolsGroups =
-    digitalDesignCreativeToolsStackData.groups.map((group) => ({
-      id: group.id,
-      label: tDigitalDesignCreativeTools(`groups.${group.id}.label`),
-      description: tDigitalDesignCreativeTools(
-        `groups.${group.id}.description`
-      ),
-      color: group.color,
-      items: group.items.map((item) => ({
-        ...item,
-        description: tDigitalDesignCreativeTools.rich(`items.${item.id}`, {
-          link: (chunks) => (
-            <a
-              href="https://www.ketubahmaker.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline dark:text-blue-400"
-            >
-              {chunks}
-            </a>
-          ),
-        }),
-      })),
-    }))
+  const digitalDesignCreativeToolsGroups = mapTechStackGroups(
+    digitalDesignCreativeToolsStackData.groups,
+    tDigitalDesignCreativeTools,
+    { items: digitalDesignItemRichTags }
+  )
 
-  const aviationStuffGroups = aviationStuffStackData.groups.map((group) => ({
-    id: group.id,
-    label: tAviationStuff(`groups.${group.id}.label`),
-    description: tAviationStuff(`groups.${group.id}.description`),
-    color: group.color,
-    items: group.items.map((item) => ({
-      ...item,
-      description: tAviationStuff(`items.${item.id}`),
-    })),
-  }))
+  const reynoldsNumberLink = externalRichLink(reynoldsNumberHref(locale))
+  const uavDesignToolsRichTags: RichTagMap = {
+    foiltransRepo: foiltransRepoLink,
+    reynoldsNumber: reynoldsNumberLink,
+  }
+  const aviationStuffGroups = mapTechStackGroups(
+    aviationStuffStackData.groups,
+    tAviationStuff,
+    {
+      groups: { uavDesignTools: uavDesignToolsRichTags },
+      items: { foiltrans: { foiltransRepo: foiltransRepoLink } },
+    }
+  )
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-200 dark:bg-zinc-800">
@@ -244,15 +211,8 @@ export default async function Home({ params }: Props) {
           <GazeboWithTwoOppositePortals />
           <p className="mx-4 mt-6 mb-40 text-[1.0rem] sm:text-justify md:mx-20 md:text-[1.4rem]">
             {t.rich('intro', {
-              existingHomepage: (chunks) => (
-                <a
-                  href="https://richard-burd.github.io/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline dark:text-blue-400"
-                >
-                  {chunks}
-                </a>
+              existingHomepage: externalRichLink(
+                'https://richard-burd.github.io/'
               ),
             })}
           </p>
@@ -311,12 +271,14 @@ export default async function Home({ params }: Props) {
               color={digitalDesignCreativeToolsStackData.color}
               groups={digitalDesignCreativeToolsGroups}
             />
-            <TechStackBar
-              title={tAviationStuff('title')}
-              subtitle={tAviationStuff('subtitle')}
-              color={aviationStuffStackData.color}
-              groups={aviationStuffGroups}
-            />
+            <div id="aviation-stuff" className="scroll-mt-24">
+              <TechStackBar
+                title={tAviationStuff('title')}
+                subtitle={tAviationStuff('subtitle')}
+                color={aviationStuffStackData.color}
+                groups={aviationStuffGroups}
+              />
+            </div>
           </div>
         </div>
       </main>

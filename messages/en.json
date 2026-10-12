@@ -58,7 +58,7 @@
       },
       "Category3": {
         "title": "Unmanned Aviation",
-        "Description": "I began building remote-controlled airplanes as a child, and continued doing so through adulthood.  These would evolve into hobby-drones in the early 2010s as off-the-shelf avionics systems became available.  Since 2012, I have worked with drones in a variety of civilian and military applications.  I specialize in <flyingWing>flying wing aerodynamics</flyingWing> and building computer simulation models of unconventional aircraft shapes."
+        "Description": "I began building remote-controlled airplanes as a child, and continued doing so through adulthood.  These would evolve into hobby-drones in the early 2010s as off-the-shelf avionics systems became available.  Since 2012, I have worked with drones in a variety of civilian and military applications.  I specialize in <flyingWing>flying wing aerodynamics</flyingWing> and building computer simulation models of unconventional aircraft shapes using <aviationStuff>my technology stack here</aviationStuff>."
       },
       "Category4": {
         "title": "Military Affairs",
@@ -190,11 +190,11 @@
     },
     "aviationStuff": {
       "title": "Aviation Stuff",
-      "subtitle": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, and war-gaming and flight-sim testing.",
+      "subtitle": "Aviation stuff is the software I use to design unmanned aircraft, fly them, and test ideas in simulation. The stack below covers airframe and airfoil design, flight-control operations, war-gaming, and flight-sim testing.",
       "groups": {
         "uavDesignTools": {
           "label": "UAV Design Tools",
-          "description": "UAV design tools are used to shape airframes, airfoils, and 3D parts before anything is built or flown — from performance estimates to CAD models that can be manufactured."
+          "description": "This is the technology stack I use to design airframes and test them in a flight simulator environment before building any real-world prototypes.  The entire process is documented <foiltransRepo>here</foiltransRepo> in a schematic visualization showing you how to take your own airfoils and input them into the flight model using these programs.  The key ingredient is making sure your airfoil polar data are created using the proper <reynoldsNumber>Reynolds number</reynoldsNumber> for each individual airfoil.  When this is done correctly, the models are incredibly accurate and predict aircraft performance."
         },
         "uavFlightOperations": {
           "label": "UAV Flight Operations",
@@ -209,8 +209,8 @@
         "planeMaker": "PlaneMaker is the aircraft-design tool bundled with X-Plane. It is used to define an airframe's shape, mass, and flight surfaces so the plane can be flown in the simulator.",
         "airfoilMaker": "Airfoil Maker is the companion tool for drawing wing and tail sections. Those airfoil shapes feed PlaneMaker and the simulator so lift and drag behave more like the real design.",
         "xflr5": "XFLR-5 is analysis software for airfoils and small aircraft. It estimates lift, drag, and stability so a UAV layout can be checked before cutting foam or carbon.",
-        "foiltrans": "FoilTrans is a utility for converting and moving airfoil coordinate files between design tools, so a section drawn in one program can be used in another without redrawing it.",
-        "onshape": "Onshape is a browser-based CAD system for 3D mechanical parts — mounts, fuselage pieces, and fittings — that can be shared and sent to a 3D printer or machine shop.",
+        "foiltrans": "FoilTrans is a utility for converting and moving airfoil coordinate files between design tools, so a section drawn in one program can be used in another without redrawing it.  You can download it <foiltransRepo>here</foiltransRepo>.",
+        "onshape": "Onshape is my go-to CAD program for mechanical engineering if I need something more powerful than Blender.  It is a competitor to the more expensive SolidWorks CAD program, which I have used in the past.",
         "ardupilot": "ArduPilot is open-source autopilot firmware that flies planes, copters, and other vehicles. It handles stabilization, navigation, and fail-safes on the aircraft itself.",
         "missionPlanner": "Mission Planner is a ground-control application for ArduPilot. It is used to configure the vehicle, draw waypoints on a map, and monitor a flight from a laptop.",
         "qGroundControl": "QGroundControl is a ground station that works with PX4 and ArduPilot. It provides maps, vehicle setup, and live telemetry so an operator can plan and watch a mission.",
