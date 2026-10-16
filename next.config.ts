@@ -3,7 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const assetsBaseUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL?.replace(
   /\/$/,
-  '',
+  ''
 )
 
 if (!assetsBaseUrl) {
@@ -11,6 +11,12 @@ if (!assetsBaseUrl) {
 }
 
 const assetsHostname = new URL(assetsBaseUrl).hostname
+
+const portfolioHeaders = [
+  { key: 'Cache-Control', value: 'private, no-store' },
+  { key: 'Referrer-Policy', value: 'no-referrer' },
+  { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+]
 
 const nextConfig: NextConfig = {
   images: {
@@ -21,6 +27,22 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/schematic-visualization/portfolio',
+        headers: portfolioHeaders,
+      },
+      {
+        source: '/ar/schematic-visualization/portfolio',
+        headers: portfolioHeaders,
+      },
+      {
+        source: '/he/schematic-visualization/portfolio',
+        headers: portfolioHeaders,
+      },
+    ]
   },
   // Proxy GLB/assets so the browser can load them without S3 CORS.
   async rewrites() {
