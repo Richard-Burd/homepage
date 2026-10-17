@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Fragment, type ReactNode } from 'react'
 
+import PortfolioPasswordButton from '@/components/portfolio/PortfolioPasswordButton'
 import RailsDiagramImage from '@/components/schematic-visualization/RailsDiagramImage'
 import SchematicAssetImage from '@/components/schematic-visualization/SchematicAssetImage'
 import TreasureMapImage from '@/components/schematic-visualization/TreasureMapImage'
@@ -225,6 +226,9 @@ export default async function SchematicVisualizationPage({ params }: Props) {
           })}
         </section>
       ))}
+      <div className="col-span-full flex justify-center border-2 border-white bg-white px-6 py-16 dark:border-black dark:bg-black">
+        <PortfolioPasswordButton />
+      </div>
     </TwoRailLayout>
   )
 }
