@@ -39,6 +39,21 @@ export const schematicVisualizationContent = {
       'paragraph-1': { type: 'paragraph' },
       'image-1': {
         type: 'image',
+        hasDescription: true,
+        location: 'schematic-visualization-light-dark-mode-preview.1.jpg',
+        width: 1000,
+        height: 595,
+        diagram: {
+          src: 'schematic-visualization-light-dark-mode-enlarged.1.jpg',
+          width: 2000,
+          height: 2777,
+        },
+      },
+    },
+    'section-3': {
+      'paragraph-1': { type: 'paragraph' },
+      'image-1': {
+        type: 'image',
         closed: {
           light: {
             desktop: {
@@ -106,7 +121,7 @@ export const schematicVisualizationContent = {
       },
       'paragraph-2': { type: 'paragraph' },
     },
-    'section-3': {
+    'section-4': {
       'paragraph-1': { type: 'paragraph' },
       'image-1': {
         type: 'image',

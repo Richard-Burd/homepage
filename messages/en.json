@@ -310,29 +310,44 @@
         }
       },
       "section-2": {
+        "title": "Frontier AI models can view, and interpret, detailed schematic drawings",
+        "paragraph-1": "<b>Most people rely on written language to communicate with AI, but this limits our ability to express complex ideas.</b>  Schematic visualizations let us communicate more information in a shorter period of time, and with fewer mistakes in the AI responses.  Almost all frontend graphics on this website were built with images fed to an AI agent.  A full stack application would be built with high-level architectural diagrams that would then get fed to an AI agent as well.  More complex, bespoke code would require more detail, especially if it is something the AI hasn’t ‘seen before’ in its training data.",
+        "image-1": {
+          "alt": "Schematic drawing of the light-dark mode toggle switch",
+          "openDiagram": "Open the diagram",
+          "closeDiagram": "Close diagram",
+          "zoomIn": "Zoom in",
+          "zoomOut": "Zoom out",
+          "fitDiagram": "Show the whole diagram",
+          "panHint": "Drag to move. Scroll or pinch to zoom.",
+          "description-title": "Light-Dark Mode Toggle Animation",
+          "description-text": "This image <orientationText></orientationText> features several ‘Figures’ built with a simple SVG editor and an accompanying superprompt.  The superprompt defines the hierarchy, <code>Variable_Names</code>, and component organization.  The AI then spits out a script to generate the animation in <cavalry>Cavalry</cavalry>, a 2D animation program for creating <lottie>Lottie files for websites</lottie>.  The result was a near complete animation, architected according to Cavalry best practices."
+        }
+      },
+      "section-3": {
         "title": "Building consensus around diagrams instead of meetings",
         "paragraph-1": "<b>Treasure mapping</b> is a process of using schematic visualizations to guide design projects.  The treasure-mapper interviews the design team members individually and discovers <b><i>pain points</i></b> between them and other forces acting outside the team.  The treasure-mapper then schematically visualizes these pain points into illustrations that can be used to develop solutions that are in turn also rendered schematically so that everyone can see (and build consensus around) the solution that is being proposed.  The process is iterative and the treasure map becomes a ground-zero starting point for discussing the design project.",
         "image-1": {
-          "alt": "Section 2 image 1",
-          "caption": "Section-2 Image-1",
+          "alt": "Section 3 image 1",
+          "caption": "Section-3 Image-1",
           "workflowAlt": "Treasure mapping workflow",
           "showWorkflow": "Show the treasure mapping workflow",
           "showMap": "Return to the treasure map"
         },
         "paragraph-2": "<b>Meetings are unproductive because people get bored and think the person talking is just wasting time.</b>  Your design team members may even be incentivized to just shut up in order to end the meeting early, or to avoid being shamed for disagreeing with more senior staff.  When your meetings are replaced with treasure mapping, every team member gets one on one attention and their concerns are not only heard, but rendered and mapped to relevant variables decisionmakers can see and understand.  This lets decisionmakers weigh input without the interference of social dynamics."
       },
-      "section-3": {
+      "section-4": {
         "title": "Understand your design and who does what",
         "paragraph-1": "At some point, your data metrics fail to capture key information related to your design project such as where and why there are disagreements and communication breakdowns within your team.  You need to know all of the relevant variables before you make a decision.",
         "image-1": {
-          "alt": "Section 3 image 1",
-          "caption": "Section-3 Image-1",
+          "alt": "Section 4 image 1",
+          "caption": "Section-4 Image-1",
           "description-title": "Show everyone on the team everything they need to know",
           "description-text": "Treasure mapping uses schematic visualizations to show your individual team members information they are currently unaware of, but should be in order for them to be successful.  In simplest terms, they show all of the relevant variables, to all of the relevant stakeholders."
         },
         "image-2": {
-          "alt": "Section 3 image 2",
-          "caption": "Section-3 Image-2"
+          "alt": "Section 4 image 2",
+          "caption": "Section-4 Image-2"
         }
       }
     }

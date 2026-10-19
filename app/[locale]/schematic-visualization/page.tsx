@@ -8,6 +8,7 @@ import TreasureMapImage from '@/components/schematic-visualization/TreasureMapIm
 import OrientationText from '@/components/two-rail/OrientationText'
 import { RailEnd, RailStart } from '@/components/two-rail/Rail'
 import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
+import { externalRichLink } from '@/lib/rich-text'
 import {
   getSchematicSections,
   isDiagramImageBlock,
@@ -24,6 +25,18 @@ type Props = {
 const richTags = {
   b: (chunks: ReactNode) => <strong className="font-bold">{chunks}</strong>,
   i: (chunks: ReactNode) => <em className="italic">{chunks}</em>,
+  code: (chunks: ReactNode) => (
+    <code
+      dir="ltr"
+      className="rounded bg-[#f9f2f4] px-1.5 py-0.5 font-mono text-[0.9em] text-[#c7254e] dark:bg-[#2d333b] dark:text-[#ff7b72]"
+    >
+      {chunks}
+    </code>
+  ),
+  cavalry: externalRichLink('https://cavalry.studio'),
+  lottie: externalRichLink(
+    'https://en.wikipedia.org/wiki/Lottie_(file_format)'
+  ),
 }
 
 function headingClassName(locale: string) {
@@ -56,6 +69,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
   const rail = await getTranslations('TwoRailOrientationText')
   const headingClass = headingClassName(locale)
   const descriptionRichTags = {
+    ...richTags,
     orientationText: () => (
       <OrientationText side={rail('side')} below={rail('below')} />
     ),
@@ -130,7 +144,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                   ) : null}
                   {description ? (
                     <div
-                      className={`max-w-prose text-start min-[800px]:ms-auto min-[800px]:max-w-66 min-[800px]:text-end ${
+                      className={`max-w-prose text-start min-[800px]:ms-auto min-[800px]:max-w-80 min-[800px]:text-end ${
                         showTitle ? 'mt-8 min-[800px]:mt-16' : ''
                       }`}
                     >
