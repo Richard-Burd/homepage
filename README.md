@@ -11,156 +11,43 @@ pnpm run dev
 Or do a build:
 
 ```bash
-pnpm build
+pnpm build && pnpm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ---
 
----
+## About This Project
 
-## Blender → AWS S3 → React Three Fiber (Next.js) Workflow
+This is the code repository for [Richard Burd’s Homepage](http://richardburd.dev), built with [Next.js](https://nextjs.org/) 16 (App Router), [React](https://react.dev/) 19, TypeScript and [Tailwind CSS](https://tailwindcss.com/) 4. Most of what you see on the site is custom-built rather than pulled off the shelf. Highlights:
 
-This section describes the complete workflow for exporting a textured 3D model from Blender, uploading it to AWS S3, and loading it into a Next.js application using React Three Fiber.
+### Multilingual, Right-To-Left (RTL) aware content
 
-You cannot modify the System defined metadata of a file on an AWS S3 Bucket as of 8/10/2026. This is a known bug. The 3D `.glb` files should have the correct system defined metadata in order to ensure they work with `react-three-fiber` and all its dependencies.
+- English, Arabic and Hebrew via [next-intl](https://next-intl.dev/), with locale-prefixed routing (`/ar`, `/he`) that leaves English at the root URL
+- RTL locales mirror the whole page horizontally, and each script gets its own typeface (Roboto, Noto Kufi Arabic, Rubik) — including inside SVG chart labels
+- Translated strings can carry inline markup (links, bold, italics, in-page anchors) through a small rich-text tag system, so translators control wording without touching components
+- Content that should never be translated (e.g. tech tool names) is kept in the data files instead of the message catalogs, so it always renders in Latin script
 
-### Exporting 3D Models (from Blender) with Animations
+### Custom data visualizations
 
-Use these glTF/GLB settings when the model should play an intro (or other) animation in the app (Three.js / React Three Fiber). The browser does **not** auto-play GLB clips — the app still needs a mixer — but the right export keeps the file to **one clear clip** instead of many loose Actions.
+- **Donut chart that turns into a bar chart:** a [Nivo](https://nivo.rocks/) donut chart on wide screens and a custom animated bar chart below 800px, both driven by the same JSON data and sharing a slide-in detail panel
+- **Label-fit geometry:** the donut’s outer labels are measured and the graphic is shifted horizontally so the leftover space on each side is equal, and slices are ordered so long labels sit near 12 and 6 o’clock where they take the least horizontal room
+- **Three-tier tech stack chart:** a hand-built, data-driven SVG chart in which tier-2 bars “pop out” of their tier-1 parent and tier-3 bars pop out of tier 2 as you scroll, with heights calculated from the data
+- Hover, focus and touch interactions designed separately for mouse and touch devices, plus dark-mode-aware colors and `prefers-reduced-motion` support throughout
 
-These instructions are optimized for Blender 5.x, for situations where you have an introductory animation that you want to play once when the page loads, then, after that, you have other animations that you want to play continuously, along with user interaction.
+### Interactive 3D (WebGL)
 
-#### Recommended export (Blender 5.x → glTF 2.0 / `.glb`)
+- Models are made in [Blender](https://www.blender.org/), exported as `.glb`, hosted on AWS S3 and rendered with [React Three Fiber](https://r3f.docs.pmnd.rs/), [Drei](https://drei.docs.pmnd.rs/) and post-processing (depth of field)
+- **Dual opposite-facing portals:** a gazebo with two portals, each opening onto a different “secret world.” It uses portal materials and stencil-buffer tricks to recreate in Three.js a Cycles Ray Portal effect that doesn’t survive `.glb` export
+- A companion Blender Python script (`scripts/dual-portals-blender.py`) fixes the related self-visibility problem in Cycles, using Portal Depth parity as a one-bit “which portal did this ray come through” flag
+- Custom turntable controls built with quaternions (horizontal drag spins, vertical drag tilts toward the camera, and the model can never roll onto its side), with touch handling that tells a drag apart from a page scroll
+- One-shot intro animations from Blender played through an animation mixer, then handed off to idle auto-rotation
+- Performance and resilience: rendering pauses when the canvas is off-screen, the canvas shrinks on short viewports so it stays above the fold, and a missing model shows an error message instead of crashing the page
 
-1. **File → Export → glTF 2.0 (.glb/.gltf)**
+### Layout, motion and theming
 
-2. Click **Remember Export Settings** for next time.
-
-3. Include **Visible Objects** only.
-
-4. Under **Mesh**, make sure you have these selected:
-   - **Apply Modifiers** to ensure that the modifiers are applied to the mesh.
-   - **UVs** to export texture coordinates.
-   - **Normals** to export shade-smooth where applicable.
-
-5. Check **Animation**:
-   - **Active actions merged** to ensure that the actions are merged into one clip.
-
-6. **Bake All Objects Animations:**
-   - Turn **off** as the default.
-     - Straight keyframed objects (an animation runs first, then it finishes, then the objects are locked in place, only to be manipulated by follow-on settings in `react-three-fiber` (or other libraries) within this app [as opposed to anumations in Blender]) → **Off**
-     - Something moves in Blender but is dead/wrong in the GLB → in that case, set this to → **On**
-
----
-
-### How to Export Dual Opposite-Facing Portals on Gazebo
-
-### How to Export Dual Opposite-Facing Portals on Gazebo
-
-When exporting the Gazebo and Secret Worlds from Blender to `.glb` for use in React Three Fiber / Three.js:
-
-#### Gazebo Export
-
-Include the real portal geometry:
-
-```text
-Portals
-├── Portal-1
-└── Portal-2
-```
-
-These meshes are required by Three.js because they define the actual portal surfaces.
-
-Do **not** export:
-
-```text
-__PORTAL_IDENTITY_FIX__
-```
-
-or any objects inside it, such as:
-
-```text
-__PID_PROXY__Portal-1
-__PID_PROXY__Portal-2
-```
-
-Those objects exist only to make the portals behave correctly inside Blender/Cycles.
-
-The portal behavior itself will be recreated in React Three Fiber / Three.js.
-
-#### Secret World Exports
-
-When exporting each Secret World as its own `.glb`, export only the actual Secret World geometry and assets.
-
-Do **not** include:
-
-```text
-__PORTAL_IDENTITY_FIX__
-```
-
-Do **not** include any:
-
-```text
-__PID_PROXY__...
-```
-
-objects.
-
-#### Final Asset Structure
-
-You should end up with separate files similar to:
-
-```text
-Gazebo.glb
-SecretWorld-1.glb
-SecretWorld-2.glb
-```
-
-`Gazebo.glb` contains:
-
-```text
-Gazebo geometry
-Portals
-├── Portal-1
-└── Portal-2
-```
-
-The Secret World files contain only their respective world geometry.
-
-The Blender-specific portal helper system is excluded from **all `.glb` exports**.
-
-#### Important
-
-The following Blender/Cycles features do not carry over as functional portal logic into Three.js:
-
-```text
-Ray Portal BSDF
-Portal Depth
-Transparent Depth
-Light Path logic
-__PORTAL_IDENTITY_FIX__
-__PID_PROXY__ objects
-```
-
-Three.js / React Three Fiber must use `Portal-1` and `Portal-2` as the real portal meshes and recreate the portal rendering behavior in code.
-
----
-
-### Workaround to Add Proper Metadata for 3D (`.glb`) Files
-
-The `.glb` file may not display correctly in the browser if the metadata is not set correctly. This did not matter as of 8/13/2026, but with future browser or Blender updates, it may be required once again. Here is how to set the metadata correctly:
-
-1. First, in the AWS S3 console, go to the S3 bucket and select the `.glb` file.
-2. In the upper righthand corner, click on **Object actions** and then select **copy**
-3. Here are the settings you need to set on the _copy_ page:
-
-   - Destination type is the default **General purpose bucket**
-   - Destination is the same exact place as your existing file (as you are overwriting it) so it will look something like: `s3://your-bucket-name/`
-   - scroll down to **Additional copy settings** and select **Specify settings** (this is the workaround) - this opens up several options below. You will leave everything on the default selections except for on the **Metadata** section
-   - In the **Metadata** section, select **replace all metadata** - then for **Type** select **System defined**
-   - On the **Key** dropdown, select **Content-type** and the, on the **Value** dropdown, select **model/gltf-binary**
-   - leave the additional selections below on their defaults, and click **Copy** in the lower righthand corner at the bottom of the screen.
-
-4. Go back to the S3 bucket and click on the `.glf` file, then scroll down to the **System and user-defined** section; you should see a System defined value with a Key set to **Content-type** and a Value set to **model/gltf-binary**
+- A two-column layout with a pinned parallax image and a “leader line” spine whose ticks line up with the first line of each row of content, collapsing to a single column on mobile
+- Art-directed imagery: separate desktop and mobile files per locale, plus light and dark variants
+- A [Lottie](https://airbnb.io/lottie/) animated sun/moon theme toggle with hover loops; the theme switches halfway through the morph, and the animation data is cleaned up at load time to remove leftover artifacts
+- Dark mode with no flash of the wrong theme on load (an inline script runs before first paint), following the system setting until the user picks a theme
