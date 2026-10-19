@@ -89,7 +89,7 @@ export default function PortfolioPasswordButton() {
             Portfolio Area
           </h2>
           <label htmlFor="portfolio-password" className="mt-4 block text-sm">
-            Please enter the secret sause
+            Please enter the secret sauce
           </label>
           <div className="mt-2 flex gap-2">
             <input
