@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { assetUrl } from '@/lib/assets'
+import ResumePdfDownloadLink from '@/components/ResumePdfDownloadLink'
+import { assetUrl, proxiedAssetUrl } from '@/lib/assets'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -49,6 +50,17 @@ export default async function ContactPage({ params }: Props) {
           width={344}
           height={98}
           className="mx-4 mt-4 px-4"
+        />
+        <h2
+          className={`${headingClass} mt-16 mb-8 text-3xl text-zinc-700 min-[800px]:text-[2.625rem] min-[800px]:leading-tight dark:text-zinc-50`}
+        >
+          {t('resumeTitle')}
+        </h2>
+        <p className="mx-4 sm:text-justify md:mx-20">{t('resumeIntro')}</p>
+        <ResumePdfDownloadLink
+          href={proxiedAssetUrl('Richard_Burd_Resume.pdf')}
+          download="Richard_Burd_Resume.pdf"
+          ariaLabel={t('resumeDownloadAria')}
         />
       </main>
     </div>

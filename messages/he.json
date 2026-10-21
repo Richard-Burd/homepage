@@ -21,14 +21,17 @@
   "NavMenu": {
     "label": "תפריט",
     "home": "דף הבית",
-    "contact": "יצירת קשר"
+    "contact": "יצירת קשר וקורות חיים"
   },
   "ContactPage": {
     "metaTitle": "יצירת קשר",
-    "metaDescription": "איך ליצור קשר עם עקיבא ציפור בדוא\"ל.",
+    "metaDescription": "איך ליצור קשר עם עקיבא ציפור בדוא\"ל ולהוריד קורות חיים.",
     "title": "יצירת קשר",
     "intro": "הדרך הטובה ביותר ליצור איתי קשר היא לשלוח דוא\"ל ל:",
-    "emailImageAlt": "rick dot a dot burd at gmail dot com"
+    "emailImageAlt": "rick dot a dot burd at gmail dot com",
+    "resumeTitle": "קורות חיים",
+    "resumeIntro": "לחצו על הסמל למטה כדי להוריד קורות החיים שלי. תודה על ההתעניינות בעבודתי!",
+    "resumeDownloadAria": "הורדת קורות החיים של עקיבא ציפור (PDF)"
   },
   "LocaleSwitcher": {
     "label": "שפה",

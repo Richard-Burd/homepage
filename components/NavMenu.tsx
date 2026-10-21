@@ -219,7 +219,7 @@ export default function NavMenu() {
             >
               <Link
                 role="menuitem"
-                href="/contact"
+                href="/contact-resume"
                 style={itemFont}
                 className={itemClassName(pressedItem === 'contact')}
                 onPointerDown={() => setPressedItem('contact')}
