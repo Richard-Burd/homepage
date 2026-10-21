@@ -33,7 +33,7 @@ This is the code repository for [Richard Burd’s Homepage](http://richardburd.d
 
 - **Donut chart that turns into a bar chart:** a [Nivo](https://nivo.rocks/) donut chart on wide screens and a custom animated bar chart below 800px, both driven by the same JSON data and sharing a slide-in detail panel
 - **Label-fit geometry:** the donut’s outer labels are measured and the graphic is shifted horizontally so the leftover space on each side is equal, and slices are ordered so long labels sit near 12 and 6 o’clock where they take the least horizontal room
-- **Three-tier tech stack chart:** a hand-built, data-driven SVG chart in which tier-2 bars “pop out” of their tier-1 parent and tier-3 bars pop out of tier 2 as you scroll, with heights calculated from the data
+- **[Three-tier tech stack chart:](https://www.richardburd.dev/#technology-stack)** a hand-built, data-driven SVG chart in which tier-2 bars “pop out” of their tier-1 parent and tier-3 bars pop out of tier 2 as you scroll, with heights calculated from the data
 - Hover, focus and touch interactions designed separately for mouse and touch devices, plus dark-mode-aware colors and `prefers-reduced-motion` support throughout
 
 ### Interactive 3D (WebGL)
@@ -47,7 +47,7 @@ This is the code repository for [Richard Burd’s Homepage](http://richardburd.d
 
 ### Layout, motion and theming
 
-- A two-column layout with a pinned parallax image and a “leader line” spine whose ticks line up with the first line of each row of content, collapsing to a single column on mobile
+- A [two-column layout](https://www.richardburd.dev/schematic-visualization) with a pinned parallax image and a “leader line” spine whose ticks line up with the first line of each row of content, collapsing to a single column on mobile
 - Art-directed imagery: separate desktop and mobile files per locale, plus light and dark variants
 - A [Lottie](https://airbnb.io/lottie/) animated sun/moon theme toggle with hover loops; the theme switches halfway through the morph, and the animation data is cleaned up at load time to remove leftover artifacts
 - Dark mode with no flash of the wrong theme on load (an inline script runs before first paint), following the system setting until the user picks a theme

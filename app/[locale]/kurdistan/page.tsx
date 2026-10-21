@@ -1,6 +1,8 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 
+import KurdistanEnlargedImage from '@/components/kurdistan/KurdistanEnlargedImage'
+import KurdistanFabDocImage from '@/components/kurdistan/KurdistanFabDocImage'
 import { assetUrl } from '@/lib/assets'
 import { externalRichLink } from '@/lib/rich-text'
 
@@ -534,28 +536,41 @@ export default async function KurdistanPage({ params }: Props) {
 
           <p>{t('pExpendable')}</p>
 
-          <ThemedImage
+          <KurdistanFabDocImage
+            lightSrc="kurdistan-fig-2-light.png"
+            lightWidth={2604}
+            lightHeight={1315}
+            darkSrc="kurdistan-fig-2-dark.png"
+            darkWidth={1000}
+            darkHeight={505}
+            diagramSrc="peshwing-2d-fab-doc.jpg"
+            diagramWidth={3600}
+            diagramHeight={2400}
             alt={t('imageAlt2')}
-            light={{
-              src: 'kurdistan-fig-2-light.png',
-              width: 2604,
-              height: 1315,
-            }}
-            dark={{
-              src: 'kurdistan-fig-2-dark.png',
-              width: 1000,
-              height: 505,
-            }}
+            openLabel={t('fabDocOpen')}
+            closeLabel={t('fabDocClose')}
+            zoomInLabel={t('fabDocZoomIn')}
+            zoomOutLabel={t('fabDocZoomOut')}
+            fitLabel={t('fabDocFit')}
+            panHint={t('fabDocPanHint')}
           />
 
           <p>{t('pRange')}</p>
 
-          <Image
-            src={assetUrl('kurdistan-fig-3.jpg')}
+          <KurdistanEnlargedImage
+            src="kurdistan-fig-3.jpg"
+            width={750}
+            height={532}
+            enlargedSrc="kurdistan-fig-3-enlarged.jpg"
+            enlargedWidth={3551}
+            enlargedHeight={2587}
             alt={t('imageAlt3')}
-            width={1200}
-            height={800}
-            className="my-6 h-auto w-full"
+            openLabel={t('enlargedImageOpen')}
+            closeLabel={t('fabDocClose')}
+            zoomInLabel={t('fabDocZoomIn')}
+            zoomOutLabel={t('fabDocZoomOut')}
+            fitLabel={t('enlargedImageFit')}
+            panHint={t('fabDocPanHint')}
           />
 
           <p>
