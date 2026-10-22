@@ -5,6 +5,7 @@ import KurdistanEnlargedImage from '@/components/kurdistan/KurdistanEnlargedImag
 import KurdistanFabDocImage from '@/components/kurdistan/KurdistanFabDocImage'
 import { assetUrl } from '@/lib/assets'
 import { externalRichLink } from '@/lib/rich-text'
+import { pageMetadata } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -376,10 +377,12 @@ export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'KurdistanPage' })
 
-  return {
+  return pageMetadata({
+    locale,
+    pathname: '/kurdistan',
     title: t('metaTitle'),
     description: t('metaDescription'),
-  }
+  })
 }
 
 export default async function KurdistanPage({ params }: Props) {
