@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import ResumePdfDownloadLink from '@/components/ResumePdfDownloadLink'
 import { assetUrl, proxiedAssetUrl } from '@/lib/assets'
+import { pageMetadata } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -15,10 +16,12 @@ export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'ContactPage' })
 
-  return {
+  return pageMetadata({
+    locale,
+    pathname: '/contact-resume',
     title: t('metaTitle'),
     description: t('metaDescription'),
-  }
+  })
 }
 
 export default async function ContactPage({ params }: Props) {

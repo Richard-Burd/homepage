@@ -4,6 +4,7 @@ import { FaImage } from 'react-icons/fa'
 
 import FlyingWingDesktopImage from '@/components/FlyingWingDesktopImage'
 import { assetUrl, proxiedAssetUrl } from '@/lib/assets'
+import { pageMetadata } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -19,10 +20,12 @@ export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'FlyingWingPage' })
 
-  return {
+  return pageMetadata({
+    locale,
+    pathname: '/flying-wing',
     title: t('metaTitle'),
     description: t('metaDescription'),
-  }
+  })
 }
 
 export default async function FlyingWingPage({ params }: Props) {

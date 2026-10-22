@@ -15,7 +15,7 @@ import { InlineScript } from '@/components/InlineScript'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { routing, type Locale } from '@/i18n/routing'
-import { assetUrl } from '@/lib/assets'
+import { openGraphImages, SITE_URL } from '@/lib/seo'
 import { themeInitScript } from '@/lib/theme'
 
 const geistSans = Geist({
@@ -59,7 +59,10 @@ export async function generateMetadata({ params }: Omit<Props, 'children'>) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'Metadata' })
 
+  // Canonical/hreflang and `openGraph.url` are route-specific, so they are set
+  // per page via `pageMetadata()` rather than inherited from this layout.
   return {
+    metadataBase: new URL(SITE_URL),
     title: t('title'),
     description: t('description'),
     icons: {
@@ -68,15 +71,7 @@ export async function generateMetadata({ params }: Omit<Props, 'children'>) {
     openGraph: {
       title: t('title'),
       description: t('description'),
-      url: 'https://richardburd.dev',
-      images: [
-        {
-          url: assetUrl('open-graph-image.3.jpg'),
-          width: 1200,
-          height: 630,
-          alt: t('ogAlt'),
-        },
-      ],
+      images: openGraphImages(t('ogAlt')),
     },
   }
 }

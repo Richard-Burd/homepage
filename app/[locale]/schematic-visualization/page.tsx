@@ -9,6 +9,7 @@ import OrientationText from '@/components/two-rail/OrientationText'
 import { RailEnd, RailStart } from '@/components/two-rail/Rail'
 import TwoRailLayout from '@/components/two-rail/TwoRailLayout'
 import { externalRichLink } from '@/lib/rich-text'
+import { pageMetadata } from '@/lib/seo'
 import {
   getSchematicSections,
   isDiagramImageBlock,
@@ -56,10 +57,12 @@ export async function generateMetadata({ params }: Props) {
     namespace: 'SchematicVisualizationPage',
   })
 
-  return {
+  return pageMetadata({
+    locale,
+    pathname: '/schematic-visualization',
     title: t('metaTitle'),
     description: t('metaDescription'),
-  }
+  })
 }
 
 export default async function SchematicVisualizationPage({ params }: Props) {
