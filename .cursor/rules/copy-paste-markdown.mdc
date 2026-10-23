@@ -1,0 +1,11 @@
+---
+alwaysApply: false
+---
+
+## Copy-paste markdown deliverables
+
+When I ask for content meant to copy and paste (PR descriptions, release notes, GitHub issue bodies, commit message drafts, README snippets, etc.), or when I say "copy/paste markdown" or "markdown block":
+
+- Put the **entire** deliverable in **one** fenced code block with language tag `markdown`.
+- Do **not** render that same content as normal formatted markdown outside the fence.
+- Keep any explanation **outside** the code block, before or after it, and keep it brief unless I ask for more.

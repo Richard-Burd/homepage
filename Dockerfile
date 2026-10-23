@@ -1,5 +1,5 @@
 # Match package.json engines.node
-FROM node:24.11.1
+FROM node:24.22.1
 
 WORKDIR /app
 
