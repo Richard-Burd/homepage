@@ -215,6 +215,7 @@ export default function PortfolioGallery({ images, returnHref }: Props) {
           <img
             src={image.previewUrl}
             alt=""
+            crossOrigin="anonymous"
             referrerPolicy="no-referrer"
             draggable={false}
             decoding="async"
