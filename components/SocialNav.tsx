@@ -9,7 +9,7 @@ import {
   FaRedditSquare,
 } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
-import { SiSketchup } from 'react-icons/si'
+import { SiLottiefiles, SiSketchup } from 'react-icons/si'
 
 const socialLinks = [
   {
@@ -56,6 +56,11 @@ const socialLinks = [
     href: 'https://www.reddit.com/user/Richard-Burd/',
     labelKey: 'reddit' as const,
     Icon: FaRedditSquare,
+  },
+  {
+    href: 'https://lottiefiles.com/richardburd',
+    labelKey: 'lottiefiles' as const,
+    Icon: SiLottiefiles,
   },
 ]
 
