@@ -4,8 +4,3 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 minimumReleaseAge: 20160
-
-minimumReleaseAgeExclude:
-  - next
-  - '@next/*'
-  - eslint-config-next
