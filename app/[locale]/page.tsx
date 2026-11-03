@@ -65,8 +65,22 @@ const capabilitiesPieRichTags: RichTagMap = {
   technologyStack: homeHashRichLink('technology-stack'),
 }
 
+const cavalryRichTags: RichTagMap = {
+  schematicVisualizationSection: internalRichLink(
+    '/schematic-visualization#section-2'
+  ),
+  lottieToggle: externalRichLink(
+    'https://lottiefiles.com/free-animation/light-dark-mode-toggle-yi2jlclpve'
+  ),
+}
+
+const fullStackWebDevItemRichTags: Partial<Record<string, RichTagMap>> = {
+  calvary: cavalryRichTags,
+}
+
 const digitalDesignItemRichTags: Partial<Record<string, RichTagMap>> = {
   fontforge: { ketubahmaker: ketubahmakerLink },
+  calvary: cavalryRichTags,
 }
 
 type StackTranslator = {
@@ -160,7 +174,8 @@ export default async function Home({ params }: Props) {
   // Rich tags are attached only for ids whose copy contains matching tags.
   const fullStackWebDevGroups = mapTechStackGroups(
     fullStackWebDevStackData.groups,
-    tFullStackWebDev
+    tFullStackWebDev,
+    { items: fullStackWebDevItemRichTags }
   )
 
   const digitalDesignCreativeToolsGroups = mapTechStackGroups(

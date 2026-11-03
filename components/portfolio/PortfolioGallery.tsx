@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import { LuScan, LuX, LuZoomIn, LuZoomOut } from 'react-icons/lu'
 
 import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/shared'
+import { useHistoryBackedOverlay } from '@/lib/use-history-backed-overlay'
 
 type Viewer = import('openseadragon').Viewer
 
@@ -40,6 +41,9 @@ export default function PortfolioGallery({ images, returnHref }: Props) {
   const [openId, setOpenId] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
   const openImage = items.find((item) => item.id === openId)
+  const closeImage = useHistoryBackedOverlay(openId !== null, () =>
+    setOpenId(null)
+  )
 
   useEffect(() => {
     const mountId = Symbol()
@@ -105,11 +109,11 @@ export default function PortfolioGallery({ images, returnHref }: Props) {
   useEffect(() => {
     if (!openImage) return
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpenId(null)
+      if (event.key === 'Escape') closeImage()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [openImage])
+  }, [openImage, closeImage])
 
   useEffect(() => {
     if (!openImage) return
@@ -266,7 +270,7 @@ export default function PortfolioGallery({ images, returnHref }: Props) {
                     type="button"
                     aria-label="Close"
                     className={controlClassName}
-                    onClick={() => setOpenId(null)}
+                    onClick={closeImage}
                   >
                     <LuX aria-hidden className="size-5" />
                   </button>

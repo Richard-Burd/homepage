@@ -99,10 +99,15 @@ export default function SchematicAssetImage({
       className={`relative overflow-hidden bg-rose-200 dark:bg-rose-900 ${
         viewportCover ? 'h-[calc(100svh-var(--navbar-height,4.15rem))]' : ''
       } ${className ?? ''}`}
+      // Reserving the final height up front keeps content below from jumping
+      // when the image loads, which would knock hash links off their target.
+      style={viewportCover ? undefined : { aspectRatio: `${width} / ${height}` }}
     >
       {showPlaceholder ? (
         <div
-          className={`flex ${minHeightClassName} flex-col items-center justify-center px-4 py-10 text-center text-rose-950 dark:text-rose-50`}
+          className={`flex ${
+            viewportCover ? minHeightClassName : 'absolute inset-0'
+          } flex-col items-center justify-center px-4 py-10 text-center text-rose-950 dark:text-rose-50`}
         >
           {caption ? (
             <p className="text-lg leading-snug min-[800px]:text-xl">
