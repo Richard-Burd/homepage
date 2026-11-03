@@ -9,6 +9,7 @@ import { LuPointer, LuScan, LuX, LuZoomIn, LuZoomOut } from 'react-icons/lu'
 import { kurdistanPointerHotspotClassName } from '@/components/kurdistan/kurdistanPointerHotspot'
 import { usePrefersReducedMotion } from '@/components/pie-and-bar-chart-combo/shared'
 import { assetUrl, proxiedAssetUrl } from '@/lib/assets'
+import { useHistoryBackedOverlay } from '@/lib/use-history-backed-overlay'
 
 type Props = {
   lightSrc: string
@@ -88,6 +89,11 @@ export default function KurdistanFabDocImage({
 
   const iconDuration = reduceMotion ? 0 : 0.35
 
+  const closeViewer = useHistoryBackedOverlay(open, () => {
+    setReady(false)
+    setOpen(false)
+  })
+
   useEffect(() => {
     if (!open) return
     const previousOverflow = document.body.style.overflow
@@ -105,16 +111,11 @@ export default function KurdistanFabDocImage({
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [open])
+  }, [open, closeViewer])
 
   function openViewer() {
     setReady(false)
     setOpen(true)
-  }
-
-  function closeViewer() {
-    setReady(false)
-    setOpen(false)
   }
 
   useEffect(() => {
