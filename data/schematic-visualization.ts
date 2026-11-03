@@ -21,6 +21,8 @@ export const schematicVisualizationContent = {
       'image-1': {
         type: 'image',
         location: 'schematic-visualization-executive-dashboard.1.jpg',
+        width: 820,
+        height: 434,
       },
       'image-2': {
         type: 'image',
@@ -221,6 +223,8 @@ type SchematicImageBase = {
 
 export type SchematicSingleImageBlock = SchematicImageBase & {
   location: string
+  width: number
+  height: number
 }
 
 /** Light and dark files, each with its own pixel size, as on the Kurdistan page. */
@@ -337,7 +341,7 @@ export function schematicImageSources(
   }
 
   if ('location' in block) {
-    return { src: block.location }
+    return { src: block.location, width: block.width, height: block.height }
   }
 
   return {

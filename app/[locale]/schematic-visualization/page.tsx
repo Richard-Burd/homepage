@@ -117,7 +117,7 @@ export default async function SchematicVisualizationPage({ params }: Props) {
       </RailEnd>
 
       {sections.map((section) => (
-        <section key={section.id} id={section.id} className="contents">
+        <section key={section.id} className="contents">
           {section.blocks.map((entry, blockIndex) => {
             const showTitle = blockIndex === 0
             const description = isSchematicImageBlock(entry.block)
@@ -139,8 +139,11 @@ export default async function SchematicVisualizationPage({ params }: Props) {
                   endAnchor={entry.block.type === 'image' ? 'media' : 'text'}
                 >
                   {showTitle ? (
+                    // The section is `display: contents` and has no box to
+                    // scroll to, so the heading carries the hash target.
                     <h2
-                      className={`${headingClass} text-center text-2xl min-[800px]:text-end min-[800px]:text-[1.75rem] min-[800px]:leading-tight`}
+                      id={section.id}
+                      className={`${headingClass} scroll-mt-[calc(var(--navbar-height,4.15rem)+1.5rem)] text-center text-2xl min-[800px]:text-end min-[800px]:text-[1.75rem] min-[800px]:leading-tight`}
                     >
                       {t(`sections.${section.id}.title`)}
                     </h2>

@@ -143,7 +143,7 @@
       },
       "items": {
         "figma": "Figma is a design tool used to sketch and prototype how websites and apps will look before they are built. Designers and developers use it to agree on layouts, colors, and screens, so everyone builds toward the same picture.",
-        "calvary": "Cavalry is a professional 2D animation tool used to create moving graphics — animated logos, explainer visuals, and motion effects — that can be exported for use on the web and in video.",
+        "calvary": "Cavalry is a 2D animation program. I can create animated logos, explainer visuals, and various motion effects.  This very website features a light-dark mode toggle made with Cavalry & AI.  It is on the right side of the navbar at the top of this screen. I describe how it was made <schematicVisualizationSection>here</schematicVisualizationSection>.  You can download it as a Lottie file for your website <lottieToggle>here</lottieToggle>.",
         "react": "React Native and Expo are tools for building mobile apps for iPhone and Android using the same programming language as the web. They let one codebase serve multiple platforms, saving time and cost.",
         "d3": "D3.js is a JavaScript library for turning raw data into custom interactive charts and visualizations — like the charts on this page. It gives fine-grained control that off-the-shelf chart tools can't match.",
         "three": "Three.js is a JavaScript library for displaying 3D graphics in a web browser — rotating product models, virtual scenes, and interactive environments — without any special software installed.",
@@ -186,7 +186,7 @@
         "davinciResolve": "DaVinci Resolve is a professional video editor and color-grading tool used to cut footage, correct color, mix audio, and export finished films and clips.",
         "lmms": "LMMS is a digital audio workstation for composing music with virtual instruments, samples, and a timeline — useful for original scores and soundtrack sketches without expensive studio software.",
         "sunoAi": "Suno AI is a generative music tool that turns text prompts into finished songs. It is a fast way to explore styles and produce backing tracks for video and other projects.",
-        "calvary": "Cavalry is a professional 2D animation tool used to create moving graphics — animated logos, explainer visuals, and motion effects — that can be exported for use on the web and in video.",
+        "calvary": "Cavalry is a 2D animation program. I can create animated logos, explainer visuals, and various motion effects.  This very website features a light-dark mode toggle made with Cavalry & AI.  It is on the right side of the navbar at the top of this screen. I describe how it was made <schematicVisualizationSection>here</schematicVisualizationSection>.  You can download it as a Lottie file for your website <lottieToggle>here</lottieToggle>.",
         "affinity": "Affinity is a suite of design apps for illustration, photo editing, and page layout. It is used to produce polished print and digital artwork without a subscription.",
         "fontforge": "FontForge is an open-source font editor for drawing, spacing, and exporting typefaces. It is how custom lettering becomes a usable font file.",
         "inkscape": "Inkscape is a free vector-graphics editor for logos, icons, and illustrations that stay sharp at any size. Files can be exported for print, the web, and other design tools.",
