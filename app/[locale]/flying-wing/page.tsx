@@ -62,7 +62,7 @@ export default async function FlyingWingPage({ params }: Props) {
 
         <div className={`${columnClassName} flex flex-1 flex-col pb-32`}>
           <Image
-            src={assetUrl('flying-wing-mobile.2.png')}
+            src={assetUrl('flying-wing-mobile.3.png')}
             alt={t('imageAlt')}
             width={1449}
             height={3000}
