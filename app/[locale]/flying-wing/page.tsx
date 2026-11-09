@@ -40,7 +40,7 @@ export default async function FlyingWingPage({ params }: Props) {
         ? 'font-(family-name:--font-hebrew) font-bold'
         : 'font-(family-name:--font-roboto) font-bold tracking-wide'
 
-  const pngHref = proxiedAssetUrl('flying-wing-desktop.2.png')
+  const pngHref = proxiedAssetUrl('flying-wing-desktop.3.png')
 
   return (
     <div className="flex flex-1 flex-col items-center bg-zinc-200 dark:bg-zinc-800">
@@ -54,7 +54,7 @@ export default async function FlyingWingPage({ params }: Props) {
         </div>
 
         <FlyingWingDesktopImage
-          src={assetUrl('flying-wing-desktop.2.png')}
+          src={assetUrl('flying-wing-desktop.3.png')}
           alt={t('imageAlt')}
           expandLabel={t('expandImage')}
           shrinkLabel={t('shrinkImage')}
