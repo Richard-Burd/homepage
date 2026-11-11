@@ -57,7 +57,7 @@
         "linkLabel": "Read Flying Wing Aerodynamics"
       },
       "foiltrans": {
-        "title": "Create Accurate, Simulation Flight Models for Airframe Geometry",
+        "title": "Create Accurate Flight Simulation Models from Airframe Geometry",
         "subtitle": "This is a GitHub repo preserving the classic <i><latin>FoilTrans</latin></i> program. It also details my workflow for building highly accurate and predictive airframe models in the <latin>X-Plane</latin> flight simulator. This lets you build an airframe in a simulation environment first, <i>before</i> you try to build and test fly it in real life.",
         "linkLabel": "Open the FoilTrans repository on GitHub"
       }
