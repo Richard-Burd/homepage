@@ -23,7 +23,45 @@
   "NavMenu": {
     "label": "Menu",
     "home": "Home",
-    "contact": "Contact & Resumé"
+    "contact": "Contact & Resumé",
+    "articles": "Article Library"
+  },
+  "ArticleLibraryPage": {
+    "metaTitle": "Article Library",
+    "metaDescription": "A library of Richard Burd's technical articles, visualizations, and software projects.",
+    "title": "Article Library",
+    "entries": {
+      "schematic": {
+        "title": "Schematic Visualization & Treasure Mapping",
+        "subtitle": "This is how I ‘draw’ problems and coordinate problem solving on big teams solving complex problems.",
+        "linkLabel": "Read Schematic Visualization & Treasure Mapping"
+      },
+      "kurdistan": {
+        "title": "Kurdistan: Homemade UAV Goes to War",
+        "subtitle": "This article…",
+        "linkLabel": "Read Kurdistan: Homemade UAV Goes to War"
+      },
+      "lcs": {
+        "title": "Longest Common Subsequence",
+        "subtitle": "Before AI, we had to think hard to solve problems. This article details my attempt to solve a classic software engineering problem taken from Google’s hiring interview process. My solution is imperfect and not as good as the “textbook” answers, but was a lot of fun nonetheless.",
+        "linkLabel": "Read Longest Common Subsequence"
+      },
+      "bigO": {
+        "title": "When Big-O Does and Does Not Matter",
+        "subtitle": "Before AI, we had to optimize software. This article details my method for determining how and when to consider Big-O optimization.",
+        "linkLabel": "Read When Big-O Does and Does Not Matter"
+      },
+      "flyingWing": {
+        "title": "Flying Wing Aerodynamics",
+        "subtitle": "This is the first in a series of visualizations I plan to make on flying wing aerodynamics. This one covers <i>center of gravity</i> placement. I plan to have more in the future.",
+        "linkLabel": "Read Flying Wing Aerodynamics"
+      },
+      "foiltrans": {
+        "title": "Create Accurate, Simulation Flight Models for Airframe Geometry",
+        "subtitle": "This is a GitHub repo preserving the classic <i><latin>FoilTrans</latin></i> program. It also details my workflow for building highly accurate and predictive airframe models in the <latin>X-Plane</latin> flight simulator. This lets you build an airframe in a simulation environment first before you try to build and test fly it in real life.",
+        "linkLabel": "Open the FoilTrans repository on GitHub"
+      }
+    }
   },
   "ContactPage": {
     "metaTitle": "Contact",

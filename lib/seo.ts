@@ -18,6 +18,7 @@ export const INDEXABLE_PATHNAMES = [
   '/flying-wing',
   '/schematic-visualization',
   '/contact-resume',
+  '/article-library',
 ] as const
 
 // this is the type of the indexable pathnames

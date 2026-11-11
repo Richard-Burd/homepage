@@ -35,9 +35,13 @@ type MenuItemId =
   | 'core-capabilities'
   | 'technology-stack'
   | 'contact'
+  | 'articles'
   | 'linkedin'
 
-type HomeHashMenuItemId = Exclude<MenuItemId, 'linkedin' | 'contact'>
+type HomeHashMenuItemId = Exclude<
+  MenuItemId,
+  'linkedin' | 'contact' | 'articles'
+>
 
 function itemClassName(pressed: boolean) {
   return `block w-full cursor-pointer px-3 py-1.5 text-start text-2xl leading-loose whitespace-nowrap outline-none transition-colors duration-150 ${
@@ -241,6 +245,33 @@ export default function NavMenu() {
                   : {
                       ...menuTransition,
                       delay: 0.04 + (items.length + 1) * 0.045,
+                    }
+              }
+            >
+              <Link
+                role="menuitem"
+                href="/article-library"
+                style={itemFont}
+                className={itemClassName(pressedItem === 'articles')}
+                onPointerDown={() => setPressedItem('articles')}
+                onPointerLeave={() => {
+                  if (closeTimerRef.current == null) setPressedItem(null)
+                }}
+                onClick={() => runAfterPress('articles', () => {})}
+              >
+                {t('articles')}
+              </Link>
+            </motion.li>
+            <motion.li
+              role="none"
+              initial={reduceMotion ? false : { opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      ...menuTransition,
+                      delay: 0.04 + (items.length + 2) * 0.045,
                     }
               }
             >
