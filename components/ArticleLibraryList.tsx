@@ -17,7 +17,7 @@ export const ARTICLE_LIBRARY_STYLES = {
   title:
     'text-xl font-bold leading-tight text-zinc-800 sm:text-2xl dark:text-zinc-50',
   subtitle:
-    'mt-2 text-base leading-relaxed text-zinc-600 sm:text-lg dark:text-zinc-300',
+    'text-base leading-relaxed text-zinc-600 sm:text-lg dark:text-zinc-300',
   icon: 'size-14 sm:size-16',
   iconLink:
     'group inline-flex size-20 shrink-0 items-center justify-center rounded-2xl border border-zinc-300 bg-zinc-50 text-sky-700 shadow-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4 dark:border-zinc-600 dark:bg-zinc-900 dark:text-sky-300 dark:focus-visible:ring-offset-black',
@@ -93,15 +93,21 @@ export default function ArticleLibraryList() {
         return (
           <li
             key={key}
-            className="flex flex-row items-start gap-5 rounded-2xl border border-zinc-200 bg-zinc-50/80 p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/70"
-            dir="ltr"
+            className="grid grid-cols-[5rem_minmax(0,1fr)] gap-x-5 gap-y-4 px-1 py-4 sm:gap-y-0"
+            dir={isRtl ? 'rtl' : 'ltr'}
           >
+            <h2
+              className={`${ARTICLE_LIBRARY_STYLES.title} col-span-2 sm:col-span-1 sm:col-start-2 sm:row-start-1`}
+            >
+              {t.rich('entries.' + key + '.title', richTextTags)}
+            </h2>
+
             <motion.a
               href={resolvedHref}
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
               aria-label={t('entries.' + key + '.linkLabel')}
-              className={ARTICLE_LIBRARY_STYLES.iconLink}
+              className={`${ARTICLE_LIBRARY_STYLES.iconLink} col-start-1 row-start-2 sm:row-span-2 sm:row-start-1`}
               whileHover={
                 reduceMotion
                   ? undefined
@@ -129,14 +135,11 @@ export default function ArticleLibraryList() {
               />
             </motion.a>
 
-            <div dir={isRtl ? 'rtl' : 'ltr'} className="min-w-0 flex-1 pt-1">
-              <h2 className={ARTICLE_LIBRARY_STYLES.title}>
-                {t.rich('entries.' + key + '.title', richTextTags)}
-              </h2>
-              <p className={ARTICLE_LIBRARY_STYLES.subtitle}>
-                {t.rich('entries.' + key + '.subtitle', richTextTags)}
-              </p>
-            </div>
+            <p
+              className={`${ARTICLE_LIBRARY_STYLES.subtitle} col-start-2 row-start-2 min-w-0 sm:mt-2`}
+            >
+              {t.rich('entries.' + key + '.subtitle', richTextTags)}
+            </p>
           </li>
         )
       })}

@@ -36,7 +36,7 @@ export default async function ArticleLibraryPage({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col items-center bg-zinc-200 dark:bg-zinc-800">
-      <main className="flex w-full max-w-4xl flex-1 flex-col items-center bg-white px-4 py-32 sm:px-8 dark:bg-black">
+      <main className="flex w-full max-w-3xl flex-1 flex-col items-center bg-white px-4 py-32 dark:bg-black">
         <h1
           className={`${headingClass} mb-12 text-center text-3xl text-zinc-700 min-[800px]:text-[2.625rem] min-[800px]:leading-tight dark:text-zinc-50`}
         >
