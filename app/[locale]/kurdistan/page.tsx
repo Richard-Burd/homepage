@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 
 import KurdistanEnlargedImage from '@/components/kurdistan/KurdistanEnlargedImage'
@@ -375,7 +375,7 @@ const fig6ByLocale = {
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'KurdistanPage' })
+  const t = await getTranslations('KurdistanPage')
 
   return pageMetadata({
     locale,
@@ -387,7 +387,6 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function KurdistanPage({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
   const t = await getTranslations('KurdistanPage')
   const imgLocale = pageLocale(locale)
   const fig1 = fig1ByLocale[imgLocale]

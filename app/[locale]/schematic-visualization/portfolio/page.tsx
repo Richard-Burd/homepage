@@ -2,7 +2,6 @@ import { connection } from 'next/server'
 import { cookies } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { hasLocale } from 'next-intl'
-import { setRequestLocale } from 'next-intl/server'
 
 import PortfolioGallery from '@/components/portfolio/PortfolioGallery'
 import { routing } from '@/i18n/routing'
@@ -31,7 +30,6 @@ export default async function PortfolioPage({ params }: Props) {
   await connection()
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  setRequestLocale(locale)
 
   const cookieStore = await cookies()
   const returnHref = schematicPath(locale)

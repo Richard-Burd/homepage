@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
@@ -124,7 +124,7 @@ function mapTechStackGroups<Item extends { id: string }>(
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'Metadata' })
+  const t = await getTranslations('Metadata')
 
   return pageMetadata({
     locale,
@@ -136,7 +136,6 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Home({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
 
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')

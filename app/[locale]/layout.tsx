@@ -1,5 +1,5 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import {
   Geist,
   Geist_Mono,
@@ -10,6 +10,7 @@ import {
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 
+import '../globals.css'
 import Footer from '@/components/Footer'
 import { InlineScript } from '@/components/InlineScript'
 import Navbar from '@/components/Navbar'
@@ -55,9 +56,8 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export async function generateMetadata({ params }: Omit<Props, 'children'>) {
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'Metadata' })
+export async function generateMetadata() {
+  const t = await getTranslations('Metadata')
 
   // Canonical/hreflang and `openGraph.url` are route-specific, so they are set
   // per page via `pageMetadata()` rather than inherited from this layout.
@@ -82,8 +82,6 @@ export default async function LocaleLayout({ children, params }: Props) {
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
-
-  setRequestLocale(locale)
 
   const isRtl = rtlLocales.includes(locale as Locale)
 
