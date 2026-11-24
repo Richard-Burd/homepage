@@ -261,7 +261,7 @@ export default async function Home({ params }: Props) {
             text-driven stretching), so the mx-4 / min-[800px]:mx-20
             gutters match the intro paragraph exactly.
           */}
-          <div className="mx-4 mt-10 mb-40 self-stretch after:block after:clear-both after:content-[''] min-[800px]:mx-20">
+          <div className="mx-4 mt-6 mb-40 self-stretch after:block after:clear-both after:content-[''] min-[800px]:mx-20 min-[800px]:mt-10">
             <Image
               src={assetUrl('round-portrait-me.1.png')}
               alt={t('portraitAlt')}
