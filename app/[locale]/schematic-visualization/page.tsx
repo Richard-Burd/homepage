@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import { Fragment, type ReactNode } from 'react'
 
 import PortfolioPasswordButton from '@/components/portfolio/PortfolioPasswordButton'
@@ -52,10 +52,7 @@ function headingClassName(locale: string) {
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  const t = await getTranslations({
-    locale,
-    namespace: 'SchematicVisualizationPage',
-  })
+  const t = await getTranslations('SchematicVisualizationPage')
 
   return pageMetadata({
     locale,
@@ -67,7 +64,6 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function SchematicVisualizationPage({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
   const t = await getTranslations('SchematicVisualizationPage')
   const rail = await getTranslations('TwoRailOrientationText')
   const headingClass = headingClassName(locale)

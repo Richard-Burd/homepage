@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 
 import ArticleLibraryList from '@/components/ArticleLibraryList'
 import { pageMetadata } from '@/lib/seo'
@@ -9,10 +9,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  const t = await getTranslations({
-    locale,
-    namespace: 'ArticleLibraryPage',
-  })
+  const t = await getTranslations('ArticleLibraryPage')
 
   return pageMetadata({
     locale,
@@ -24,7 +21,6 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ArticleLibraryPage({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
   const t = await getTranslations('ArticleLibraryPage')
 
   const headingClass =

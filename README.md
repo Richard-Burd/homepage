@@ -2,7 +2,13 @@
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 pnpm run dev
@@ -11,7 +17,19 @@ pnpm run dev
 Or do a build:
 
 ```bash
-pnpm build && pnpm start
+pnpm build
+```
+
+Then, start the server:
+
+```bash
+pnpm start
+```
+
+...or run the dev server:
+
+```bash
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
@@ -124,7 +124,7 @@ function mapTechStackGroups<Item extends { id: string }>(
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'Metadata' })
+  const t = await getTranslations('Metadata')
 
   return pageMetadata({
     locale,
@@ -136,7 +136,6 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Home({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
 
   const t = await getTranslations('HomePage')
   const tDomains = await getTranslations('DomainsPie')
@@ -262,7 +261,7 @@ export default async function Home({ params }: Props) {
             text-driven stretching), so the mx-4 / min-[800px]:mx-20
             gutters match the intro paragraph exactly.
           */}
-          <div className="mx-4 mt-10 mb-40 self-stretch after:block after:clear-both after:content-[''] min-[800px]:mx-20">
+          <div className="mx-4 mt-6 mb-40 self-stretch after:block after:clear-both after:content-[''] min-[800px]:mx-20 min-[800px]:mt-10">
             <Image
               src={assetUrl('round-portrait-me.1.png')}
               alt={t('portraitAlt')}

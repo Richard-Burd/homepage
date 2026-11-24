@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 
 import ResumePdfDownloadLink from '@/components/ResumePdfDownloadLink'
 import { assetUrl, proxiedAssetUrl } from '@/lib/assets'
@@ -14,7 +14,7 @@ const columnClassName =
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'ContactPage' })
+  const t = await getTranslations('ContactPage')
 
   return pageMetadata({
     locale,
@@ -26,7 +26,6 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
   const t = await getTranslations('ContactPage')
 
   const headingClass =
