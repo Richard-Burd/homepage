@@ -4,3 +4,10 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 minimumReleaseAge: 20160
+overrides:
+  next: 16.4.6
+  'brace-expansion@>=4': 5.0.12
+  browserslist: 4.29.5
+  baseline-browser-mapping: 2.11.35
+  zod: 4.6.7
+  'minimatch@>=7 <11': 11.0.6
