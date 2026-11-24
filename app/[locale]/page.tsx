@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import Image from 'next/image'
 
 import PieAndBarCharts from '@/components/pie-and-bar-chart-combo/PieAndBarCharts'
 import GazeboWithTwoOppositePortals from '@/components/scenes/GazeboWithTwoOppositePortals'
@@ -13,6 +14,7 @@ import fullStackWebDevStackData from '@/data/full-stack-web-dev-stack.json'
 import digitalDesignCreativeToolsStackData from '@/data/digital-design-creative-tools-stack.json'
 import aviationStuffStackData from '@/data/aviation-stuff-stack.json'
 import type { Locale } from '@/i18n/routing'
+import { assetUrl } from '@/lib/assets'
 import {
   boldRichTag,
   externalRichLink,
@@ -237,13 +239,43 @@ export default async function Home({ params }: Props) {
 
         <div className="flex w-full flex-col items-center">
           <GazeboWithTwoOppositePortals />
-          <p className="mx-4 mt-6 mb-40 text-[1.0rem] sm:text-justify md:mx-20 md:text-[1.4rem]">
+          <p className="mx-4 mt-6 text-[1.0rem] sm:text-justify md:mx-20 md:text-[1.4rem]">
             {t.rich('intro', {
               existingHomepage: externalRichLink(
                 'https://richard-burd.github.io/'
               ),
             })}
           </p>
+          {/*
+            Portrait + paragraph form a newspaper-style wrap:
+            - Desktop (>=800px): the portrait is floated to the start side
+              (left in LTR, right in RTL) so the paragraph wraps the top
+              and continues full-width beneath it — a backwards "L" in
+              English, mirrored naturally in Arabic & Hebrew. The wrap
+              uses the image's square bounding box (not its circular
+              silhouette), so the adjacent text aligns to a single
+              vertical edge.
+            - Mobile: the portrait sits above the paragraph, centered,
+              with no float.
+            `self-stretch` makes this block fill the same horizontal
+            footprint as the intro <p> above (which relies on implicit
+            text-driven stretching), so the mx-4 / min-[800px]:mx-20
+            gutters match the intro paragraph exactly.
+          */}
+          <div className="mx-4 mt-10 mb-40 self-stretch after:block after:clear-both after:content-[''] min-[800px]:mx-20">
+            <Image
+              src={assetUrl('round-portrait-me.1.png')}
+              alt={t('portraitAlt')}
+              width={512}
+              height={512}
+              priority
+              sizes="(min-width: 800px) 12rem, 10rem"
+              className="mx-auto mb-6 block size-40 rounded-full object-cover min-[800px]:float-start min-[800px]:mb-2 min-[800px]:me-6 min-[800px]:size-48"
+            />
+            <p className="text-[1.0rem] sm:text-justify min-[800px]:text-[1.4rem]">
+              {t('aiFirstApproach')}
+            </p>
+          </div>
         </div>
 
         {/* <div className="flex w-full items-center justify-center">
