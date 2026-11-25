@@ -374,7 +374,7 @@
           "fitDiagram": "Show the whole diagram",
           "panHint": "Drag to move. Scroll or pinch to zoom.",
           "description-title": "Light-Dark Mode Toggle Animation",
-          "description-text": "This image <orientationText></orientationText> features several ‘Figures’ built with a simple SVG editor and an accompanying superprompt.  The superprompt defines the hierarchy, <code>Variable_Names</code>, and component organization.  The AI then spits out a script to generate the animation in <cavalry>Cavalry</cavalry>, a 2D animation program for creating <lottie>Lottie files for websites</lottie>.  The result was a near complete animation, architected according to Cavalry best practices."
+          "description-text": "This image <orientationText></orientationText> features several ‘Figures’ built with a simple SVG editor and an ASCII tree from an accompanying superprompt.  The ASCII tree defines the hierarchy, <code>Variable_Names</code>, and component organization.  The AI then spits out a script to generate the animation in <cavalry>Cavalry</cavalry>, a 2D animation program for creating <lottie>Lottie files for websites</lottie>.  The result was a near complete animation, architected according to Cavalry best practices."
         }
       },
       "section-3": {
